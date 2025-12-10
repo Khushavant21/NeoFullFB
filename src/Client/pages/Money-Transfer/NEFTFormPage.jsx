@@ -7,7 +7,10 @@ const NEFTFormPage = () => {
 
   const [formData, setFormData] = useState({
     beneficiaryName: "",
+    mobileNumber: "",
     bankName: "",
+    transferDate: "",
+
     accountNumber: "",
     confirmAccountNumber: "",
     ifsc: "",
@@ -27,7 +30,15 @@ const NEFTFormPage = () => {
   const validate = () => {
     const e = {};
     if (!formData.beneficiaryName.trim()) e.beneficiaryName = "Beneficiary name is required";
+    if (!formData.mobileNumber.trim())
+      e.mobileNumber = "Mobile number is required";
+     else if (!/^[6-9]\d{9}$/.test(formData.mobileNumber))
+  e.mobileNumber = "Enter a valid 10-digit mobile number";
+
     if (!formData.bankName.trim()) e.bankName = "Bank name is required";
+    if (!formData.transferDate.trim())
+  e.transferDate = "Date is required";
+
     if (!formData.accountNumber.trim()) e.accountNumber = "Account number is required";
     if (!formData.confirmAccountNumber.trim()) e.confirmAccountNumber = "Confirm account is required";
     if (formData.accountNumber && formData.confirmAccountNumber && formData.accountNumber !== formData.confirmAccountNumber)
@@ -81,8 +92,28 @@ const NEFTFormPage = () => {
             {errors.beneficiaryName && <span className="neft-error">{errors.beneficiaryName}</span>}
           </div>
 
+
+
+<div className="neft-form-group">
+  <label htmlFor="mobileNumber" className="neft-label">Mobile Number</label>
+  <input
+    type="text"
+    id="mobileNumber"
+    name="mobileNumber"
+    maxLength={10}
+    placeholder="Enter 10-digit mobile number"
+    value={formData.mobileNumber}
+    onChange={handleChange}
+    className="neft-input"
+  />
+  {errors.mobileNumber && <span className="neft-error">{errors.mobileNumber}</span>}
+</div>
+
+
+
+
           {/* Bank Name */}
-          <div className="neft-form-group">
+          {/* <div className="neft-form-group">
             <label htmlFor="bankName" className="neft-label">Bank Name</label>
             <select
               id="bankName"
@@ -100,7 +131,50 @@ const NEFTFormPage = () => {
               <option value="Punjab National Bank">Punjab National Bank</option>
             </select>
             {errors.bankName && <span className="neft-error">{errors.bankName}</span>}
-          </div>
+          </div> */}
+{/* Bank Name + Transfer Date */}
+<div className="neft-row">
+
+  {/* Bank Name */}
+  <div className="neft-col">
+    <label htmlFor="bankName" className="neft-label">Bank Name</label>
+    <select
+      id="bankName"
+      name="bankName"
+      value={formData.bankName}
+      onChange={handleChange}
+      className="neft-input"
+    >
+      <option value="">Select Bank</option>
+      <option value="HDFC Bank">HDFC Bank</option>
+      <option value="State Bank of India">State Bank of India</option>
+      <option value="ICICI Bank">ICICI Bank</option>
+      <option value="Axis Bank">Axis Bank</option>
+      <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+      <option value="Punjab National Bank">Punjab National Bank</option>
+    </select>
+    {errors.bankName && (
+      <span className="neft-error">{errors.bankName}</span>
+    )}
+  </div>
+
+  {/* Transfer Date */}
+  <div className="neft-col">
+    <label htmlFor="transferDate" className="neft-label">Date</label>
+    <input
+      type="date"
+      id="transferDate"
+      name="transferDate"
+      value={formData.transferDate}
+      onChange={handleChange}
+      className="neft-input"
+    />
+    {errors.transferDate && (
+      <span className="neft-error">{errors.transferDate}</span>
+    )}
+  </div>
+
+</div>
 
           {/* Account Numbers */}
           <div className="neft-row">
@@ -146,6 +220,8 @@ const NEFTFormPage = () => {
               />
               {errors.ifsc && <span className="neft-error">{errors.ifsc}</span>}
             </div>
+
+            
             <div className="neft-col">
               <label htmlFor="amount" className="neft-label">Amount (₹)</label>
               <input

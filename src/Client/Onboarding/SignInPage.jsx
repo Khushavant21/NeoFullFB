@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useOnboarding } from '../context/OnboardingContext';
 import './SignInPage.css';
 
 export default function SignInPage({ onComplete }) {
   const { setCurrentStep, updateUserData } = useOnboarding();
+  
   const [customerId, setCustomerId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // ✅ Static demo credentials
-  const demoCustomerId = "custm123456";
-  const demoPassword = "User123";
-
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
+    setError('');
 
-    // ✅ Validation
     if (!customerId.trim() || !password.trim()) {
-      setError('Please fill in both Customer ID and Password.');
+      setError('Please fill in both Customer ID/Email and Password.');
       return;
     }
 
@@ -26,21 +25,64 @@ export default function SignInPage({ onComplete }) {
       return;
     }
 
-    // ✅ Static credential check
-    if (customerId === demoCustomerId && password === demoPassword) {
-      // Store login state
-      updateUserData({ loggedIn: true, customerId });
+    try {
+      setLoading(true);
 
-      setError('');
+      const response = await axios.post('http://localhost:8080/api/auth/login', {
+        customerIdOrEmail: customerId,
+        password: password,
+      });
 
-      // ✅ Trigger main flow completion (Dashboard)
-      if (onComplete) {
-        onComplete();
-      } else {
-        setCurrentStep('dashboard');
+      const { token, role, kycStatus } = response?.data;
+
+      if (!token) {
+        setError("Login failed: No token received.");
+        return;
       }
-    } else {
-      setError('Invalid Customer ID or Password. Please try again.');
+
+      // Save token in localStorage
+      localStorage.setItem("accessToken", token);
+
+      // Save login state globally
+      updateUserData({
+        loggedIn: true,
+        customerId: customerId,
+        role: role,
+        kycStatus: kycStatus
+      });
+
+      console.log("ROLE:", role);
+      console.log("KYC:", kycStatus);
+
+      // -------------------------
+      // 🔥 USER → KYC BASED REDIRECT
+      // -------------------------
+      if (kycStatus === "APPROVED") {
+        // Dashboard
+        if (onComplete) onComplete();
+      }
+      else if (kycStatus === "REJECTED") {
+        // KYC re-upload page
+        setCurrentStep("updateKYC33");
+      }
+      else {
+        // PENDING / NULL / ANYTHING → Upload missing docs
+        setCurrentStep("updateKYC33");
+      }
+
+    } catch (err) {
+      console.error('Login error:', err);
+
+      if (err?.response?.status === 401) {
+        setError("Invalid credentials.");
+      } else if (err?.response?.status === 403) {
+        setError("Account disabled or blocked.");
+      } else {
+        setError("Something went wrong. Try again later.");
+      }
+
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,22 +95,20 @@ export default function SignInPage({ onComplete }) {
       <div className="signin-card">
         <div className="logo-icon-signin">N</div>
 
-        <button className="back-btn" onClick={handleBack}>
-          ← Back
-        </button>
+        <button className="back-btn" onClick={handleBack}>← Back</button>
 
         <h2>Sign In</h2>
 
         <form onSubmit={handleSignIn}>
           <input
             type="text"
-            placeholder="Customer ID"
+            placeholder="Customer ID or Email"
             value={customerId}
             onChange={(e) => setCustomerId(e.target.value)}
             className="signin-input"
           />
 
-          <input 
+          <input
             type="password"
             placeholder="Password"
             value={password}
@@ -78,35 +118,26 @@ export default function SignInPage({ onComplete }) {
 
           {error && <div className="signin-error">{error}</div>}
 
-          <button type="submit" className="signin-btn">
-            Sign In
+          <button type="submit" className="signin-btn" disabled={loading}>
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
 
         <div className="extra-links">
           <p className="signin-footer">
             Don’t have an account?{' '}
-            <span
-              onClick={() => setCurrentStep('signup')}
-              className="signup-link"
-            >
+            <span onClick={() => setCurrentStep('signup')} className="signup-link">
               Sign Up
             </span>
           </p>
 
-          {/* ✅ Forgot Password link */}
           <button
             className="forgot-btn"
-            onClick={() => alert('Password reset link sent to your registered email!')}
+            onClick={() => alert("Password reset link sent!")}
           >
             Forgot Password?
           </button>
         </div>
-
-        {/* ✅ Demo info text */}
-        <p className="signin-info">
-          Use <strong>custm123456</strong> / <strong>User123</strong> for demo login
-        </p>
       </div>
     </div>
   );

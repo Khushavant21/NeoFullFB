@@ -1,0 +1,154 @@
+/* ========================= */
+/* Testimonials Section */
+/* ========================= */
+.testimonials-section {
+  text-align: center;
+  padding: 40px 20px;
+  background: #f8fafc;
+}
+
+.testimonials-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 10px;
+}
+
+.testimonials-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 50px;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  justify-items: center;
+}
+
+.testimonial-card {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  text-align: left;
+  max-width: 350px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.testimonial-stars {
+  color: #facc15;
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+.testimonial-text {
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #374151;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.testimonial-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.testimonial-emoji {
+  font-size: 26px;
+}
+
+.testimonial-role {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ========================= */
+/* Responsive Design */
+/* ========================= */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .testimonials-section {
+    padding: 70px 16px;
+  }
+
+  .testimonials-title {
+    font-size: 1.8rem;
+  }
+
+  .testimonials-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 40px;
+  }
+
+  .testimonial-card {
+    padding: 24px;
+    max-width: 320px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .testimonials-section {
+    padding: 60px 14px;
+  }
+
+  .testimonials-title {
+    font-size: 1.6rem;
+  }
+
+  .testimonials-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .testimonials-grid {
+    grid-template-columns: 1fr; /* One per row */
+    gap: 20px;
+  }
+
+  .testimonial-card {
+    max-width: 100%;
+    padding: 22px;
+  }
+
+  .testimonial-text {
+    font-size: 0.9rem;
+  }
+
+  .testimonial-emoji {
+    font-size: 22px;
+  }
+
+  .testimonial-role {
+    font-size: 0.8rem;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+  .testimonials-title {
+    font-size: 1.4rem;
+  }
+
+  .testimonials-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .testimonial-card {
+    padding: 18px;
+  }
+
+  .testimonial-text {
+    font-size: 0.85rem;
+  }
+}

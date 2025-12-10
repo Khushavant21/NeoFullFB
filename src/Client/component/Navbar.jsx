@@ -8,9 +8,8 @@ import {
   Repeat, TrendingUp, Settings, AlertCircle, LayoutDashboard, Menu
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import logo from "../assets/logo.png";
 import "./Navbar.css"; // Assuming you have a CSS file for styling
-
+import logo from "../assets/logo.png";
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [secondaryOpen, setSecondaryOpen] = useState(false);
@@ -46,10 +45,11 @@ const Navbar = () => {
             <span className="brand-text">NeoBank</span>
           </Link>
 
+
           {/* Search Bar */}
-          <form className="search-form">
+          {/* <form className="search-form">
             <input type="text" className="search-input" placeholder="Search users, transactions..." />
-          </form>
+          </form> */}
         </div>
 
         {/* Right side */}
@@ -63,10 +63,10 @@ const Navbar = () => {
             gap: "15px"
           }}
         >
-          <button className="icon-btn">
+          <Link to="/Client/Notifications" className="icon-btn">
             <Bell size={22} />
             <span className="badge">3</span>
-          </button>
+          </Link>
 
           {/* ✅ Profile Button from amit_myAccount branch */}
           <Link

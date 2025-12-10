@@ -70,8 +70,8 @@ const MoneyTransferPage = () => {
               }
             />
           </div>
-
-          {/* Transaction Limit */}
+{/* 
+          Transaction Limit
           <div className="feature-card-col">
             <FeatureCard
               title="Transaction Limit"
@@ -88,7 +88,7 @@ const MoneyTransferPage = () => {
                 </svg>
               }
             />
-          </div>
+          </div> */}
 
           {/* Domestic Transfer */}
           <div className="feature-card-col">

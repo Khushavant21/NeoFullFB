@@ -5,16 +5,27 @@ import "./KYCDashboard11.css";
 
 export default function KYCDashboard() {
   const navigate = useNavigate();
-  const [lastUpdated, setLastUpdated] = useState(new Date());
-  const [viewingAlert, setViewingAlert] = useState(null);
 
-  // ✅ New States for Monitor & Review Modals
+  const [summary, setSummary] = useState({
+    total: 0,
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+  });
+
+  const [viewingAlert, setViewingAlert] = useState(null);
   const [monitorTxn, setMonitorTxn] = useState(null);
   const [reviewTxn, setReviewTxn] = useState(null);
 
+  // 🔥 FETCH BACKEND SUMMARY HERE
   useEffect(() => {
-    const interval = setInterval(() => setLastUpdated(new Date()), 1000);
-    return () => clearInterval(interval);
+    fetch("http://localhost:8080/api/auth/admin/kyc/summary")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("KYC SUMMARY:", data);
+        setSummary(data);
+      })
+      .catch((err) => console.error("Summary Error:", err));
   }, []);
 
   const transactions = [
@@ -29,202 +40,138 @@ export default function KYCDashboard() {
     { id: 3, text: "Daily backup completed successfully", time: "6 hours ago" },
   ];
 
-  const summaryCards = [
-    { title: "KYC Approvals", text: "Pending Review", btn: "Review KYC", route: "review-kyc", icon: <FaUserCheck /> },
-    { title: "KYC History", text: "History list", btn: "Review History", route: "review-transactions", icon: <FaHistory /> },
-    { title: "System Alerts", text: "Requires Attention", btn: "View Alerts", route: "view-alerts", icon: <FaBell /> },
-  ];
-
   return (
-
-<>
-     {/* Header */}
+    <>
+      {/* ------------ HEADER -------------- */}
       <div className="kdb-header">
         <div className="kdb-header-content">
           <h2 className="kdb-title">KYC & Compliance Dashboard</h2>
           <p className="kdb-description">Monitor and manage compliance operations</p>
         </div>
       </div>
-    <div className="kdb-container">
-     
 
-      {/* Summary Cards with Icons */}
-      <div className="kdb-grid-3">
-        {summaryCards.map((item, i) => (
-          <div className="kdb-card kdb-card-hover" key={i}>
-            <div className="kdb-card-icon">{item.icon}</div>
-            <h6>{item.title}</h6>
+      <div className="kdb-container">
+
+        {/* ------------ SUMMARY CARDS ---------- */}
+        <div className="kdb-grid-3">
+          {/* CARD 1 — PENDING REVIEW */}
+          <div className="kdb-card kdb-card-hover">
+            <div className="kdb-card-icon"><FaUserCheck /></div>
+            <h6>KYC Approvals</h6>
+            <h5>{summary.pending}</h5>
+            <p>Pending Review</p>
+            <button className="kdb-btn kdb-btn-primary" onClick={() => navigate("review-kyc")}>
+              Review KYC
+            </button>
+          </div>
+
+          {/* CARD 2 — TOTAL HISTORY */}
+          <div className="kdb-card kdb-card-hover">
+            <div className="kdb-card-icon"><FaHistory /></div>
+            <h6>KYC History</h6>
+            <h5>{summary.total}</h5>
+            <p>History list</p>
+            <button className="kdb-btn kdb-btn-primary" onClick={() => navigate("review-transactions")}>
+              Review History
+            </button>
+          </div>
+
+          {/* CARD 3 — ALERTS */}
+          <div className="kdb-card kdb-card-hover">
+            <div className="kdb-card-icon"><FaBell /></div>
+            <h6>System Alerts</h6>
             <h5>0</h5>
-            <p>{item.text}</p>
-            <button className="kdb-btn kdb-btn-primary" onClick={() => navigate(item.route)}>
-              {item.btn}
+            <p>Requires Attention</p>
+            <button className="kdb-btn kdb-btn-primary" onClick={() => navigate("view-alerts")}>
+              View Alerts
             </button>
           </div>
-        ))}
-      </div>
-
-      {/* Transactions + Alerts */}
-      <div className="kdb-grid-2">
-        {/* Transactions */}
-        <div className="kdb-card">
-          <div className="kdb-card-header">
-            <strong>Recent Transactions</strong>
-            <button className="kdb-btn kdb-btn-outline" onClick={() => navigate("transactions")}>
-              View All
-            </button>
-          </div>
-          <div className="kdb-card-body">
-            {transactions.map((txn) => (
-              <div key={txn.id} className="kdb-txn-item">
-                <div>
-                  <strong>{txn.id}</strong> <br />
-                  <small>{txn.type}</small>
-                </div>
-                <div className="kdb-txn-actions">
-                  <span className="kdb-badge">{txn.amount}</span>
-                  {txn.status === "pending" ? (
-                    <button className="kdb-btn kdb-btn-dark" onClick={() => setMonitorTxn(txn)}>
-                      Monitor
-                    </button>
-                  ) : (
-                    <button className="kdb-btn kdb-btn-warning" onClick={() => setReviewTxn(txn)}>
-                      Review
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
-        {/* Alerts */}
-        <div className="kdb-card">
-          <div className="kdb-card-header">
-            <strong>System Alerts</strong>
-            <button className="kdb-btn kdb-btn-outline" onClick={() => navigate("view-alerts")}>
-              Review Now
-            </button>
-          </div>
-          <div className="kdb-card-body">
-            {alerts.map((a) => (
-              <div key={a.id} className="kdb-alert-item">
-                <div>
-                  ⚠️ {a.text} <br />
-                  <small>{a.time}</small>
-                </div>
-                <button className="kdb-btn kdb-btn-primary" onClick={() => setViewingAlert(a)}>
-                  View Report
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ✅ Monitor Modal with Live Progress */}
-      {monitorTxn && (
-        <div className="kdb-modal-overlay">
-          <div className="kdb-modal-box">
-            <div className="kdb-modal-header">
-              <h5>Monitor Transaction</h5>
-              <button className="kdb-modal-close" onClick={() => setMonitorTxn(null)}>✖</button>
+        {/* ---------- TRANSACTIONS + ALERTS ----------- */}
+        <div className="kdb-grid-2">
+          {/* Transactions */}
+          <div className="kdb-card">
+            <div className="kdb-card-header">
+              <strong>Recent Transactions</strong>
+              <button className="kdb-btn kdb-btn-outline" onClick={() => navigate("transactions")}>
+                View All
+              </button>
             </div>
-            <div className="kdb-modal-body">
-              <h6>{monitorTxn.id} - {monitorTxn.type}</h6>
-              <p><strong>Amount:</strong> {monitorTxn.amount}</p>
-              <p>Status: <span className="kdb-badge">Pending Monitoring</span></p>
-              <hr />
-              <p>Live updates:</p>
-              <ul>
-                <li>Source & Destination Accounts: XXXX123 → YYYY456</li>
-                <li>AML / Risk Check: Running...</li>
-                <li>Progress: <progress value={Math.floor(Math.random() * 100)} max="100"></progress></li>
-                <li>Suspicious activity: None detected</li>
-              </ul>
-            </div>
-            <div className="kdb-modal-footer">
-              <button className="kdb-btn kdb-btn-secondary" onClick={() => setMonitorTxn(null)}>Close</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ✅ Review Modal with Actions & Comments */}
-      {reviewTxn && (
-        <div className="kdb-modal-overlay">
-          <div className="kdb-modal-box">
-            <div className="kdb-modal-header">
-              <h5>Review Transaction</h5>
-              <button className="kdb-modal-close" onClick={() => setReviewTxn(null)}>✖</button>
-            </div>
-            <div className="kdb-modal-body">
-              <h6>{reviewTxn.id} - {reviewTxn.type}</h6>
-              <p><strong>Amount:</strong> {reviewTxn.amount}</p>
-              <p>Status: <span className="kdb-badge">Flagged for Review</span></p>
-              <hr />
-              <p>Transaction Details:</p>
-              <ul>
-                <li>Sender Account: XXXX123</li>
-                <li>Receiver Account: YYYY456</li>
-                <li>Compliance Checks: Passed / Failed</li>
-                <li>Risk Score: Medium</li>
-              </ul>
-              <hr />
-              <p>Admin Comments:</p>
-              <textarea
-                className="kdb-textarea"
-                placeholder="Add remarks..."
-                rows={3}
-              ></textarea>
-            </div>
-            <div className="kdb-modal-footer">
-              <button className="kdb-btn kdb-btn-secondary" onClick={() => setReviewTxn(null)}>Close</button>
-              <button className="kdb-btn kdb-btn-primary">Approve</button>
-              <button className="kdb-btn kdb-btn-warning">Reject</button>
-              <button className="kdb-btn kdb-btn-dark">Escalate</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ✅ AML Modal */}
-      {viewingAlert && (
-        <div className="kdb-modal-overlay">
-          <div className="kdb-modal-box">
-            <div className="kdb-modal-header">
-              <h5>AML Alert Details</h5>
-              <button className="kdb-modal-close" onClick={() => setViewingAlert(null)}>✖</button>
-            </div>
-            <div className="kdb-modal-body">
-              <h6>{viewingAlert.text}</h6>
-              <p><strong>Time:</strong> {viewingAlert.time}</p>
-              <hr />
-              <p>Here you can show full AML details, transaction list, flagged users, or compliance info.</p>
-            </div>
-            <div className="kdb-modal-footer">
-              <button className="kdb-btn kdb-btn-secondary" onClick={() => setViewingAlert(null)}>Close</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Compliance Overview */}
-      <div className="kdb-grid-4">
-        {[
-          { text: "Total Submissions", icon: <FaExchangeAlt /> },
-          { text: "Approval Rate", icon: <FaUserCheck /> },
-          { text: "Pending Review", icon: <FaHistory /> },
-          { text: "Active Alerts", icon: <FaShieldAlt /> },
-        ].map((item, i) => (
-          <div className="kdb-card kdb-compliance-card" key={i}>
-            <div className="kdb-card-icon">{item.icon}</div>
             <div className="kdb-card-body">
-              0 <br /> {item.text}
+              {transactions.map((txn) => (
+                <div key={txn.id} className="kdb-txn-item">
+                  <div>
+                    <strong>{txn.id}</strong><br />
+                    <small>{txn.type}</small>
+                  </div>
+
+                  <div className="kdb-txn-actions">
+                    <span className="kdb-badge">{txn.amount}</span>
+
+                    {txn.status === "pending" ? (
+                      <button className="kdb-btn kdb-btn-dark" onClick={() => setMonitorTxn(txn)}>
+                        Monitor
+                      </button>
+                    ) : (
+                      <button className="kdb-btn kdb-btn-warning" onClick={() => setReviewTxn(txn)}>
+                        Review
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        ))}
+
+          {/* Alerts */}
+          <div className="kdb-card">
+            <div className="kdb-card-header">
+              <strong>System Alerts</strong>
+              <button className="kdb-btn kdb-btn-outline" onClick={() => navigate("view-alerts")}>
+                Review Now
+              </button>
+            </div>
+
+            <div className="kdb-card-body">
+              {alerts.map((a) => (
+                <div key={a.id} className="kdb-alert-item">
+                  <div>
+                    ⚠️ {a.text}<br />
+                    <small>{a.time}</small>
+                  </div>
+                  <button className="kdb-btn kdb-btn-primary" onClick={() => setViewingAlert(a)}>
+                    View Report
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ----------- COMPLIANCE OVERVIEW ------- */}
+        <div className="kdb-grid-4">
+          <div className="kdb-card kdb-compliance-card">
+            <div className="kdb-card-icon"><FaExchangeAlt /></div>
+            <div className="kdb-card-body">{summary.total}<br />Total Submissions</div>
+          </div>
+
+          <div className="kdb-card kdb-compliance-card">
+            <div className="kdb-card-icon"><FaUserCheck /></div>
+            <div className="kdb-card-body">{summary.approved}<br />Approval Rate</div>
+          </div>
+
+          <div className="kdb-card kdb-compliance-card">
+            <div className="kdb-card-icon"><FaHistory /></div>
+            <div className="kdb-card-body">{summary.pending}<br />Pending Review</div>
+          </div>
+
+          <div className="kdb-card kdb-compliance-card">
+            <div className="kdb-card-icon"><FaShieldAlt /></div>
+            <div className="kdb-card-body">0<br />Active Alerts</div>
+          </div>
+        </div>
       </div>
-    </div>
     </>
   );
 }

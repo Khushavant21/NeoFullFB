@@ -1,97 +1,43 @@
-// Core imports
-import React, { Suspense, lazy } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import React, { Suspense, lazy, useRef, useState, useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 
-// Lazy-loaded apps
-const ClientApp = lazy(() => import("./Client/ClientApp")); // User side App
-const AdminApp = lazy(() => import("./Admin/AdminApp"));   // Admin side App
+// Lazy-loaded microapps
+const ClientApp = lazy(() => import("./Client/ClientApp"));
+const AdminApp = lazy(() => import("./Admin/AdminApp"));
 
-// ------------------- Home Page -------------------
-function Home() {
-  return (
-    <div style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
-      {/* Hero Section */}
-      <header
-        className="text-white text-center py-5"
-        style={{ backgroundColor: "#900603" }}
-      >
-        <h1 className="display-4 fw-bold">Welcome to NeoBank</h1>
-        <p className="lead">
-          Secure, Fast, and Trusted Banking at Your Fingertips
-        </p>
-        <div className="mt-4">
-          <Link to="/client" className="btn btn-light btn-lg me-3">
-            Open User App
-          </Link>
-          <Link to="/admin" className="btn btn-outline-light btn-lg">
-            Open Admin App
-          </Link>
-        </div>
-      </header>
+// Main Components (Landing Page)
+import LoadingScreen from "./LandingPage/Pages/LoadingScreen";
+import Header from "./LandingPage/Pages/Header";
+import HeroSection from "./LandingPage/Pages/HeroSection";
+import TrustworthySection from "./LandingPage/Pages/TrustworthySection";
+import BankingServices from "./LandingPage/Pages/BankingServices";
+import CreditCardsSection from "./LandingPage/Pages/CreditCardsSection";
+import Footer from "./LandingPage/Pages/Footer";
+import BankMadeSimple from "./LandingPage/Pages/BankMadeSimple";
+import OpenAccount from "./LandingPage/Pages/OpenAccount";
+import BankingApp from "./LandingPage/Pages/BankingApp";
+import PersonalSection from "./LandingPage/Pages/personal/PersonalSection";
+import SecurityFeatures from "./LandingPage/Pages/SecurityFeatures";
+import Testimonials from "./LandingPage/Pages/Testimonials";
+import CallToAction from "./LandingPage/Pages/CallToAction";
+import LandingCard from "./LandingPage/Pages/landingCardSection/LandingCard";
+import NShop from "./LandingPage/components/Nshop/nshop";
+import FinancialResourcesHub from "./LandingPage/Pages/Resourses/FinancialResourcesHub";
+import AboutPage from "./LandingPage/Pages/About/AboutPage";
+import Business from "./LandingPage/Pages/business/Business";
+import ComplaintsModule from "./LandingPage/Pages/ComplaintsModule/ComplaintsModule";
+import HelpPage from "./LandingPage/Pages/HelpPage/HelpPage";
 
-      {/* Features Section */}
-      <section className="container py-5">
-        <h2 className="text-center mb-5" style={{ color: "#900603" }}>
-          Why Choose NeoBank?
-        </h2>
-        <div className="row text-center g-4">
-          <div className="col-md-4">
-            <div className="card shadow-sm h-100">
-              <div className="card-body">
-                <h5 className="card-title text-primary">Secure Banking</h5>
-                <p className="card-text">
-                  Your money is protected with state-of-the-art security
-                  protocols.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card shadow-sm h-100">
-              <div className="card-body">
-                <h5 className="card-title text-primary">Fast Transactions</h5>
-                <p className="card-text">
-                  Transfer funds instantly with minimal charges and maximum
-                  convenience.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card shadow-sm h-100">
-              <div className="card-body">
-                <h5 className="card-title text-primary">24/7 Support</h5>
-                <p className="card-text">
-                  Our dedicated team is always here to help you with any banking
-                  needs.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call-to-Action Section */}
-      <section
-        className="text-center py-5 text-white"
-        style={{ backgroundColor: "#900603" }}
-      >
-        <h3 className="mb-3">Ready to Get Started?</h3>
-        <p className="mb-4">
-          Join thousands of happy customers using NeoBank every day.
-        </p>
-        <Link to="/client" className="btn btn-light btn-lg me-3">
-          Open User App
-        </Link>
-        <Link to="/admin/login" className="btn btn-outline-light btn-lg">
-          Open Admin App
-        </Link>
-      </section>
-    </div>
-  );
+// ------------------- ScrollToTop -------------------
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
 }
 
-// ------------------- Onboarding Redirect -------------------
+// ------------------- Onboarding Page -------------------
 function OnboardingFlow() {
   return (
     <div
@@ -124,8 +70,8 @@ function OnboardingFlow() {
         <p style={{ marginBottom: "30px", color: "#cbd5e1" }}>
           Please complete your account setup to access the banking features.
         </p>
-        <Link
-          to="/client"
+        <a
+          href="/client"
           style={{
             background: "#900603",
             color: "white",
@@ -137,22 +83,143 @@ function OnboardingFlow() {
           }}
         >
           Continue Setup
-        </Link>
+        </a>
       </div>
     </div>
   );
 }
 
-// ------------------- App Root -------------------
+// ------------------- Main App -------------------
 export default function App() {
+  const headerLogoRef = useRef(null);
+  const [splashDone, setSplashDone] = useState(false);
+  const location = useLocation();
+
+  // Detect if route is inside client or admin
+  const isClientOrAdmin = /^\/(client|admin)(\/|$)/.test(location.pathname);
+
   return (
     <Suspense fallback={<div className="text-center py-5">Loading...</div>}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/client/*" element={<ClientApp />} />
-        <Route path="/admin/*" element={<AdminApp />} />
-        <Route path="/onboarding" element={<OnboardingFlow />} />
-      </Routes>
+      {/* Splash Screen */}
+      <LoadingScreen
+        headerLogoRef={headerLogoRef}
+        onFinish={() => setSplashDone(true)}
+      />
+      <ScrollToTop />
+
+      <div className={`app-root ${splashDone ? "ready" : "behind-splash"}`}>
+        <Routes>
+          {/* 🏠 Landing Page */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Header headerLogoRef={headerLogoRef} />
+                <HeroSection />
+                <BankMadeSimple />
+                <TrustworthySection />
+                <OpenAccount />
+                <BankingServices />
+                <CreditCardsSection />
+                <BankingApp />
+                <SecurityFeatures />
+                <Testimonials />
+                <CallToAction />
+                <Footer />
+              </>
+            }
+          />
+
+          {/* 🌐 Public Pages (with Header & Footer) */}
+          <Route
+            path="/personal"
+            element={
+              <>
+                <Header headerLogoRef={headerLogoRef} />
+                <PersonalSection />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/landCard"
+            element={
+              <>
+                <Header headerLogoRef={headerLogoRef} />
+                <LandingCard />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/nshop"
+            element={
+              <>
+                <Header headerLogoRef={headerLogoRef} />
+                <NShop />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/resources"
+            element={
+              <>
+                <Header headerLogoRef={headerLogoRef} />
+                <FinancialResourcesHub />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/business"
+            element={
+              <>
+                <Header headerLogoRef={headerLogoRef} />
+                <Business />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <>
+                <Header headerLogoRef={headerLogoRef} />
+                <AboutPage />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/complaint"
+            element={
+              <>
+                <Header headerLogoRef={headerLogoRef} />
+                <ComplaintsModule />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/help"
+            element={
+              <>
+                <Header headerLogoRef={headerLogoRef} />
+                <HelpPage />
+                <Footer />
+              </>
+            }
+          />
+
+          {/* 🚫 Client/Admin (No Header/Footer) */}
+          <Route path="/client/*" element={<ClientApp />} />
+          <Route path="/admin/*" element={<AdminApp />} />
+
+          {/* 🧭 Onboarding */}
+          <Route path="/onboarding" element={<OnboardingFlow />} />
+        </Routes>
+      </div>
     </Suspense>
   );
 }

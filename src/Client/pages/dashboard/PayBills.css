@@ -1,159 +1,86 @@
-/* Full screen wrapper */
 .paybills-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;
-  background-color: #fafafa;
+  background: #fafafa;
   padding: 20px;
-  box-sizing: border-box;
-  overflow-x: hidden; /* 🔹 Horizontal scroll fix */
 }
 
-/* Outer card */
 .paybills-card {
   width: 100%;
-  background-color: #fff;
+  background: #fff;
   border-radius: 12px;
-  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
   padding: 20px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
 }
 
-/* Header with back button */
 .pb-header {
   display: flex;
   align-items: center;
-  position: relative;
   margin-bottom: 20px;
+  position: relative;
 }
 
 .pb-back-btn {
   position: absolute;
   left: 0;
   cursor: pointer;
-  font-weight: 700;
-  font-size: 1.3rem; /* 🔹 Button size */
+  font-size: 1.3rem;
+  font-weight: bold;
   color: #950606;
-  transition: color 0.3s ease;
-}
-
-.pb-back-btn:hover {
-  
-  text-decoration: underline;
-
 }
 
 .pb-title {
   width: 100%;
   text-align: center;
-  font-size: 1.75rem;
-  font-weight: bold;
   color: #950606;
-  margin-bottom: 8px;
+  font-size: 1.7rem;
+  font-weight: bold;
 }
 
-/* Subtitle */
-.paybills-card p {
-  text-align: center;
-  color: #6c757d;
-  margin-bottom: 1.5rem;
-}
-
-/* Biller grid */
 .biller-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
   gap: 15px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
 }
 
 .biller-card {
-  text-align: center;
-  padding: 15px;
+  border: 1px solid #ddd;
   border-radius: 12px;
-  border: 1px solid #dee2e6;
+  padding: 15px;
+  text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  user-select: none;
+  transition: .3s;
 }
 
 .biller-card.selected {
-  border: 2px solid #dc3545;
-  background-color: #f8f9fa;
+  border: 2px solid #950606;
+  background: #fff4f4;
 }
 
-.biller-card .icon {
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-}
-
-.biller-card .name {
-  font-weight: 600;
-  font-size: 0.875rem;
-}
-
-/* Form Inputs */
 .paybills-card input {
   width: 100%;
-  padding: 10px 15px;
-  border-radius: 50px;
-  border: 1px solid #dee2e6;
+  padding: 10px;
   margin-bottom: 12px;
-  font-size: 0.95rem;
-  outline: none;
-  box-sizing: border-box;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 50px;
+  border: 1px solid #ddd;
 }
 
-.paybills-card input:focus {
-  border-color: #950606;
-  box-shadow: 0 0 0 2px rgba(149, 6, 6, 0.2);
-}
-
-/* Pay Button */
 .paybills-card button {
   width: 100%;
-  padding: 14px 0; /* 🔹 Thoda bada */
+  padding: 14px;
+  background: #950606;
+  border: none;
+  color: #fff;
   border-radius: 50px;
   font-weight: bold;
-  font-size: 1.05rem;
-  color: #fff;
-  border: none;
-  background-color: #950606;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 12px; /* 🔹 Gap from previous input */
 }
 
-.paybills-card button:hover {
-  background-color: #7a0505;
-}
-
-/* Message */
 .paybills-message {
+  margin-top: 10px;
+  font-weight: bold;
   text-align: center;
-  margin-top: 1rem;
-  font-weight: 600;
-  color: #28a745;
-  font-size: 0.95rem;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .pb-title {
-    font-size: 1.4rem;
-  }
-
-  .pb-back-btn {
-    font-size: 1rem;
-    left: 3px;
-  }
-
-  .paybills-card button {
-    font-size: 1.1rem;
-    padding: 16px 0;
-  }
+  color: green;
 }

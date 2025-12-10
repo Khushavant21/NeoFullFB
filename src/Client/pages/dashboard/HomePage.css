@@ -1,0 +1,269 @@
+/* General Layout */
+.client-home-dashboard {
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Header */
+.client-home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 2rem;
+  background-color: #900603;
+  color: white;
+  top: 0;
+  z-index: 1000;
+  flex-wrap: wrap;
+}
+
+.client-home-header-left h2 {
+  font-size: 1.75rem;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+}
+
+.client-home-header-left p {
+  font-size: 0.9rem;
+  color: #f0f0f0;
+}
+
+.client-home-header-right {
+  display: flex;
+  gap: 0.2rem;
+  flex-wrap: wrap;
+}
+
+.client-home-header-right p {
+  font-size: 0.9rem;
+  color: #f0f0f0;
+  padding-bottom: 10px;
+  margin-right: -110px;
+}
+
+.client-home-header-right h3 {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Card Container */
+.client-home-card-container {
+  background: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.client-home-card-container h4 {
+  margin: 0 0 10px;
+}
+
+.client-home-subtitle {
+  font-size: 18px;
+  color: gray;
+  margin-bottom: 15px;
+}
+
+.client-home-small {
+  font-size: 12px;
+  color: #777;
+}
+
+/* Quick Actions */
+.client-home-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.client-home-action-card {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.client-home-action-card:hover {
+  transform: translateY(-3px);
+}
+
+.client-home-action-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin: 0 auto 10px;
+}
+
+.client-home-action-icon.primary {
+  background: #007bff;
+}
+.client-home-action-icon.success {
+  background: #28a745;
+}
+.client-home-action-icon.purple {
+  background: purple;
+}
+.client-home-action-icon.warning {
+  background: orange;
+}
+.client-home-action-icon.pink {
+  background: hotpink;
+}
+.client-home-action-icon.info {
+  background: teal;
+}
+
+/* Two Column Layout */
+.client-home-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin: 0px 20px;
+}
+
+/* Accounts */
+.client-home-account-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #eee;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.client-home-account-left {
+  display: flex;
+  align-items: center;
+}
+
+.client-home-account-icon {
+  width: 40px;
+  height: 40px;
+  background: #f1f1f1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.client-home-balance {
+  color: #950606;
+  font-weight: bold;
+}
+
+/* Transactions */
+.client-home-transaction-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #eee;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.client-home-transaction-left {
+  display: flex;
+  align-items: center;
+}
+
+.client-home-transaction-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.client-home-transaction-icon.success {
+  background: #d4edda;
+  color: #28a745;
+}
+.client-home-transaction-icon.danger {
+  background: #f8d7da;
+  color: #dc3545;
+}
+
+.client-home-amount.success {
+  color: #28a745;
+}
+.client-home-amount.danger {
+  color: #dc3545;
+}
+
+/* Widgets */
+.client-home-three-column {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.client-home-widget-card {
+  background: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.client-home-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #950606;
+}
+
+.client-home-positive {
+  font-size: 14px;
+  color: green;
+}
+
+/* 📱 Mobile responsiveness */
+@media (max-width: 768px) {
+  .client-home-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .client-home-two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .client-home-actions-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .client-home-three-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .client-home-action-card {
+    padding: 20px;
+  }
+
+  .client-home-action-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .client-home-value {
+    font-size: 18px;
+  }
+}

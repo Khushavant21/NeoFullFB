@@ -1,0 +1,427 @@
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.complaints-container {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* Help Banner Section */
+.help-banner {
+  background-color: #900603;
+  color: white;
+  padding: 40px 20px;
+}
+
+.help-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.help-content h2 {
+  font-size: 36px;
+  margin-bottom: 30px;
+  font-weight: 300;
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.contact-item {
+  flex: 1;
+  min-width: 250px;
+}
+
+.contact-item h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+
+.contact-link {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.find-branch-btn {
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.find-branch-btn:hover {
+  background-color: white;
+  color: #900603;
+}
+
+/* Options Section */
+.options-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+}
+
+.main-heading {
+  background-color: #900603;
+  color: white;
+  padding: 20px;
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 40px;
+  border-radius: 8px;
+  font-weight: 400;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+/* Option Cards */
+.option-card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.option-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.option-card h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.card-subtitle {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.card-description {
+  color: #555;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.feature-list {
+  list-style: none;
+  margin-bottom: 25px;
+}
+
+.feature-list li {
+  padding: 8px 0;
+  color: #666;
+  position: relative;
+  padding-left: 20px;
+}
+
+.feature-list li:before {
+  content: "•";
+  color: #900603;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+/* Buttons */
+.action-btn {
+  background-color: #900603;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 100%;
+  margin-bottom: 10px;
+  transition: background-color 0.3s;
+  font-weight: 600;
+}
+
+.action-btn:hover {
+  background-color: #750505;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fraud-btn {
+  background-color: #d32f2f;
+}
+
+.fraud-btn:hover {
+  background-color: #b71c1c;
+}
+
+/* Contact Section */
+.contact-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 50px;
+}
+
+.contact-box {
+  background-color: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.contact-box h2 {
+  color: #333;
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.contact-description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.contact-list {
+  list-style: none;
+  margin-bottom: 25px;
+}
+
+.contact-list li {
+  padding: 10px 0;
+  color: #555;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 30px;
+  margin: auto;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  color: #666;
+  line-height: 1;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+}
+
+.close-btn:hover {
+  color: #900603;
+}
+
+.modal-title {
+  background-color: #900603;
+  color: white;
+  padding: 15px;
+  margin: -30px -30px 25px -30px;
+  border-radius: 8px 8px 0 0;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #900603;
+}
+
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+  border-color: #d32f2f;
+}
+
+.error-text {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+.fraud-warning {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 15px;
+  margin-bottom: 20px;
+  color: #856404;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  justify-content: flex-end;
+}
+
+.cancel-btn {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 12px 30px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.submit-btn {
+  background-color: #900603;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  font-weight: 600;
+}
+
+.submit-btn:hover {
+  background-color: #750505;
+}
+
+/* Status Messages */
+.status-message {
+  padding: 20px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.status-message.success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.status-message.error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.reference-id {
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .help-content h2 {
+    font-size: 28px;
+  }
+
+  .contact-info {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .main-heading {
+    font-size: 24px;
+  }
+
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    padding: 20px;
+  }
+
+  .modal-title {
+    margin: -20px -20px 20px -20px;
+    font-size: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-btn,
+  .submit-btn {
+    width: 100%;
+  }
+}

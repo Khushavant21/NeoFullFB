@@ -1,6 +1,6 @@
 // React imports
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
 // Components
 import Navbar from "./component/Navbar";
@@ -17,12 +17,10 @@ import PANScreen from "./Onboarding/PANScreen.jsx";
 import AccountTypeScreen from "./Onboarding/AccountTypeScreen.jsx";
 import VideoKYCScreen from "./Onboarding/VideoKYCScreen.jsx";
 import UpdateKYC33 from "./Onboarding/UpdateKYC33.jsx";
-import CustomerIDPage from "./Onboarding/CustomerIDPage.jsx"; // ✅ NEW PAGE
-
-
+import CustomerIDPage from "./Onboarding/CustomerIDPage.jsx";
+import SignInPage from "./Onboarding/SignInPage.jsx";
 
 // Dashboard Pages
-import DashBoard from "./pages/dashboard/DashBoard.jsx";
 import HomePage from "./pages/dashboard/HomePage.jsx";
 import AddMoney from "./pages/dashboard/AddMoney.jsx";
 import SendMoneyDashboard from "./pages/dashboard/SendMoney.jsx";
@@ -81,6 +79,7 @@ import InternationalTransferPage from "./pages/Money-Transfer/InternationalTrans
 // Cards Pages
 import ClientCard from "./pages/cards/ClientCard.jsx";
 import ApplyNewCard from "./pages/cards/ApplyNewCard.jsx";
+import ClientNotifications from "./pages/Notification/ClientNotifications.jsx";
 
 // Complaint & Feedback
 import ComplaintFeedback from "./pages/Complaint & Feedback/ComplaintFeedback";
@@ -88,37 +87,35 @@ import EmailSupport from "./pages/Complaint & Feedback/EmailSupport";
 
 // Profile
 import Profile from "./pages/Profile/Profile.jsx";
-import SignInPage from "./Onboarding/SignInPage.jsx";
+import DebitCardSettings from "./pages/cards/DebitCardSettings.jsx";
 
-// ------------------- Onboarding Flow -------------------
 function OnboardingFlow({ onComplete }) {
   const [showSplash, setShowSplash] = useState(true);
-  
-    if (showSplash) {
-      return <SplashScreen onFinish={() => setShowSplash(false)} />;
-    }
-  const { currentStep } = useOnboarding();
+  const { currentStep } = useOnboarding();  // ✔ Moved to top (before any return)
+
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
 
   switch (currentStep) {
     case "welcome":
       return <WelcomeScreen />;
-      case "signIn":
-        return <SignInPage onComplete={onComplete} />
+    case "signIn":
+      return <SignInPage onComplete={onComplete} />;
     case "signup":
-      return <SignupScreen />;
+      return <SignupScreen onComplete={onComplete} />;
     case "aadhar":
       return <AadharScreen />;
     case "pan":
       return <PANScreen />;
     case "account-type":
       return <AccountTypeScreen />;
-     
-     case "customer-id": // ✅ NEW STEP ADDED HERE
+    case "customer-id":
       return <CustomerIDPage />;
     case "kyc":
       return <VideoKYCScreen />;
     case "updateKYC33":
-      return <UpdateKYC33 onComplete={onComplete} />; // ✅ correct usage
+      return <UpdateKYC33 onComplete={onComplete} />;
     default:
       return <WelcomeScreen />;
   }
@@ -126,21 +123,26 @@ function OnboardingFlow({ onComplete }) {
 
 // ------------------- Main App -------------------
 function MainApp() {
-  
+  const location = useLocation();
+
+  // Hide Navbar on profile page
+  const hideNavbarRoutes = ["/client/profile"];
+  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
     <div className="App">
-      <Navbar />
+      {!shouldHideNavbar && <Navbar />}
+
       <Routes>
         {/* Profile */}
         <Route path="/profile" element={<Profile />} />
 
         {/* Dashboard */}
-        <Route path="/" element={<DashBoard />} />
-        <Route path="/homepage" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/add-money" element={<AddMoney />} />
         <Route path="/send-money" element={<SendMoneyDashboard />} />
         <Route path="/pay-bills" element={<PayBills />} />
+        <Route path="/Notifications" element={<ClientNotifications />} />
 
         {/* MyAccount */}
         <Route path="/myAccount" element={<MyAccounts />} />
@@ -180,7 +182,7 @@ function MainApp() {
         <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/General" element={<GeneralSettings />} />
         <Route path="/personal-details" element={<PersonalDetails />} />
-        <Route path="Security" element={<Security/>}/>
+        <Route path="/Security" element={<Security />} />
 
         {/* Money Transfer */}
         <Route path="/money-transfer" element={<MoneyTransfer />} />
@@ -197,6 +199,7 @@ function MainApp() {
         {/* Cards */}
         <Route path="/cards" element={<ClientCard />} />
         <Route path="/applynewcard" element={<ApplyNewCard />} />
+        <Route path="/CardsSetting" element={<DebitCardSettings />} />
 
         {/* Complaint & Feedback */}
         <Route path="/complaintfeedback" element={<ComplaintFeedback />} />

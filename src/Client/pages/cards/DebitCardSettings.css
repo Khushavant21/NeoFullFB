@@ -1,0 +1,191 @@
+.debit-container-unique {
+  padding: 0 0 20px 0;  
+  font-family: 'Inter', sans-serif;
+  color: #333;
+}
+
+.header-unique {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 25px ;
+  background-color: #900603;
+  color: white;
+  z-index: 1000;
+  min-height: 125px; 
+}
+.DCS-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #900603;
+  color: white;
+  border: 2px solid white; 
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+.header-unique h2 {
+  font-size: 1.75rem;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  text-align: left;
+}
+
+.section-title-unique {
+  color: #333;
+  margin-left: 12px;      /* left se thodi si space */
+  margin-top: 15px;       /* thoda niche */
+  font-weight: 600;
+}
+
+.card-number-unique {
+  color: #333;
+  margin-left: 12px;      /* same left spacing */
+  margin-top: 5px;        /* title ke neeche gap */
+  font-size: 1.1rem;
+}
+
+
+.sub-title-unique {
+  font-size: 16px;
+  margin: 15px 0 5px;
+  font-weight: 600;
+}
+
+.desc-unique {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+/* ---------------- SIDE BY SIDE WRAPPER ---------------- */
+
+.dual-wrapper-unique {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.usage-wrapper-unique,
+.limits-wrapper-unique {
+  width: 50%;
+}
+
+/* ---------------- Manage Usage Card ---------------- */
+
+.card-unique {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.row-unique {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.row-unique:last-child {
+  border-bottom: none;
+}
+
+.label-unique {
+  font-size: 15px;
+}
+
+/* Toggle Switch */
+.switch-unique {
+  position: relative;
+  width: 46px;
+  height: 24px;
+}
+
+.switch-unique input {
+  display: none;
+}
+
+.slider-unique {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 24px;
+  inset: 0;
+  transition: .3s;
+}
+
+.slider-unique:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  background: white;
+  border-radius: 50%;
+  left: 3px;
+  top: 3px;
+  transition: .3s;
+}
+
+.switch-unique input:checked + .slider-unique {
+  background-color: #900603;   /* Updated */
+}
+
+.switch-unique input:checked + .slider-unique:before {
+  transform: translateX(22px);
+}
+
+/* ---------------- Limit Cards ---------------- */
+
+.limit-card-unique {
+  background: #fff;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.limit-label-unique {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.new-limit-unique {
+  color: #900603;   /* Updated */
+  font-weight: bold;
+}
+
+.slider-range-unique {
+  width: 100%;
+  accent-color: #900603; /* Updated */
+}
+
+.range-values-unique {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  color: #777;
+}
+
+.save-btn-unique {
+  width: 100%;
+  background: #900603; /* Updated */
+  color: white;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  margin-top: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}

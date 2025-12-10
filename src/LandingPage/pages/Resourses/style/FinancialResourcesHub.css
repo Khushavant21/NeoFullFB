@@ -1,0 +1,269 @@
+/* FinancialResourcesHub.css */
+
+/* Container */
+.resources-page {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #222;
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+/* Hero Section */
+.resources-hero-section {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+  padding: 100px 20px;
+}
+
+.resources-hero-content {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.resources-hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.resources-hero-subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  color: #fecaca;
+  max-width: 700px;
+}
+
+/* Buttons */
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.resourcesbtn {
+  font-size: 1rem;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+}
+
+.resourcesbtn-primary {
+  background-color:white;
+  color: #991b1b;
+}
+
+.resourcesbtn-primary:hover {
+  background-color: #f3f4f6;
+}
+
+.resourcesbtn-secondary {
+  background: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+.resourcesbtn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Explore Section */
+.explore-section {
+  background-color: #fff;
+  padding: 64px 24px;
+}
+
+.explore-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.explore-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.explore-subtitle {
+  font-size: 1.25rem;
+  color: #6b7280;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Resource Cards Container */
+.resources-section {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-bottom: 40px;
+  max-width: 1460px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.resource-card {
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 32px;
+  width: 700px;
+  flex: 0 0 700px;
+  transition: all 0.3s ease;
+}
+
+.resource-card:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Header */
+.resource-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.header-icon {
+  background-color: #fef2f2;
+  color: #991b1b;
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resource-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+/* Resource List */
+.resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.resource-item {
+  background-color: #f9fafb;
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.resource-item:hover {
+  background-color: #f3f4f6;
+  transform: translateY(-2px);
+}
+
+.resource-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.file-icon {
+  color: #991b1b;
+  flex-shrink: 0;
+}
+
+.resource-text {
+  flex: 1;
+}
+
+.resource-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.resource-info p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.open-icon {
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.open-icon:hover {
+  color: #991b1b;
+}
+
+/* Responsive */
+@media (max-width: 1520px) {
+  .resources-section {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .explore-title {
+    font-size: 2rem;
+  }
+
+  .explore-subtitle {
+    font-size: 1rem;
+  }
+
+  .resource-card {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .resource-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .resource-info h4 {
+    font-size: 0.95rem;
+  }
+
+  .resource-info p {
+    font-size: 0.8rem;
+  }
+}

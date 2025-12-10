@@ -73,7 +73,8 @@ export default function ClientCard() {
 
   return (
     <div className="client-card-wrapper">
-      <div className="client-card-header">
+      <div className="client-card-header-sonali
+      ">
         <h2>My Cards</h2>
         <p>Your digital cards, simplified and secure</p>
         <button className="add-card-btn" onClick={handleAddCard}>
@@ -130,21 +131,21 @@ export default function ClientCard() {
                 </div>
 
                 <div className="card-actions">
-                  <button className="manage-btn">Manage</button>
+                  <button className="manage-btn" onClick={() => toggleSettings(index)}>Manage</button>
                   <div className="settings-wrapper">
-                    <button
+                    {/* <button
                       className="settings-btn"
                       onClick={() => toggleSettings(index)}
                     >
                       ⚙️
-                    </button>
+                    </button> */}
 
                     {openSettingsFor === index && (
                       <div className="settings-menu">
                         <button onClick={() => handleSettingsAction(card, "Block Card")}>
                           Block / Unblock Card
                         </button>
-                        <button onClick={() => handleSettingsAction(card, "Set Limit")}>
+                        <button onClick={() => navigate("/Client/CardsSetting")}>
                           Set Spending Limit
                         </button>
                         <button onClick={() => handleSettingsAction(card, "Change PIN")}>

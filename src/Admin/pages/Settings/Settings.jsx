@@ -134,110 +134,110 @@ const Settings = () => {
   const toggleSecurityForm = () => setShowSecurityForm(!showSecurityForm);
 
   return (
-    <div className="settings-container">
-      {/* Compact Admin Header */}
-      <header className="admin-header">
-        <div className="header-content">
-          <h1 className="admin-title">Admin Settings</h1>
-          <p className="admin-subtitle">Manage your preferences and security</p>
+    <div className="admin-settings-wrapper">
+      {/* Admin Header */}
+      <header className="admin-settings-header">
+        <div className="admin-header-content">
+          <h1 className="admin-settings-title">Admin Settings</h1>
+          <p className="admin-settings-subtitle">Manage your preferences and security</p>
         </div>
       </header>
 
       {/* Settings Grid */}
-      <div className="settings-grid">
-        <div className="settings-card general">
-          <div className="card-header">
-            <div className="card-icon general-icon"></div>
-            <h2>General Settings</h2>
+      <div className="admin-settings-grid">
+        <div className="admin-settings-card admin-card-general">
+          <div className="admin-card-header">
+            <div className="admin-card-icon admin-icon-general">⚙️</div>
+            <h2 className="admin-card-title">General Settings</h2>
           </div>
-          <p>App preferences, language, and display settings</p>
-          <button className="configure-btn" onClick={toggleGeneralForm}>
+          <p className="admin-card-description">App preferences, language, and display settings</p>
+          <button className="admin-configure-btn" onClick={toggleGeneralForm}>
             Configure
           </button>
           {showGeneralForm && (
-            <div className="settings-form">
-              <h3>Edit General Settings</h3>
-              <form>
-                <div className="form-group">
-                  <label>Username / Display Name</label>
-                  <input type="text" placeholder="Enter username" />
+            <div className="admin-settings-form">
+              <h3 className="admin-form-title">Edit General Settings</h3>
+              <form className="admin-form">
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Username / Display Name</label>
+                  <input className="admin-form-input" type="text" placeholder="Enter username" />
                 </div>
-                <div className="form-group">
-                  <label>Language Preferences</label>
-                  <select>
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Language Preferences</label>
+                  <select className="admin-form-select">
                     <option value="en">English</option>
                     <option value="hi">Hindi</option>
                     <option value="es">Spanish</option>
                   </select>
                 </div>
-                <div className="form-group">
-                  <label>Timezone / Region</label>
-                  <select>
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Timezone / Region</label>
+                  <select className="admin-form-select">
                     <option value="IST">India Standard Time (UTC+5:30)</option>
                     <option value="PST">Pacific Standard Time (UTC-8:00)</option>
                     <option value="GMT">Greenwich Mean Time (UTC+0:00)</option>
                   </select>
                 </div>
-                <div className="form-group">
-                  <label>Notifications Preferences</label>
-                  <select>
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Notifications Preferences</label>
+                  <select className="admin-form-select">
                     <option value="all">All Notifications</option>
                     <option value="important">Important Only</option>
                     <option value="none">None</option>
                   </select>
                 </div>
-                <div className="form-group">
-                  <label>App/Theme Preferences</label>
-                  <select>
+                <div className="admin-form-group">
+                  <label className="admin-form-label">App/Theme Preferences</label>
+                  <select className="admin-form-select">
                     <option value="light">Light Mode</option>
                     <option value="dark">Dark Mode</option>
                     <option value="system">System Default</option>
                   </select>
                 </div>
-                <div className="form-actions">
-                  <button type="button" onClick={toggleGeneralForm}>
+                <div className="admin-form-actions">
+                  <button type="button" className="admin-btn-cancel" onClick={toggleGeneralForm}>
                     Cancel
                   </button>
-                  <button type="submit">Save</button>
+                  <button type="submit" className="admin-btn-save">Save</button>
                 </div>
               </form>
             </div>
           )}
         </div>
 
-        <div className="settings-card personal">
-          <div className="card-header">
-            <div className="card-icon user-icon"></div>
-            <h2>Personal Details</h2>
+        <div className="admin-settings-card admin-card-personal">
+          <div className="admin-card-header">
+            <div className="admin-card-icon admin-icon-personal">👤</div>
+            <h2 className="admin-card-title">Personal Details</h2>
           </div>
-          <p>Update your profile information and contact details</p>
-          <button className="configure-btn" onClick={togglePersonalForm}>
+          <p className="admin-card-description">Update your profile information and contact details</p>
+          <button className="admin-configure-btn" onClick={togglePersonalForm}>
             Configure
           </button>
           {showPersonalForm && (
-            <div className="settings-form">
-              <h3>Edit Personal Details</h3>
-              <form>
-                <div className="form-group photo-group">
-                  <label>Profile Photo</label>
-                  <div className="photo-upload">
+            <div className="admin-settings-form">
+              <h3 className="admin-form-title">Edit Personal Details</h3>
+              <form className="admin-form">
+                <div className="admin-form-group admin-photo-group">
+                  <label className="admin-form-label">Profile Photo</label>
+                  <div className="admin-photo-upload">
                     <input 
                       type="file" 
-                      id="photo-upload" 
+                      id="admin-photo-upload" 
                       accept="image/*" 
                       onChange={handlePhotoUpload}
                       style={{display: 'none'}} 
                     />
-                    <label htmlFor="photo-upload" className="photo-upload-btn">
-                      <div className="upload-icon">📷</div>
+                    <label htmlFor="admin-photo-upload" className="admin-photo-upload-btn">
+                      <div className="admin-upload-icon">📷</div>
                       <span>Upload Photo</span>
                     </label>
                     {photoPreview && (
-                      <div className="photo-preview">
-                        <img src={photoPreview} alt="Profile preview" />
+                      <div className="admin-photo-preview">
+                        <img src={photoPreview} alt="Profile preview" className="admin-preview-img" />
                         <button 
                           type="button" 
-                          className="remove-photo-btn"
+                          className="admin-remove-photo-btn"
                           onClick={() => {
                             setPhotoPreview(null);
                             setProfilePhoto(null);
@@ -249,89 +249,89 @@ const Settings = () => {
                     )}
                   </div>
                 </div>
-                <div className="form-group">
-                  <label>Full Name</label>
-                  <input type="text" placeholder="Enter full name" />
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Full Name</label>
+                  <input className="admin-form-input" type="text" placeholder="Enter full name" />
                 </div>
-                <div className="form-group">
-                  <label>Email ID</label>
-                  <input type="email" placeholder="Enter email" />
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Email ID</label>
+                  <input className="admin-form-input" type="email" placeholder="Enter email" />
                 </div>
-                <div className="form-group">
-                  <label>Phone Number</label>
-                  <input type="tel" placeholder="Enter phone number" />
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Phone Number</label>
+                  <input className="admin-form-input" type="tel" placeholder="Enter phone number" />
                 </div>
-                <div className="form-group">
-                  <label>Date of Birth</label>
-                  <input type="date" />
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Date of Birth</label>
+                  <input className="admin-form-input" type="date" />
                 </div>
-                <div className="form-group">
-                  <label>Address (Optional)</label>
-                  <textarea placeholder="Enter address"></textarea>
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Address (Optional)</label>
+                  <textarea className="admin-form-textarea" placeholder="Enter address"></textarea>
                 </div>
-                <div className="form-actions">
-                  <button type="button" onClick={togglePersonalForm}>
+                <div className="admin-form-actions">
+                  <button type="button" className="admin-btn-cancel" onClick={togglePersonalForm}>
                     Cancel
                   </button>
-                  <button type="submit">Save</button>
+                  <button type="submit" className="admin-btn-save">Save</button>
                 </div>
               </form>
             </div>
           )}
         </div>
 
-        <div className="settings-card security">
-          <div className="card-header">
-            <div className="card-icon shield-icon"></div>
-            <h2>Security</h2>
+        <div className="admin-settings-card admin-card-security">
+          <div className="admin-card-header">
+            <div className="admin-card-icon admin-icon-security">🛡️</div>
+            <h2 className="admin-card-title">Security</h2>
           </div>
-          <p>Password, 2FA, and security preferences</p>
-          <button className="configure-btn" onClick={toggleSecurityForm}>
+          <p className="admin-card-description">Password, 2FA, and security preferences</p>
+          <button className="admin-configure-btn" onClick={toggleSecurityForm}>
             Configure
           </button>
           {showSecurityForm && (
-            <div className="settings-form">
-              <h3>Edit Security Settings</h3>
-              <form>
-                <div className="form-group">
-                  <label>Password Reset / Change Password</label>
-                  <input type="password" placeholder="Enter new password" />
+            <div className="admin-settings-form">
+              <h3 className="admin-form-title">Edit Security Settings</h3>
+              <form className="admin-form">
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Password Reset / Change Password</label>
+                  <input className="admin-form-input" type="password" placeholder="Enter new password" />
                 </div>
-                <div className="form-group">
-                  <label>Confirm New Password</label>
-                  <input type="password" placeholder="Confirm new password" />
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Confirm New Password</label>
+                  <input className="admin-form-input" type="password" placeholder="Confirm new password" />
                 </div>
-                <div className="form-group">
-                  <label>Two-Factor Authentication (2FA)</label>
-                  <select>
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Two-Factor Authentication (2FA)</label>
+                  <select className="admin-form-select">
                     <option value="enabled">Enabled</option>
                     <option value="disabled">Disabled</option>
                   </select>
                 </div>
-                <div className="form-group">
-                  <label>Security Questions</label>
-                  <select>
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Security Questions</label>
+                  <select className="admin-form-select">
                     <option value="q1">What is your pet's name?</option>
                     <option value="q2">What is your favorite book?</option>
                     <option value="q3">What is your mother's maiden name?</option>
                   </select>
-                  <input type="text" placeholder="Enter answer" />
+                  <input className="admin-form-input" type="text" placeholder="Enter answer" />
                 </div>
-                <div className="form-group">
-                  <label>Login Activity / Sessions</label>
-                  <p>View and manage active sessions</p>
-                  <button type="button">View Sessions</button>
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Login Activity / Sessions</label>
+                  <p className="admin-form-help-text">View and manage active sessions</p>
+                  <button type="button" className="admin-btn-secondary">View Sessions</button>
                 </div>
-                <div className="form-group">
-                  <label>Account Recovery Options</label>
-                  <input type="email" placeholder="Recovery email" />
-                  <input type="tel" placeholder="Recovery phone number" />
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Account Recovery Options</label>
+                  <input className="admin-form-input" type="email" placeholder="Recovery email" />
+                  <input className="admin-form-input" type="tel" placeholder="Recovery phone number" />
                 </div>
-                <div className="form-actions">
-                  <button type="button" onClick={toggleSecurityForm}>
+                <div className="admin-form-actions">
+                  <button type="button" className="admin-btn-cancel" onClick={toggleSecurityForm}>
                     Cancel
                   </button>
-                  <button type="submit">Save</button>
+                  <button type="submit" className="admin-btn-save">Save</button>
                 </div>
               </form>
             </div>
@@ -339,120 +339,119 @@ const Settings = () => {
         </div>
       </div>
 
-
       {/* Quick Settings Section */}
-      <section className="quick-settings">
-        <h2>Quick Settings</h2>
-        <p>Frequently used settings for quick access</p>
+      <section className="admin-quick-settings">
+        <h2 className="admin-section-title">Quick Settings</h2>
+        <p className="admin-section-description">Frequently used settings for quick access</p>
 
-        <div className="quick-toggles">
-          <div className="toggle-item">
-            <div className="toggle-icon fingerprint-icon">👆</div>
-            <label className="toggle-label">Biometric Login</label>
-            <label className="switch">
+        <div className="admin-quick-toggles">
+          <div className="admin-toggle-item">
+            <div className="admin-toggle-icon admin-icon-fingerprint">👆</div>
+            <label className="admin-toggle-label">Biometric Login</label>
+            <label className="admin-switch">
               <input type="checkbox" checked={quickSettings.biometricLogin} onChange={handleToggle('biometricLogin')} />
-              <span className="slider"></span>
+              <span className="admin-slider"></span>
             </label>
           </div>
 
-          <div className="toggle-item">
-            <div className="toggle-icon bell-icon-small">🔔</div>
-            <label className="toggle-label">Transaction Alerts</label>
-            <label className="switch">
+          <div className="admin-toggle-item">
+            <div className="admin-toggle-icon admin-icon-bell">🔔</div>
+            <label className="admin-toggle-label">Transaction Alerts</label>
+            <label className="admin-switch">
               <input type="checkbox" checked={quickSettings.transactionAlerts} onChange={handleToggle('transactionAlerts')} />
-              <span className="slider"></span>
+              <span className="admin-slider"></span>
             </label>
           </div>
 
-          <div className="toggle-item">
-            <div className="toggle-icon eye-icon">👁️</div>
-            <label className="toggle-label">Account Visibility</label>
-            <label className="switch">
+          <div className="admin-toggle-item">
+            <div className="admin-toggle-icon admin-icon-eye">👁️</div>
+            <label className="admin-toggle-label">Account Visibility</label>
+            <label className="admin-switch">
               <input type="checkbox" checked={quickSettings.accountVisibility} onChange={handleToggle('accountVisibility')} />
-              <span className="slider"></span>
+              <span className="admin-slider"></span>
             </label>
           </div>
 
-          <div className="toggle-item">
-            <div className="toggle-icon lock-icon">🔒</div>
-            <label className="toggle-label">Auto Lock</label>
-            <label className="switch">
+          <div className="admin-toggle-item">
+            <div className="admin-toggle-icon admin-icon-lock">🔒</div>
+            <label className="admin-toggle-label">Auto Lock</label>
+            <label className="admin-switch">
               <input type="checkbox" checked={quickSettings.autoLock} onChange={handleToggle('autoLock')} />
-              <span className="slider"></span>
+              <span className="admin-slider"></span>
             </label>
           </div>
         </div>
 
         {/* Account Information */}
-        <div className="account-info">
-          <h3>Account Information and Status</h3>
-          <p>Overview of your account settings and status</p>
+        <div className="admin-account-info">
+          <h3 className="admin-subsection-title">Account Information and Status</h3>
+          <p className="admin-subsection-description">Overview of your account settings and status</p>
 
-          <div className="status-table">
-            <div className="status-row">
-              <span className="status-label">Account Status</span>
-              <span className="status-value active">Active</span>
+          <div className="admin-status-table">
+            <div className="admin-status-row">
+              <span className="admin-status-label">Account Status</span>
+              <span className="admin-status-value admin-status-active">Active</span>
             </div>
-            <div className="status-row">
-              <span className="status-label">Last Login</span>
-              <span className="status-value">Today 10:30 AM</span>
+            <div className="admin-status-row">
+              <span className="admin-status-label">Last Login</span>
+              <span className="admin-status-value">Today 10:30 AM</span>
             </div>
-            <div className="status-row">
-              <span className="status-label">KYC Status</span>
-              <span className="status-value verified">Verified</span>
+            <div className="admin-status-row">
+              <span className="admin-status-label">KYC Status</span>
+              <span className="admin-status-value admin-status-verified">Verified</span>
             </div>
-            <div className="status-row">
-              <span className="status-label">Mobile Verified</span>
-              <span className="status-value yes">Yes</span>
+            <div className="admin-status-row">
+              <span className="admin-status-label">Mobile Verified</span>
+              <span className="admin-status-value admin-status-yes">Yes</span>
             </div>
-            <div className="status-row">
-              <span className="status-label">Two-Factor Auth</span>
-              <span className="status-value enabled">Enabled</span>
+            <div className="admin-status-row">
+              <span className="admin-status-label">Two-Factor Auth</span>
+              <span className="admin-status-value admin-status-enabled">Enabled</span>
             </div>
-            <div className="status-row">
-              <span className="status-label">Email Verified</span>
-              <span className="status-value yes">Yes</span>
+            <div className="admin-status-row">
+              <span className="admin-status-label">Email Verified</span>
+              <span className="admin-status-value admin-status-yes">Yes</span>
             </div>
           </div>
         </div>
 
         {/* Security Recommendations */}
-        <div className="security-recs">
-          <h3>Security Recommendations</h3>
-          <p>Improve your account security with these suggestions</p>
-          <div className="recs-list">
-            <div className="rec-item-container">
+        <div className="admin-security-recs">
+          <h3 className="admin-subsection-title">Security Recommendations</h3>
+          <p className="admin-subsection-description">Improve your account security with these suggestions</p>
+          <div className="admin-recs-list">
+            <div className="admin-rec-item-container">
               <button
                 type="button"
-                className={`rec-item rec-button ${activeSecurityRec === '2fa' ? 'active' : ''}`}
-                onClick={() => setActiveSecurityRec('2fa')}
+                className={`admin-rec-item admin-rec-button ${activeSecurityRec === '2fa' ? 'admin-rec-active' : ''}`}
+                onClick={() => setActiveSecurityRec(activeSecurityRec === '2fa' ? null : '2fa')}
                 aria-pressed={activeSecurityRec === '2fa'}
               >
-                <div className="rec-icon">🔐</div>
-                <div className="rec-content">
-                  <span className="rec-title">Enable Two-Factor Authentication</span>
-                  <span className="rec-description">Add an extra layer of security to your account</span>
+                <div className="admin-rec-icon">🔐</div>
+                <div className="admin-rec-content">
+                  <span className="admin-rec-title">Enable Two-Factor Authentication</span>
+                  <span className="admin-rec-description">Add an extra layer of security to your account</span>
                 </div>
               </button>
               {activeSecurityRec === '2fa' && (
-                <div className="rec-panel">
-                  <h4>Two-Factor Authentication</h4>
-                  <p>
+                <div className="admin-rec-panel">
+                  <h4 className="admin-panel-title">Two-Factor Authentication</h4>
+                  <p className="admin-panel-text">
                     Add an extra layer of security to your account by enabling 2FA. 
                     You'll receive a verification code via SMS or authenticator app when signing in.
                   </p>
-                  <div className="security-status">
-                    Status: <span className={`status-badge ${securityFeatures.twoFactorAuth ? 'enabled' : 'disabled'}`}>
+                  <div className="admin-security-status">
+                    Status: <span className={`admin-status-badge ${securityFeatures.twoFactorAuth ? 'admin-badge-enabled' : 'admin-badge-disabled'}`}>
                       {securityFeatures.twoFactorAuth ? 'Enabled' : 'Disabled'}
                     </span>
                   </div>
-                  <div className="security-actions">
+                  <div className="admin-security-actions">
                     {securityFeatures.twoFactorAuth ? (
-                      <button className="disable-2fa-btn" onClick={handleDisable2FA}>
+                      <button className="admin-btn-disable" onClick={handleDisable2FA}>
                         Disable 2FA
                       </button>
                     ) : (
-                      <button className="enable-2fa-btn" onClick={handleEnable2FA}>
+                      <button className="admin-btn-enable" onClick={handleEnable2FA}>
                         Enable 2FA
                       </button>
                     )}
@@ -461,37 +460,38 @@ const Settings = () => {
               )}
             </div>
             
-            <div className="rec-item-container">
+            <div className="admin-rec-item-container">
               <button
                 type="button"
-                className={`rec-item rec-button ${activeSecurityRec === 'password' ? 'active' : ''}`}
-                onClick={() => setActiveSecurityRec('password')}
+                className={`admin-rec-item admin-rec-button ${activeSecurityRec === 'password' ? 'admin-rec-active' : ''}`}
+                onClick={() => setActiveSecurityRec(activeSecurityRec === 'password' ? null : 'password')}
                 aria-pressed={activeSecurityRec === 'password'}
               >
-                <div className="rec-icon">🔑</div>
-                <div className="rec-content">
-                  <span className="rec-title">Update Password</span>
-                  <span className="rec-description">Use a strong, unique password and change it regularly</span>
+                <div className="admin-rec-icon">🔑</div>
+                <div className="admin-rec-content">
+                  <span className="admin-rec-title">Update Password</span>
+                  <span className="admin-rec-description">Use a strong, unique password and change it regularly</span>
                 </div>
               </button>
               {activeSecurityRec === 'password' && (
-                <div className="rec-panel">
-                  <h4>Update Your Password</h4>
-                  <p>
+                <div className="admin-rec-panel">
+                  <h4 className="admin-panel-title">Update Your Password</h4>
+                  <p className="admin-panel-text">
                     Use a strong, unique password and change it regularly. Avoid reusing passwords across services.
                     Consider using a password manager to keep credentials secure.
                   </p>
                   {securityFeatures.passwordLastUpdated && (
-                    <div className="security-status">
-                      Last Updated: <span className="status-badge enabled">
+                    <div className="admin-security-status">
+                      Last Updated: <span className="admin-status-badge admin-badge-enabled">
                         {new Date(securityFeatures.passwordLastUpdated).toLocaleDateString()}
                       </span>
                     </div>
                   )}
-                  <form onSubmit={handlePasswordUpdate} className="password-form">
-                    <div className="form-group">
-                      <label>Current Password</label>
+                  <form onSubmit={handlePasswordUpdate} className="admin-password-form">
+                    <div className="admin-form-group">
+                      <label className="admin-form-label">Current Password</label>
                       <input 
+                        className="admin-form-input"
                         type="password" 
                         name="currentPassword"
                         value={passwordForm.currentPassword}
@@ -500,9 +500,10 @@ const Settings = () => {
                         required
                       />
                     </div>
-                    <div className="form-group">
-                      <label>New Password</label>
+                    <div className="admin-form-group">
+                      <label className="admin-form-label">New Password</label>
                       <input 
+                        className="admin-form-input"
                         type="password" 
                         name="newPassword"
                         value={passwordForm.newPassword}
@@ -512,9 +513,10 @@ const Settings = () => {
                         minLength="8"
                       />
                     </div>
-                    <div className="form-group">
-                      <label>Confirm New Password</label>
+                    <div className="admin-form-group">
+                      <label className="admin-form-label">Confirm New Password</label>
                       <input 
+                        className="admin-form-input"
                         type="password" 
                         name="confirmPassword"
                         value={passwordForm.confirmPassword}
@@ -523,7 +525,7 @@ const Settings = () => {
                         required
                       />
                     </div>
-                    <button type="submit" className="update-password-btn">
+                    <button type="submit" className="admin-btn-update">
                       Update Password
                     </button>
                   </form>
@@ -531,38 +533,38 @@ const Settings = () => {
               )}
             </div>
             
-            <div className="rec-item-container">
+            <div className="admin-rec-item-container">
               <button
                 type="button"
-                className={`rec-item rec-button ${activeSecurityRec === 'biometric' ? 'active' : ''}`}
-                onClick={() => setActiveSecurityRec('biometric')}
+                className={`admin-rec-item admin-rec-button ${activeSecurityRec === 'biometric' ? 'admin-rec-active' : ''}`}
+                onClick={() => setActiveSecurityRec(activeSecurityRec === 'biometric' ? null : 'biometric')}
                 aria-pressed={activeSecurityRec === 'biometric'}
               >
-                <div className="rec-icon">👆</div>
-                <div className="rec-content">
-                  <span className="rec-title">Enable Biometric Login</span>
-                  <span className="rec-description">Use fingerprint or face recognition for secure access</span>
+                <div className="admin-rec-icon">👆</div>
+                <div className="admin-rec-content">
+                  <span className="admin-rec-title">Enable Biometric Login</span>
+                  <span className="admin-rec-description">Use fingerprint or face recognition for secure access</span>
                 </div>
               </button>
               {activeSecurityRec === 'biometric' && (
-                <div className="rec-panel">
-                  <h4>Biometric Login</h4>
-                  <p>
+                <div className="admin-rec-panel">
+                  <h4 className="admin-panel-title">Biometric Login</h4>
+                  <p className="admin-panel-text">
                     Turn on fingerprint or face recognition to sign in quickly and securely.
                     Your biometric data never leaves your device; we store only a token to verify you.
                   </p>
-                  <div className="security-status">
-                    Status: <span className={`status-badge ${securityFeatures.biometricLogin ? 'enabled' : 'disabled'}`}>
+                  <div className="admin-security-status">
+                    Status: <span className={`admin-status-badge ${securityFeatures.biometricLogin ? 'admin-badge-enabled' : 'admin-badge-disabled'}`}>
                       {securityFeatures.biometricLogin ? 'Enabled' : 'Disabled'}
                     </span>
                   </div>
-                  <div className="security-actions">
+                  <div className="admin-security-actions">
                     {securityFeatures.biometricLogin ? (
-                      <button className="disable-biometric-btn" onClick={handleDisableBiometric}>
+                      <button className="admin-btn-disable" onClick={handleDisableBiometric}>
                         Disable Biometric
                       </button>
                     ) : (
-                      <button className="enable-biometric-btn" onClick={handleEnableBiometric}>
+                      <button className="admin-btn-enable" onClick={handleEnableBiometric}>
                         Enable Biometric
                       </button>
                     )}
@@ -573,7 +575,7 @@ const Settings = () => {
           </div>
           {/* Security Message Display */}
           {securityMessage.text && (
-            <div className={`security-message ${securityMessage.type}`}>
+            <div className={`admin-security-message ${securityMessage.type === 'success' ? 'admin-message-success' : 'admin-message-error'}`}>
               {securityMessage.text}
             </div>
           )}

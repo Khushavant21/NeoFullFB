@@ -1,0 +1,107 @@
+.bank-section {
+  padding: 3rem 3rem;
+  text-align: center;
+  
+}
+
+.bank-main-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.bank-subtitle {
+  color: #6b7280; /* gray-500 */
+  margin-bottom: 3rem;
+}
+
+.bank-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+ 
+}
+
+.bank-card {
+  position: relative; /* needed for pseudo-element */
+  background: #fff;
+  padding: 3rem 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+   background-color: #e6eaec;
+
+     display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* centers all contents vertically */
+  text-align: center;
+}
+
+.bank-card:hover {
+  transform: translateY(-5px);
+}
+
+.bank-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+/* Colored circle at bottom-right */
+.bank-card::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  opacity: 0.1;
+  bottom: -30px;
+  right: -30px;
+  z-index: 0;
+  background-color: var(--circle-color); /* dynamically assigned */
+}
+
+
+/* Assign color dynamically using inline style from React */
+@media (max-width: 768px) {
+  .bank-section {
+    padding: 2rem 1.5rem; /* reduce horizontal padding */
+  }
+
+  .bank-main-title {
+    font-size: 2rem; /* smaller heading */
+  }
+
+  .bank-grid {
+    grid-template-columns: 1fr; /* single column layout */
+  }
+
+  .bank-card {
+    padding: 2rem 1rem; /* tighter padding on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .bank-main-title {
+    font-size: 1.6rem;
+  }
+
+  .bank-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .bank-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+}

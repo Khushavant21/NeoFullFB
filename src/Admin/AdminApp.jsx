@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 // Components
 import TopNavbar from "./Components/TopNavbar";
@@ -15,15 +15,10 @@ import Loans from "./pages/Loan/Loans.jsx";
 import MoneyTransferRequest from "./pages/MoneyTransferRequests/MoneyTransferRequests";
 import Reports from "./pages/Reports/Reports.jsx";
 import AdminTransactions from "./pages/Transaction/TransactionsRecords.jsx";
-import Card from "./pages/Cards/Card.jsx"
+import Card from "./pages/Cards/Card.jsx";
 import AdminProfile from "./pages/AdminProfile/AdminProfile";
-import  Settings from "./pages/Settings/Settings.jsx"
-import Notification from "./pages/Notification/Notification.jsx";
-
-// Temp Pages
-function KYC() { return <h1>KYC Page</h1>; }
-function Support() { return <h1>Support Page</h1>; }
-
+import Settings from "./pages/Settings/Settings.jsx";
+import Notification from "./pages/Notification/AdminNotificationPanel.jsx";
 
 // Admin Login
 import AdminLogin from "./auth/AdminLogin";
@@ -31,13 +26,25 @@ import AdminLogin from "./auth/AdminLogin";
 export default function AdminApp() {
   const [showSplash, setShowSplash] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const location = useLocation();
 
+  // Splash screen
   if (showSplash) return <SplashScreen onFinish={() => setShowSplash(false)} />;
+
+  // ❌ Navbar hide on specific admin pages
+  const hideNavbarRoutes = ["/admin/adminprofile"];
+
+  // Check if current path matches navbar hidden list
+  const shouldHideNavbar = hideNavbarRoutes.some((path) =>
+    location.pathname.toLowerCase().startsWith(path)
+  );
 
   return (
     <>
-      {isLoggedIn && <TopNavbar />}
-      <div >
+      {/* Navbar sirf tab dikhega jab login hua ho & path hidden list me na ho */}
+      {isLoggedIn && !shouldHideNavbar && <TopNavbar />}
+
+      <div>
         <Routes>
           {/* Login Route */}
           <Route
@@ -51,31 +58,38 @@ export default function AdminApp() {
             }
           />
 
-          {/* Protected Routes */}
+          {/* --- Protected Routes --- */}
           {isLoggedIn ? (
             <>
               <Route path="/adminprofile" element={<AdminProfile />} />
-              <Route path="/Notification" element={<Notification />} />
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/notifications" element={<Notification />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/users" element={<UserManagement />} />
               <Route path="/kyc/*" element={<KYCComplianceRoutes />} />
               <Route path="/transactions" element={<AdminTransactions />} />
               <Route path="/loans" element={<Loans />} />
-              <Route path="/DepositManagement" element={<DepositManagement />} />
+              <Route
+                path="/depositmanagement"
+                element={<DepositManagement />}
+              />
               <Route path="/complaints" element={<ComplaintsLayout />} />
               <Route path="/cards" element={<Card />} />
-              <Route path="/support" element={<Support />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/AccountsDashboard" element={<AccountsDashboard />} />
-              <Route path="/investment_products" element={<InvestmentPanel />} />
+              <Route
+                path="/accountsdashboard"
+                element={<AccountsDashboard />}
+              />
+              <Route
+                path="/investment_products"
+                element={<InvestmentPanel />}
+              />
               <Route path="/moneyrequest" element={<MoneyTransferRequest />} />
               <Route path="/reports" element={<Reports />} />
-              
-              {/* Default redirect for logged in admin */}
-              <Route path="*" element={<Navigate to="/admin/" />} />
+
+              {/* Default route redirect */}
+              <Route path="*" element={<Navigate to="/admin/dashboard" />} />
             </>
           ) : (
-            // Redirect all unknown routes to login if not logged in
             <Route path="*" element={<Navigate to="/admin/login" />} />
           )}
         </Routes>

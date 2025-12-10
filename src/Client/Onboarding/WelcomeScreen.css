@@ -1,4 +1,4 @@
-.welcome-container {
+.neoWelcome-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #900603 0%, #0f172a 50%, #900603 100%);
   display: flex;
@@ -7,46 +7,46 @@
   justify-content: center;
   padding: 20px;
   font-family: 'Segoe UI', system-ui, sans-serif;
-  animation: fadeInBackground 1.5s ease forwards;
+  animation: neoWelcome-fadeInBackground 1.5s ease forwards;
 }
 
-@keyframes fadeInBackground {
+@keyframes neoWelcome-fadeInBackground {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-.welcome-card {
-   background: linear-gradient(135deg, #900603 0%, #0f172a 50%, #900603 100%);
+.neoWelcome-card {
+  background: linear-gradient(135deg, #900603 0%, #0f172a 50%, #900603 100%);
   border-radius: 24px;
   padding: 40px 32px;
   width: 100%;
   max-width: 400px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  animation: fadeInCard 1.2s ease forwards;
-  color: white; /* all text white */
+  animation: neoWelcome-fadeInCard 1.2s ease forwards;
+  color: white;
 }
 
-@keyframes fadeInCard {
+@keyframes neoWelcome-fadeInCard {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.logo-container {
+.neoWelcome-logo-container {
   display: flex;
   justify-content: center;
   margin-bottom: 32px;
-  animation: logoBounce 1s ease forwards;
+  animation: neoWelcome-logoBounce 1s ease forwards;
 }
 
-@keyframes logoBounce {
+@keyframes neoWelcome-logoBounce {
   0% { transform: scale(0); }
   60% { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
 
-.logo-icon {
-  background: #900603; /* darker shade for logo */
+.neoWelcome-logo-icon {
+  background: #900603;
   padding: 18px;
   border-radius: 16px;
   color: white;
@@ -61,12 +61,12 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.logo-icon:hover {
+.neoWelcome-logo-icon:hover {
   transform: scale(1.1);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
 }
 
-.welcome-title {
+.neoWelcome-title {
   font-size: 36px;
   font-weight: bold;
   text-align: center;
@@ -74,21 +74,21 @@
   line-height: 1.2;
 }
 
-.welcome-subtitle {
-  color: #ffe6e6; /* soft white/pink */
+.neoWelcome-subtitle {
+  color: #ffe6e6;
   text-align: center;
   margin-bottom: 32px;
   font-size: 18px;
 }
 
-.features-list {
+.neoWelcome-features-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin-bottom: 32px;
 }
 
-.feature-item {
+.neoWelcome-feature-item {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -97,22 +97,22 @@
   transition: all 0.3s ease;
 }
 
-.feature-item:hover {
+.neoWelcome-feature-item:hover {
   transform: translateX(5px);
 }
 
-.feature-dot {
+.neoWelcome-feature-dot {
   width: 10px;
   height: 10px;
-  background: #ff9999; /* soft red dot */
+  background: #ff9999;
   border-radius: 50%;
   flex-shrink: 0;
   box-shadow: 0 0 6px #900603;
 }
 
-.get-started-btn {
+.neoWelcome-get-started-btn {
   width: 100%;
-  background: #721b19; /* bright red button */
+  background: #721b19;
   color: white;
   font-weight: 600;
   padding: 16px;
@@ -121,51 +121,50 @@
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
 }
 
-.get-started-btn:hover {
+.neoWelcome-get-started-btn:hover {
   background: #900603;
   transform: translateY(-2px) scale(1.03);
 }
 
-.arrow-icon {
+.neoWelcome-arrow-icon {
   transition: transform 0.3s ease;
 }
 
-.get-started-btn:hover .arrow-icon {
+.neoWelcome-get-started-btn:hover .neoWelcome-arrow-icon {
   transform: translateX(6px);
 }
 
-.login-link {
+.neoWelcome-login-link {
   margin-top: 24px;
   text-align: center;
 }
 
-.login-btn {
+.neoWelcome-login-btn {
   background: none;
   border: none;
-    color: white;
+  color: white;
   cursor: pointer;
   font-size: 14px;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.login-btn:hover {
+.neoWelcome-login-btn:hover {
   color: white;
   transform: scale(1.05);
 }
 
-.login-text {
+.neoWelcome-login-text {
   color: #ffb3b3;
   font-weight: 600;
 }
 
-.footer-text {
+.neoWelcome-footer-text {
   color: #ffcccc;
   text-align: center;
   margin-top: 24px;

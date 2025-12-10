@@ -1,0 +1,119 @@
+.insights-section {
+  background-color: #fafafa;
+  padding: 80px 24px;
+  text-align: center;
+}
+
+.insights-header {
+  max-width: 1200px;
+  margin: 0 auto 50px;
+}
+
+.insights-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1rem;
+  font-family: "Playfair Display", serif;
+}
+
+.insights-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto 50px;
+  padding: 0 20px;
+}
+
+.insight-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px 24px;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.insight-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.insight-category {
+  display: inline-block;
+  background-color: #fee;
+  color: #c53040;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.insight-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 20px;
+  line-height: 1.4;
+  min-height: 70px;
+}
+
+.insight-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.insight-date,
+.insight-read-time {
+  color: #888;
+}
+
+.insights-cta {
+  margin-top: 30px;
+}
+
+.view-all-btn {
+  background: linear-gradient(135deg, #d63b4c, #c53040);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 14px 32px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(214, 59, 76, 0.3);
+}
+
+.view-all-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(214, 59, 76, 0.4);
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .insights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .insights-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

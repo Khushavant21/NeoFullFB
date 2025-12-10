@@ -1,3 +1,8 @@
+
+
+
+
+
 import React, { useState } from "react";
 import "./InternationalTransferPage.css";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +14,7 @@ const InternationalTransferPage = () => {
     recipientName: "",
     accountNumber: "",
     swiftIban: "",
+     transferDate: "", 
   });
 
   const countries = ["USA", "UK", "UAE", "Canada"];
@@ -29,6 +35,7 @@ const InternationalTransferPage = () => {
       recipientName: "",
       accountNumber: "",
       swiftIban: "",
+       transferDate: "",   // reset
     });
   };
 
@@ -154,7 +161,18 @@ const InternationalTransferPage = () => {
                 placeholder="Enter SWIFT or IBAN code"
                 className="intl-input"
               />
+            
+
+              <label className="intl-label">Date</label>
+              <input
+                type="date"
+                name="transferDate"
+                value={formData.transferDate}
+                onChange={handleChange}
+                className="intl-input"
+              />
             </form>
+
             <div className="intl-buttons-between">
               <button className="intl-btn" onClick={handlePrev}>
                 Back
@@ -211,4 +229,4 @@ const InternationalTransferPage = () => {
   );
 };
 
-export default InternationalTransferPage;
+export default InternationalTransferPage; 

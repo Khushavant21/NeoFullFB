@@ -86,13 +86,13 @@ const TopNavbar = () => {
 
           {/* Right Side: Notification + Profile */}
           <div className="tnb-navbar-right">
-            {/* 🔔 Notification Button with navigation */}
-            <button
-              className="tnb-icon-btn"
-              onClick={() => navigate("/Admin/Notification")}
+           <button
+              className="tn-icon-btn"
+              onClick={() => navigate("/admin/notifications")} // :white_check_mark: Navigate to AdminNotificationPanel
+              title="View Notifications"
             >
-              <FontAwesomeIcon icon={faBell} className="tnb-bell-icon" />
-              <span className="tnb-badge">3</span>
+              <FontAwesomeIcon icon={faBell} className="tn-bell-icon" />
+              <span className="tn-badge">3</span>
             </button>
 
             <NavLink to="/Admin/adminprofile" className="tnb-profile-btn">

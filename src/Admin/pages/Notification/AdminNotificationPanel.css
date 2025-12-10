@@ -1,0 +1,320 @@
+/* ===== Base Styles ===== */
+.admin-notify-container {
+  padding: 2rem;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ===== Header ===== */
+.admin-notify-header {
+  border-bottom: 3px solid #900603;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  position: relative;
+}
+
+.admin-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-notify-header h2 {
+  color: #900603;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.admin-notify-desc {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* ===== Back Button (Right Side - Real Bank Style) ===== */
+.admin-btn-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #ffffff;
+  color: #900603;
+  border: 1.8px solid #900603;
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 5px rgba(144, 6, 3, 0.15);
+}
+
+.admin-btn-back:hover {
+  background-color: #900603;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(144, 6, 3, 0.25);
+  transform: translateY(-1px);
+}
+
+/* ===== Notification List ===== */
+.admin-notify-loading,
+.admin-notify-empty {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  margin-top: 40px;
+}
+
+.admin-notify-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* ===== Notification Card ===== */
+.admin-notify-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #eee;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #fff;
+}
+
+.admin-notify-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.admin-notify-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.admin-notify-avatar {
+  background-color: #900603;
+  color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.admin-notify-info h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.admin-notify-info p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+  max-width: 600px;
+}
+
+.admin-notify-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+  flex-wrap: wrap;
+}
+
+.admin-notify-type {
+  color: white;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.admin-notify-date {
+  font-size: 12px;
+  color: #888;
+}
+
+/* ===== Buttons ===== */
+.admin-btn-view,
+.admin-btn-approve,
+.admin-btn-reject {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-view {
+  background-color: #0dcaf0;
+  color: white;
+  margin-right: 6px;
+}
+.admin-btn-view:hover {
+  background-color: #0bb1d1;
+}
+
+.admin-btn-approve {
+  background-color: #28a745;
+  color: white;
+}
+.admin-btn-approve:hover {
+  background-color: #218838;
+}
+
+.admin-btn-reject {
+  background-color: #dc3545;
+  color: white;
+  margin-left: 8px;
+}
+.admin-btn-reject:hover {
+  background-color: #c82333;
+}
+
+/* ===== Modal ===== */
+.admin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  backdrop-filter: blur(2px);
+  padding: 20px;
+}
+
+.admin-modal-content {
+  background: #fff;
+  padding: 25px;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 12px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+  text-align: left;
+  animation: fadeIn 0.3s ease;
+}
+
+.admin-modal-content h3 {
+  color: #900603;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #900603;
+  padding-bottom: 5px;
+}
+
+.admin-modal-content p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.admin-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+.admin-btn-close {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.admin-btn-close:hover {
+  background-color: #5a6268;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 992px) {
+  .admin-notify-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-notify-right {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .admin-notify-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .admin-header-top {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-notify-container {
+    padding: 1rem;
+  }
+
+  .admin-notify-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .admin-notify-card {
+    padding: 12px 15px;
+  }
+
+  .admin-btn-view,
+  .admin-btn-approve,
+  .admin-btn-reject {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .admin-modal-content {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .admin-modal-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .admin-btn-back {
+    width: 100%;
+    justify-content: center;
+  }
+}

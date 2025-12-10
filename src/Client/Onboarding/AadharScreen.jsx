@@ -1,16 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useOnboarding } from '../context/OnboardingContext';
 import './AadharScreen.css';
 
 export default function AadharScreen() {
   const { setCurrentStep, updateUserData } = useOnboarding();
-  const [aadharNumber, setAadharNumber] = useState('');
+  const [aadhaar, setAadharNumber] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [otpSent, setOtpSent] = useState(false);
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleAadharSubmit = (e) => {
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('userEmail');
+    if (storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
+
+
+  const handleAadharSubmit = async (e) => {
     e.preventDefault();
-    setOtpSent(true);
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/aadhaar/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          aadhaar: aadhaar,
+          email: email, // ✅ automatically fetched from localStorage
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('OTP Sent:', data);
+        setOtpSent(true); // ✅ show OTP input screen
+      } else {
+        const errData = await response.json();
+        setError(errData.message || 'Failed to send OTP');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleOtpChange = (index, value) => {
@@ -25,9 +63,40 @@ export default function AadharScreen() {
     }
   };
 
-  const handleVerify = () => {
-    updateUserData({ aadharNumber });
-    setCurrentStep('pan');
+  const handleVerify = async () => {
+    const enteredOtp = otp.join(''); // Combine 6 digits into one string
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/aadhaar/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          otp: enteredOtp,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('OTP Verified:', data);
+
+        // ✅ Move to next step only after success
+        updateUserData({ aadhaar });
+        setCurrentStep('pan');
+        console.log("sonali")
+      } else {
+        const errData = await response.json();
+        setError(errData.message || 'Invalid OTP. Please try again.');
+      }
+    } 
+    catch (err) 
+    {
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -64,7 +133,7 @@ export default function AadharScreen() {
               <input
                 type="text"
                 required
-                value={aadharNumber}
+                value={aadhaar}
                 onChange={(e) => setAadharNumber(e.target.value)}
                 placeholder="XXXX XXXX XXXX"
                 maxLength={12}
@@ -104,6 +173,7 @@ export default function AadharScreen() {
                   />
                 ))}
               </div>
+                {error && <p className="aadharscreen-error">{error}</p>}
             </div>
 
             <button

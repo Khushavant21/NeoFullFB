@@ -1,7 +1,7 @@
 // src/Components/SplashScreen.jsx
 import React, { useEffect, useRef, useState } from "react";
 import "./SplashScreen.css";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo1234.png";
 
 export default function SplashScreen({ onFinish }) {
   const [stage, setStage] = useState(1);

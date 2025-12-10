@@ -1,13 +1,14 @@
 // src/components/ProfileSection.jsx
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
-  User, Settings, CreditCard, Shield, Bell, Eye, EyeOff, Camera, 
-  Phone, Mail, MapPin, Calendar, DollarSign, TrendingUp, Clock, 
-  Download, RefreshCw, Zap, Plus, Trash2, X, Lock, Key, UserCheck, 
-  Smartphone, Wifi, Home, Film, Heart, CheckCircle, AlertCircle, 
+  User, Settings, CreditCard, Shield, Bell, Eye, EyeOff, Camera,
+  Phone, Mail, MapPin, Calendar, DollarSign, TrendingUp, Clock,
+  Download, RefreshCw, Zap, Plus, Trash2, X, Lock, Key, UserCheck,
+  Smartphone, Wifi, Home, Film, Heart, CheckCircle, AlertCircle,
   PauseCircle, Edit3, ArrowUpRight, ArrowDownLeft, ChevronRight
 } from "lucide-react";
 import './Profile.css';
+import BASE_URL from '../../../api/apiConfig';
 
 const ProfileSection = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -27,16 +28,49 @@ const ProfileSection = () => {
     address: ''
   });
   const [user, setUser] = useState({
-    name: 'Amit Rajput',
-    email: 'amit.rajput@email.com',
-    phone: '+91 98765 43210',
-    address: 'Mumbai, Maharashtra, India',
-    dateOfBirth: '15/08/1990',
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    dateOfBirth: '',
     accountNumber: '****1234',
     accountType: 'Premium Savings',
     balance: 48748.00,
-    profileImage: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1'
+    profileImage: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1',
+    gender: ''
   });
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const email = localStorage.getItem('userEmail');
+      if (!email) {
+        alert('No user email found. Please login again.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${BASE_URL}/auth/profile?email=${encodeURIComponent(email)}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
+        const userData = await response.json();
+        setUser(prev => ({
+          ...prev,
+          name: userData.fullName || '',
+          email: userData.email || '',
+          phone: userData.mobile || '',
+          dateOfBirth: userData.dob || '',
+          gender: userData.gender || '',
+          profileImage: userData.profileImageUrl || prev.profileImage
+        }));
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+        alert('Failed to load user profile');
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
   const [autoDebits, setAutoDebits] = useState([
     { id: 1, name: 'Electricity Bill - MSEB', category: 'utilities', amount: 2500, frequency: 'Monthly', nextDate: '2025-02-05', status: 'active', icon: Zap },
     { id: 2, name: 'Mobile Postpaid - Airtel', category: 'telecom', amount: 999, frequency: 'Monthly', nextDate: '2025-02-10', status: 'active', icon: Smartphone },
@@ -62,18 +96,18 @@ const ProfileSection = () => {
     { id: 'security', name: 'Security Settings', icon: Shield },
     { id: 'settings', name: 'Application & Communication Settings', icon: Settings }
   ];
-  
+
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR'
     }).format(amount);
   };
-  
+
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
-  
+
   const handlePasswordChange = () => {
     if (formData.newPassword !== formData.confirmPassword) {
       alert('New passwords do not match!');
@@ -87,7 +121,7 @@ const ProfileSection = () => {
     setActiveModal(null);
     setFormData(prev => ({ ...prev, currentPassword: '', newPassword: '', confirmPassword: '' }));
   };
-  
+
   const handlePinChange = () => {
     if (formData.newPin !== formData.confirmPin) {
       alert('New PINs do not match!');
@@ -101,7 +135,7 @@ const ProfileSection = () => {
     setActiveModal(null);
     setFormData(prev => ({ ...prev, currentPin: '', newPin: '', confirmPin: '' }));
   };
-  
+
   const handleProfileEdit = () => {
     setFormData(prev => ({
       ...prev,
@@ -112,7 +146,7 @@ const ProfileSection = () => {
     }));
     setActiveModal('edit-profile');
   };
-  
+
   const handleProfileUpdate = () => {
     if (!formData.name || !formData.email || !formData.phone || !formData.address) {
       alert('Please fill in all fields.');
@@ -128,7 +162,7 @@ const ProfileSection = () => {
     alert('Profile updated successfully!');
     setActiveModal(null);
   };
-  
+
   const handleQuickAction = (action) => {
     switch (action) {
       case 'transfer':
@@ -147,7 +181,7 @@ const ProfileSection = () => {
         break;
     }
   };
-  
+
   const handleAutoDebitAction = (action, debitId) => {
     switch (action) {
       case 'add':
@@ -157,8 +191,8 @@ const ProfileSection = () => {
         alert(`Editing Auto Debit ID: ${debitId}`);
         break;
       case 'pause':
-        setAutoDebits(prev => prev.map(debit => 
-          debit.id === debitId 
+        setAutoDebits(prev => prev.map(debit =>
+          debit.id === debitId
             ? { ...debit, status: debit.status === 'active' ? 'paused' : 'active' }
             : debit
         ));
@@ -172,22 +206,49 @@ const ProfileSection = () => {
         break;
     }
   };
-  
+
   const handleSettingToggle = (setting) => {
     alert(`Toggling setting: ${setting}`);
   };
 
-  const handleProfileImageChange = (event) => {
+  const handleProfileImageChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setUser(prev => ({
-          ...prev,
-          profileImage: e.target.result
-        }));
-      };
-      reader.readAsDataURL(file);
+      const email = localStorage.getItem('userEmail');
+      if (!email) {
+        alert('No user email found. Please login again.');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('email', email);
+
+      try {
+        const response = await fetch(`${BASE_URL}/auth/profile/upload`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to upload image');
+        }
+
+        // Refresh user profile to get updated image URL
+        const profileResponse = await fetch(`${BASE_URL}/auth/profile?email=${encodeURIComponent(email)}`);
+        if (profileResponse.ok) {
+          const userData = await profileResponse.json();
+          setUser(prev => ({
+            ...prev,
+            profileImage: userData.profileImageUrl || prev.profileImage
+          }));
+        }
+
+        alert('Profile image uploaded successfully!');
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        alert('Failed to upload profile image');
+      }
     }
   };
 
@@ -245,9 +306,9 @@ const ProfileSection = () => {
             <div className="ps-balance-block">
               <div className="ps-balance-label">
                 <span>Available Balance</span>
-                <button 
-                  className="ps-toggle-balance-btn" 
-                  onClick={() => setShowBalance(!showBalance)} 
+                <button
+                  className="ps-toggle-balance-btn"
+                  onClick={() => setShowBalance(!showBalance)}
                   aria-pressed={showBalance}
                 >
                   {showBalance ? <Eye size={18} /> : <EyeOff size={18} />}
@@ -338,6 +399,20 @@ const ProfileSection = () => {
                           <div className="ps-info-text">
                             <div className="ps-info-label">Date of Birth</div>
                             <div className="ps-info-value">{user.dateOfBirth}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="ps-row">
+                      <div className="ps-col">
+                        <div className="ps-info-item">
+                          <div className="ps-info-icon">
+                            <UserCheck size={20} />
+                          </div>
+                          <div className="ps-info-text">
+                            <div className="ps-info-label">Gender</div>
+                            <div className="ps-info-value" style={{ textTransform: 'capitalize' }}>{user.gender}</div>
                           </div>
                         </div>
                       </div>

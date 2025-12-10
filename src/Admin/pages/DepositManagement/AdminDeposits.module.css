@@ -1,20 +1,20 @@
 /* ========================================
-   ADMIN DEPOSITS - MAIN CONTAINER
+   MAIN WRAPPER
 ======================================== */
-.admDepContainer {
+.depositMainWrapper {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 32px;
+    padding: 32px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     min-height: 100vh;
     box-sizing: border-box;
 }
 
 /* ========================================
-   HEADING BAR
+   HEADER BAR - Fixed Single Color
 ======================================== */
-.admDepHeadingBar {
+.depositHeaderBar {
     width: 100%;
-    background: linear-gradient(135deg, #900603 0%, #b30805 100%);
+    background: #900603;
     color: #fff;
     padding: 0 32px;
     display: flex;
@@ -23,7 +23,7 @@
     box-shadow: 0 4px 12px rgba(144, 6, 3, 0.2);
 }
 
-.admDepHeadingBar h1 {
+.depositHeaderBar h1 {
     margin: 0;
     font-size: 32px;
     font-weight: 600;
@@ -33,15 +33,16 @@
 /* ========================================
    TABS
 ======================================== */
-.admDepTabs {
+.depositTabsWrapper {
     display: flex;
     justify-content: center;
     gap: 16px;
     flex-wrap: wrap;
     margin-bottom: 32px;
+    padding: 0 32px;
 }
 
-.admDepTabs button {
+.depositTabsWrapper button {
     background: #fff;
     border: 2px solid #e0e0e0;
     border-radius: 12px;
@@ -56,7 +57,7 @@
     overflow: hidden;
 }
 
-.admDepTabs button::before {
+.depositTabsWrapper button::before {
     content: '';
     position: absolute;
     top: 0;
@@ -67,43 +68,43 @@
     transition: left 0.5s;
 }
 
-.admDepTabs button:hover::before {
+.depositTabsWrapper button:hover::before {
     left: 100%;
 }
 
-.admDepTabs button:hover {
+.depositTabsWrapper button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(144, 6, 3, 0.15);
     border-color: #900603;
 }
 
-.admDepTabActive {
-    background: linear-gradient(135deg, #900603 0%, #b30805 100%) !important;
+.depositTabActive {
+    background: #900603 !important;
     color: #fff !important;
     border-color: #900603 !important;
     box-shadow: 0 4px 12px rgba(144, 6, 3, 0.3) !important;
 }
 
 /* ========================================
-   TABLE CARD
+   CONTENT CARD - Full Width
 ======================================== */
-.admDepTableCard {
+.depositContentCard {
     background: #fff;
-    padding: 28px;
-    border-radius: 20px;
+    padding: 28px 0;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     margin-bottom: 32px;
     transition: box-shadow 0.3s ease;
 }
 
-.admDepTableCard:hover {
+.depositContentCard:hover {
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
 }
 
-.admDepTableCard h2 {
+.depositContentCard h2 {
     color: #900603;
     font-size: 1.5rem;
     margin-bottom: 20px;
+    margin-left: 32px;
     border-bottom: 3px solid #900603;
     display: inline-block;
     padding-bottom: 8px;
@@ -114,15 +115,17 @@
 /* ========================================
    FILTERS
 ======================================== */
-.admDepFilters {
+.depositFilterContainer {
     display: flex;
     gap: 16px;
     margin-bottom: 24px;
+    margin-left: 32px;
+    margin-right: 32px;
     flex-wrap: wrap;
 }
 
-.admDepFilters input,
-.admDepFilters select {
+.depositFilterContainer input,
+.depositFilterContainer select {
     padding: 12px 16px;
     border: 2px solid #e0e0e0;
     border-radius: 10px;
@@ -132,8 +135,8 @@
     font-weight: 500;
 }
 
-.admDepFilters input:focus,
-.admDepFilters select:focus {
+.depositFilterContainer input:focus,
+.depositFilterContainer select:focus {
     outline: none;
     border-color: #900603;
     background: #fff;
@@ -141,12 +144,12 @@
     transform: translateY(-1px);
 }
 
-.admDepFilters input {
+.depositFilterContainer input {
     flex: 1;
     min-width: 250px;
 }
 
-.admDepFilters select {
+.depositFilterContainer select {
     min-width: 180px;
     cursor: pointer;
 }
@@ -154,20 +157,22 @@
 /* ========================================
    NOTIFICATION
 ======================================== */
-.admDepNotification {
+.depositNotificationBox {
     background: linear-gradient(135deg, #fff3f3 0%, #ffe8e8 100%);
     color: #900603;
     border-left: 5px solid #900603;
     border-radius: 12px;
     padding: 16px 20px;
     margin-bottom: 20px;
+    margin-left: 32px;
+    margin-right: 32px;
     font-weight: 600;
     font-size: 15px;
     box-shadow: 0 4px 12px rgba(144, 6, 3, 0.1);
-    animation: admDepSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: depositSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes admDepSlideIn {
+@keyframes depositSlideIn {
     from {
         opacity: 0;
         transform: translateY(-12px);
@@ -180,15 +185,14 @@
 }
 
 /* ========================================
-   TABLE WRAPPER & TABLE
+   TABLE CONTAINER & TABLE - Full Width
 ======================================== */
-.admDepTableWrapper {
+.depositTableContainer {
     overflow-x: auto;
-    border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.admDepTable {
+.depositDataTable {
     width: 100%;
     border-collapse: collapse;
     font-size: 15px;
@@ -196,15 +200,15 @@
     background: #fff;
 }
 
-.admDepTable th,
-.admDepTable td {
+.depositDataTable th,
+.depositDataTable td {
     text-align: left;
     padding: 16px 14px;
     border-bottom: 1px solid #f0f0f0;
 }
 
-.admDepTable th {
-    background: linear-gradient(135deg, #900603 0%, #b30805 100%);
+.depositDataTable th {
+    background: #900603;
     color: #fff;
     font-weight: 600;
     text-transform: uppercase;
@@ -215,28 +219,28 @@
     z-index: 10;
 }
 
-.admDepTable tbody tr {
+.depositDataTable tbody tr {
     transition: all 0.2s ease;
 }
 
-.admDepTable tbody tr:hover {
+.depositDataTable tbody tr:hover {
     background: linear-gradient(90deg, #fff5f5 0%, #ffe8e8 100%);
     transform: scale(1.01);
     box-shadow: 0 2px 8px rgba(144, 6, 3, 0.08);
 }
 
-.admDepTable tbody tr:nth-child(even) {
+.depositDataTable tbody tr:nth-child(even) {
     background: #fafafa;
 }
 
-.admDepTable tbody tr:nth-child(even):hover {
+.depositDataTable tbody tr:nth-child(even):hover {
     background: linear-gradient(90deg, #fff5f5 0%, #ffe8e8 100%);
 }
 
 /* ========================================
    STATUS BADGES
 ======================================== */
-.admDepStatus {
+.depositStatusBadge {
     padding: 6px 14px;
     border-radius: 20px;
     font-weight: 600;
@@ -247,27 +251,27 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.admDepStatusPending {
+.depositStatusPending {
     background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
     color: #856404;
 }
 
-.admDepStatusApproved {
+.depositStatusApproved {
     background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
     color: #155724;
 }
 
-.admDepStatusRejected {
+.depositStatusRejected {
     background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
     color: #721c24;
 }
 
-.admDepStatusClosed {
+.depositStatusClosed {
     background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
     color: #0c5460;
 }
 
-.admDepStatusRenewed {
+.depositStatusRenewed {
     background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
     color: #155724;
 }
@@ -275,14 +279,14 @@
 /* ========================================
    ACTION BUTTONS
 ======================================== */
-.admDepActionCell {
+.depositActionButtons {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
     align-items: center;
 }
 
-.admDepTable button {
+.depositDataTable button {
     padding: 8px 16px;
     border: none;
     border-radius: 8px;
@@ -295,7 +299,7 @@
     overflow: hidden;
 }
 
-.admDepTable button::before {
+.depositDataTable button::before {
     content: '';
     position: absolute;
     top: 50%;
@@ -308,76 +312,76 @@
     transition: width 0.6s, height 0.6s;
 }
 
-.admDepTable button:hover::before {
+.depositDataTable button:hover::before {
     width: 300px;
     height: 300px;
 }
 
-.admDepTable button:active {
+.depositDataTable button:active {
     transform: scale(0.95);
 }
 
-.admDepBtnApprove {
-    background: linear-gradient(135deg, #900603 0%, #b30805 100%);
+.depositApproveButton {
+    background: #900603;
     color: #fff;
 }
 
-.admDepBtnApprove:hover {
-    background: linear-gradient(135deg, #b30805 0%, #d00906 100%);
+.depositApproveButton:hover {
+    background: #b30805;
     box-shadow: 0 4px 12px rgba(144, 6, 3, 0.3);
     transform: translateY(-2px);
 }
 
-.admDepBtnReject {
-    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+.depositRejectButton {
+    background: #f5f5f5;
     color: #900603;
     border: 2px solid #900603;
 }
 
-.admDepBtnReject:hover {
-    background: linear-gradient(135deg, #900603 0%, #b30805 100%);
+.depositRejectButton:hover {
+    background: #900603;
     color: #fff;
     box-shadow: 0 4px 12px rgba(144, 6, 3, 0.3);
     transform: translateY(-2px);
 }
 
-.admDepBtnRenew {
-    background: linear-gradient(135deg, #900603 0%, #900603 100%);
+.depositRenewButton {
+    background: #900603;
     color: #fff;
 }
 
-.admDepBtnRenew:hover {
-    background: linear-gradient(135deg, #900603 0%, #900603 100%);
-    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-    transform: translateY(-2px);
-}
-
-.admDepBtnClose {
-    background: linear-gradient(135deg, #900603 0%, #b30805 100%);
-    color: #fff;
-}
-
-.admDepBtnClose:hover {
-    background: linear-gradient(135deg, #b30805 0%, #d00906 100%);
+.depositRenewButton:hover {
+    background: #b30805;
     box-shadow: 0 4px 12px rgba(144, 6, 3, 0.3);
     transform: translateY(-2px);
 }
 
-.admDepBtnGenerate {
-    background: linear-gradient(135deg, #050505 0%, #0f0f0f 100%);
+.depositCloseButton {
+    background: #900603;
     color: #fff;
 }
 
-.admDepBtnGenerate:hover {
-    background: linear-gradient(135deg, #0d0d0e 0%, #111111 100%);
-    box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+.depositCloseButton:hover {
+    background: #b30805;
+    box-shadow: 0 4px 12px rgba(144, 6, 3, 0.3);
+    transform: translateY(-2px);
+}
+
+.depositGenerateButton {
+    background: #050505;
+    color: #fff;
+}
+
+.depositGenerateButton:hover {
+    background: #0f0f0f;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transform: translateY(-2px);
 }
 
 /* ========================================
    MODAL
 ======================================== */
-.admDepModalBackdrop {
+.depositModalOverlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
@@ -387,32 +391,32 @@
     z-index: 1050;
     padding: 20px;
     backdrop-filter: blur(4px);
-    animation: admDepFadeIn 0.3s ease;
+    animation: depositFadeIn 0.3s ease;
 }
 
-.admDepModal {
+.depositModalContainer {
     background: #fff;
     border-radius: 20px;
     padding: 32px;
     width: 480px;
     max-width: 100%;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    animation: admDepSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: depositSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
 
-.admDepModal::before {
+.depositModalContainer::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #900603 0%, #b30805 50%, #900603 100%);
+    background: #900603;
     border-radius: 20px 20px 0 0;
 }
 
-.admDepModal h3 {
+.depositModalContainer h3 {
     color: #900603;
     margin-bottom: 20px;
     font-size: 1.6rem;
@@ -421,7 +425,7 @@
     letter-spacing: 0.5px;
 }
 
-.admDepModal p {
+.depositModalContainer p {
     margin: 12px 0;
     color: #495057;
     font-size: 1rem;
@@ -429,8 +433,8 @@
     font-weight: 500;
 }
 
-.admDepModal input,
-.admDepModal textarea {
+.depositModalContainer input,
+.depositModalContainer textarea {
     width: 100%;
     padding: 14px 16px;
     border: 2px solid #e0e0e0;
@@ -443,8 +447,8 @@
     background: #f8f9fa;
 }
 
-.admDepModal input:focus,
-.admDepModal textarea:focus {
+.depositModalContainer input:focus,
+.depositModalContainer textarea:focus {
     outline: none;
     border-color: #900603;
     background: #fff;
@@ -452,20 +456,20 @@
     transform: translateY(-1px);
 }
 
-.admDepModal textarea {
+.depositModalContainer textarea {
     height: 100px;
     resize: vertical;
     font-family: inherit;
 }
 
-.admDepModalActions {
+.depositModalButtonGroup {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
     margin-top: 24px;
 }
 
-.admDepModalActions button {
+.depositModalButtonGroup button {
     padding: 12px 24px;
     border: none;
     border-radius: 10px;
@@ -476,38 +480,38 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.admDepModalActions button:first-child {
+.depositModalButtonGroup button:first-child {
     background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
     color: #495057;
 }
 
-.admDepModalActions button:first-child:hover {
+.depositModalButtonGroup button:first-child:hover {
     background: linear-gradient(135deg, #dee2e6 0%, #ced4da 100%);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.admDepModalActions .admDepBtnApprove,
-.admDepModalActions .admDepBtnReject {
+.depositModalButtonGroup .depositApproveButton,
+.depositModalButtonGroup .depositRejectButton {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.admDepModalActions .admDepBtnApprove:hover,
-.admDepModalActions .admDepBtnReject:hover {
+.depositModalButtonGroup .depositApproveButton:hover,
+.depositModalButtonGroup .depositRejectButton:hover {
     transform: translateY(-2px);
 }
 
 /* ========================================
    FORMAT BUTTONS IN MODAL
 ======================================== */
-.admDepFormatButtons {
+.depositFormatButtonGroup {
     display: flex;
     flex-direction: column;
     gap: 12px;
     margin: 20px 0;
 }
 
-.admDepBtnFormat {
+.depositFormatButton {
     width: 100%;
     padding: 16px 24px;
     border: 2px solid #e0e0e0;
@@ -525,22 +529,22 @@
     gap: 12px;
 }
 
-.admDepBtnFormat:hover {
-    background: linear-gradient(135deg, #900603 0%, #b30805 100%);
+.depositFormatButton:hover {
+    background: #900603;
     color: #fff;
     border-color: #900603;
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(144, 6, 3, 0.2);
 }
 
-.admDepBtnFormat:active {
+.depositFormatButton:active {
     transform: translateY(0);
 }
 
 /* ========================================
    ANIMATIONS
 ======================================== */
-@keyframes admDepFadeIn {
+@keyframes depositFadeIn {
     from {
         opacity: 0;
     }
@@ -550,7 +554,7 @@
     }
 }
 
-@keyframes admDepSlideUp {
+@keyframes depositSlideUp {
     from {
         opacity: 0;
         transform: translateY(30px);
@@ -566,122 +570,128 @@
    RESPONSIVE - MOBILE (≤767px)
 ======================================== */
 @media (max-width: 767px) {
-    .admDepContainer {
-        padding: 16px;
+    .depositMainWrapper {
+        padding: 16px 0;
     }
 
-    .admDepHeadingBar {
+    .depositHeaderBar {
         height: auto;
         padding: 20px 16px;
         text-align: center;
     }
 
-    .admDepHeadingBar h1 {
+    .depositHeaderBar h1 {
         font-size: 22px;
     }
 
-    .admDepTabs {
+    .depositTabsWrapper {
         flex-direction: column;
         gap: 12px;
+        padding: 0 16px;
     }
 
-    .admDepTabs button {
+    .depositTabsWrapper button {
         width: 100%;
         padding: 12px 20px;
         font-size: 15px;
     }
 
-    .admDepFilters {
+    .depositFilterContainer {
         flex-direction: column;
         gap: 12px;
+        margin-left: 16px;
+        margin-right: 16px;
     }
 
-    .admDepFilters input,
-    .admDepFilters select {
+    .depositFilterContainer input,
+    .depositFilterContainer select {
         width: 100%;
         min-width: 100%;
     }
 
-    .admDepTableCard {
-        padding: 16px;
-        border-radius: 16px;
+    .depositContentCard {
+        padding: 16px 0;
+        border-radius: 0;
     }
 
-    .admDepTableCard h2 {
+    .depositContentCard h2 {
         font-size: 1.25rem;
+        margin-left: 16px;
     }
 
-    .admDepTableWrapper {
-        border-radius: 8px;
+    .depositTableContainer {
+        border-radius: 0;
     }
 
-    .admDepTable {
+    .depositDataTable {
         font-size: 13px;
         min-width: 600px;
     }
 
-    .admDepTable th,
-    .admDepTable td {
+    .depositDataTable th,
+    .depositDataTable td {
         padding: 12px 10px;
     }
 
-    .admDepTable th {
+    .depositDataTable th {
         font-size: 11px;
     }
 
-    .admDepActionCell {
+    .depositActionButtons {
         flex-direction: column;
         width: 100%;
     }
 
-    .admDepTable button {
+    .depositDataTable button {
         width: 100%;
         padding: 10px 14px;
         font-size: 13px;
     }
 
-    .admDepModal {
+    .depositModalContainer {
         width: 95%;
         padding: 24px 20px;
         border-radius: 16px;
     }
 
-    .admDepModal h3 {
+    .depositModalContainer h3 {
         font-size: 1.3rem;
     }
 
-    .admDepModal p {
+    .depositModalContainer p {
         font-size: 0.9rem;
     }
 
-    .admDepModal input,
-    .admDepModal textarea {
+    .depositModalContainer input,
+    .depositModalContainer textarea {
         padding: 12px 14px;
         font-size: 14px;
     }
 
-    .admDepModalActions {
+    .depositModalButtonGroup {
         flex-direction: column;
         gap: 10px;
     }
 
-    .admDepModalActions button {
+    .depositModalButtonGroup button {
         width: 100%;
         padding: 12px 20px;
     }
 
-    .admDepFormatButtons {
+    .depositFormatButtonGroup {
         gap: 10px;
     }
 
-    .admDepBtnFormat {
+    .depositFormatButton {
         padding: 14px 20px;
         font-size: 15px;
     }
 
-    .admDepNotification {
+    .depositNotificationBox {
         font-size: 14px;
         padding: 14px 16px;
+        margin-left: 16px;
+        margin-right: 16px;
     }
 }
 
@@ -689,43 +699,50 @@
    RESPONSIVE - TABLET (768px–1023px)
 ======================================== */
 @media (min-width: 768px) and (max-width: 1023px) {
-    .admDepContainer {
-        padding: 24px;
+    .depositMainWrapper {
+        padding: 24px 0;
     }
 
-    .admDepHeadingBar {
+    .depositHeaderBar {
         padding: 0 24px;
         height: 90px;
     }
 
-    .admDepHeadingBar h1 {
+    .depositHeaderBar h1 {
         font-size: 26px;
     }
 
-    .admDepTabs button {
+    .depositTabsWrapper {
+        padding: 0 24px;
+    }
+
+    .depositTabsWrapper button {
         padding: 12px 22px;
         font-size: 0.95rem;
     }
 
-    .admDepTableCard {
-        padding: 24px;
+    .depositContentCard {
+        padding: 24px 0;
     }
 
-    .admDepTable {
+    .depositTableContainer {
+    }
+
+    .depositDataTable {
         font-size: 14px;
     }
 
-    .admDepTable th,
-    .admDepTable td {
+    .depositDataTable th,
+    .depositDataTable td {
         padding: 14px 12px;
     }
 
-    .admDepModal {
+    .depositModalContainer {
         width: 85%;
         padding: 28px;
     }
 
-    .admDepModal h3 {
+    .depositModalContainer h3 {
         font-size: 1.4rem;
     }
 }
@@ -734,20 +751,27 @@
    RESPONSIVE - DESKTOP (≥1024px)
 ======================================== */
 @media (min-width: 1024px) {
-    .admDepContainer {
-        padding: 36px 48px;
+    .depositMainWrapper {
+        padding: 36px 0;
     }
 
-    .admDepHeadingBar {
+    .depositHeaderBar {
         padding: 0 48px;
     }
 
-    .admDepTableCard {
-        padding: 32px;
+    .depositTabsWrapper {
+        padding: 0 48px;
     }
 
-    .admDepTable th,
-    .admDepTable td {
+    .depositContentCard {
+        padding: 32px 0;
+    }
+
+    .depositTableContainer {
+    }
+
+    .depositDataTable th,
+    .depositDataTable td {
         padding: 18px 16px;
     }
 }
@@ -756,37 +780,37 @@
    SMALL MOBILE (≤480px)
 ======================================== */
 @media (max-width: 480px) {
-    .admDepHeadingBar h1 {
+    .depositHeaderBar h1 {
         font-size: 18px;
     }
 
-    .admDepTableCard h2 {
+    .depositContentCard h2 {
         font-size: 1.1rem;
     }
 
-    .admDepTable {
+    .depositDataTable {
         font-size: 12px;
         min-width: 550px;
     }
 
-    .admDepTable th {
+    .depositDataTable th {
         font-size: 10px;
     }
 
-    .admDepTable button {
+    .depositDataTable button {
         font-size: 12px;
         padding: 8px 12px;
     }
 
-    .admDepModal {
+    .depositModalContainer {
         padding: 20px 16px;
     }
 
-    .admDepModal h3 {
+    .depositModalContainer h3 {
         font-size: 1.15rem;
     }
 
-    .admDepBtnFormat {
+    .depositFormatButton {
         padding: 12px 16px;
         font-size: 14px;
     }
@@ -797,25 +821,25 @@
 ======================================== */
 @media print {
 
-    .admDepHeadingBar,
-    .admDepTabs,
-    .admDepFilters,
-    .admDepActionCell,
-    .admDepModalBackdrop {
+    .depositHeaderBar,
+    .depositTabsWrapper,
+    .depositFilterContainer,
+    .depositActionButtons,
+    .depositModalOverlay {
         display: none !important;
     }
 
-    .admDepContainer {
+    .depositMainWrapper {
         padding: 0;
         background: #fff;
     }
 
-    .admDepTableCard {
+    .depositContentCard {
         box-shadow: none;
         border: 1px solid #ddd;
     }
 
-    .admDepTable {
+    .depositDataTable {
         font-size: 12px;
     }
 }

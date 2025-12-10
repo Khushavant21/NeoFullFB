@@ -11,8 +11,8 @@ const ApprovalModal = ({ row, onClose, onConfirm }) => {
   };
 
   return (
-    <div className={styles.admDepModalBackdrop}>
-      <div className={styles.admDepModal}>
+    <div className={styles.depositModalOverlay}>
+      <div className={styles.depositModalContainer}>
         <h3>Approve Request</h3>
         <p>Customer: {row?.name || "N/A"}</p>
         <input
@@ -27,10 +27,10 @@ const ApprovalModal = ({ row, onClose, onConfirm }) => {
           value={tenure}
           onChange={(e) => setTenure(e.target.value)}
         />
-        <div className={styles.admDepModalActions}>
+        <div className={styles.depositModalButtonGroup}>
           <button onClick={onClose}>Cancel</button>
           <button
-            className={styles.admDepBtnApprove}
+            className={styles.depositApproveButton}
             onClick={handleConfirm}
           >
             Confirm
@@ -46,8 +46,8 @@ const RejectionModal = ({ row, onClose, onConfirm }) => {
   const [reason, setReason] = useState("");
 
   return (
-    <div className={styles.admDepModalBackdrop}>
-      <div className={styles.admDepModal}>
+    <div className={styles.depositModalOverlay}>
+      <div className={styles.depositModalContainer}>
         <h3>Reject Request</h3>
         <p>Customer: {row?.name || "N/A"}</p>
         <textarea
@@ -55,10 +55,10 @@ const RejectionModal = ({ row, onClose, onConfirm }) => {
           value={reason}
           onChange={(e) => setReason(e.target.value)}
         />
-        <div className={styles.admDepModalActions}>
+        <div className={styles.depositModalButtonGroup}>
           <button onClick={onClose}>Cancel</button>
           <button
-            className={styles.admDepBtnReject}
+            className={styles.depositRejectButton}
             onClick={() => onConfirm({ reason })}
           >
             Reject
@@ -72,33 +72,33 @@ const RejectionModal = ({ row, onClose, onConfirm }) => {
 // Format Selection Modal
 const FormatModal = ({ row, onClose, onDownload }) => {
   return (
-    <div className={styles.admDepModalBackdrop}>
-      <div className={styles.admDepModal}>
+    <div className={styles.depositModalOverlay}>
+      <div className={styles.depositModalContainer}>
         <h3>Generate Instrument</h3>
         <p>Customer: {row?.user || "N/A"}</p>
         <p>Amount: ₹{row?.amount || 0}</p>
         <p>Select download format:</p>
-        <div className={styles.admDepFormatButtons}>
+        <div className={styles.depositFormatButtonGroup}>
           <button
-            className={styles.admDepBtnFormat}
+            className={styles.depositFormatButton}
             onClick={() => onDownload(row, "csv")}
           >
             📄 CSV
           </button>
           <button
-            className={styles.admDepBtnFormat}
+            className={styles.depositFormatButton}
             onClick={() => onDownload(row, "pdf")}
           >
             📕 PDF
           </button>
           <button
-            className={styles.admDepBtnFormat}
+            className={styles.depositFormatButton}
             onClick={() => onDownload(row, "excel")}
           >
             📗 Excel
           </button>
         </div>
-        <div className={styles.admDepModalActions}>
+        <div className={styles.depositModalButtonGroup}>
           <button onClick={onClose}>Close</button>
         </div>
       </div>
@@ -278,7 +278,6 @@ const AdminDeposits = () => {
     setFormatModalData(null);
   };
 
-  // --- CSV / PDF / Excel downloads unchanged ---
   const downloadCSV = (data) => {
     const csvContent = [
       ["Field", "Value"],
@@ -356,7 +355,6 @@ Generated Date\t${data.generatedDate}
     URL.revokeObjectURL(url);
   };
 
-  // ✅ Updated filtering logic
   const filterRows = (rows) => {
     return rows.filter(
       (row) =>
@@ -369,12 +367,12 @@ Generated Date\t${data.generatedDate}
     const filteredApplications = filterRows(applications);
 
     return (
-      <div className={styles.admDepTableCard}>
+      <div className={styles.depositContentCard}>
         <h2>Deposit Applications</h2>
         {notification && (
-          <div className={styles.admDepNotification}>{notification}</div>
+          <div className={styles.depositNotificationBox}>{notification}</div>
         )}
-        <div className={styles.admDepFilters}>
+        <div className={styles.depositFilterContainer}>
           <input
             type="text"
             placeholder="Search customer..."
@@ -391,8 +389,8 @@ Generated Date\t${data.generatedDate}
             <option>Rejected</option>
           </select>
         </div>
-        <div className={styles.admDepTableWrapper}>
-          <table className={styles.admDepTable}>
+        <div className={styles.depositTableContainer}>
+          <table className={styles.depositDataTable}>
             <thead>
               <tr>
                 <th>User</th>
@@ -416,15 +414,15 @@ Generated Date\t${data.generatedDate}
                     <td>{row.dueDate}</td>
                     <td>
                       <span
-                        className={`${styles.admDepStatus} ${styles[`admDepStatus${row.status}`]}`}
+                        className={`${styles.depositStatusBadge} ${styles[`depositStatus${row.status}`]}`}
                       >
                         {row.status}
                       </span>
                     </td>
                     <td>{row.interest}</td>
-                    <td className={styles.admDepActionCell}>
+                    <td className={styles.depositActionButtons}>
                       <button
-                        className={styles.admDepBtnApprove}
+                        className={styles.depositApproveButton}
                         onClick={() =>
                           openModal(row, setApplications, "Approved")
                         }
@@ -432,7 +430,7 @@ Generated Date\t${data.generatedDate}
                         Approve
                       </button>
                       <button
-                        className={styles.admDepBtnReject}
+                        className={styles.depositRejectButton}
                         onClick={() =>
                           openModal(row, setApplications, "Rejected")
                         }
@@ -441,7 +439,7 @@ Generated Date\t${data.generatedDate}
                       </button>
                       {row.status === "Approved" && (
                         <button
-                          className={styles.admDepBtnGenerate}
+                          className={styles.depositGenerateButton}
                           onClick={() => handleGenerateInstrument(row)}
                         >
                           Generate
@@ -468,12 +466,12 @@ Generated Date\t${data.generatedDate}
     const filteredMaturities = filterRows(maturities);
 
     return (
-      <div className={styles.admDepTableCard}>
+      <div className={styles.depositContentCard}>
         <h2>Maturities</h2>
         {notification && (
-          <div className={styles.admDepNotification}>{notification}</div>
+          <div className={styles.depositNotificationBox}>{notification}</div>
         )}
-        <div className={styles.admDepFilters}>
+        <div className={styles.depositFilterContainer}>
           <input
             type="text"
             placeholder="Search customer..."
@@ -490,8 +488,8 @@ Generated Date\t${data.generatedDate}
             <option>Closed</option>
           </select>
         </div>
-        <div className={styles.admDepTableWrapper}>
-          <table className={styles.admDepTable}>
+        <div className={styles.depositTableContainer}>
+          <table className={styles.depositDataTable}>
             <thead>
               <tr>
                 <th>User</th>
@@ -512,27 +510,27 @@ Generated Date\t${data.generatedDate}
                     <td>{row.maturityDate}</td>
                     <td>
                       <span
-                        className={`${styles.admDepStatus} ${styles[`admDepStatus${row.status}`]}`}
+                        className={`${styles.depositStatusBadge} ${styles[`depositStatus${row.status}`]}`}
                       >
                         {row.status}
                       </span>
                     </td>
-                    <td className={styles.admDepActionCell}>
+                    <td className={styles.depositActionButtons}>
                       <button
-                        className={styles.admDepBtnRenew}
+                        className={styles.depositRenewButton}
                         onClick={() => handleMaturityAction(row.id, "Renewed")}
                       >
                         Renew
                       </button>
                       <button
-                        className={styles.admDepBtnClose}
+                        className={styles.depositCloseButton}
                         onClick={() => handleMaturityAction(row.id, "Closed")}
                       >
                         Close
                       </button>
                       {(row.status === "Renewed" || row.status === "Closed") && (
                         <button
-                          className={styles.admDepBtnGenerate}
+                          className={styles.depositGenerateButton}
                           onClick={() => handleGenerateInstrument(row)}
                         >
                           Generate
@@ -559,12 +557,12 @@ Generated Date\t${data.generatedDate}
     const filteredWithdrawals = filterRows(withdrawals);
 
     return (
-      <div className={styles.admDepTableCard}>
+      <div className={styles.depositContentCard}>
         <h2>Early Withdrawal Requests</h2>
         {notification && (
-          <div className={styles.admDepNotification}>{notification}</div>
+          <div className={styles.depositNotificationBox}>{notification}</div>
         )}
-        <div className={styles.admDepFilters}>
+        <div className={styles.depositFilterContainer}>
           <input
             type="text"
             placeholder="Search customer..."
@@ -581,8 +579,8 @@ Generated Date\t${data.generatedDate}
             <option>Rejected</option>
           </select>
         </div>
-        <div className={styles.admDepTableWrapper}>
-          <table className={styles.admDepTable}>
+        <div className={styles.depositTableContainer}>
+          <table className={styles.depositDataTable}>
             <thead>
               <tr>
                 <th>User</th>
@@ -603,14 +601,14 @@ Generated Date\t${data.generatedDate}
                     <td>₹{row.penalty}</td>
                     <td>
                       <span
-                        className={`${styles.admDepStatus} ${styles[`admDepStatus${row.status}`]}`}
+                        className={`${styles.depositStatusBadge} ${styles[`depositStatus${row.status}`]}`}
                       >
                         {row.status}
                       </span>
                     </td>
-                    <td className={styles.admDepActionCell}>
+                    <td className={styles.depositActionButtons}>
                       <button
-                        className={styles.admDepBtnApprove}
+                        className={styles.depositApproveButton}
                         onClick={() =>
                           handleWithdrawalAction(row.id, "Approved")
                         }
@@ -618,7 +616,7 @@ Generated Date\t${data.generatedDate}
                         Approve
                       </button>
                       <button
-                        className={styles.admDepBtnReject}
+                        className={styles.depositRejectButton}
                         onClick={() =>
                           handleWithdrawalAction(row.id, "Rejected")
                         }
@@ -627,7 +625,7 @@ Generated Date\t${data.generatedDate}
                       </button>
                       {row.status === "Approved" && (
                         <button
-                          className={styles.admDepBtnGenerate}
+                          className={styles.depositGenerateButton}
                           onClick={() => handleGenerateInstrument(row)}
                         >
                           Generate
@@ -652,14 +650,14 @@ Generated Date\t${data.generatedDate}
 
   return (
     <>
-      <div className={styles.admDepHeadingBar}>
+      <div className={styles.depositHeaderBar}>
         <h1>Deposits Management</h1>
       </div>
-      <div className={styles.admDepContainer}>
-        <div className={styles.admDepTabs}>
+      <div className={styles.depositMainWrapper}>
+        <div className={styles.depositTabsWrapper}>
           <button
             className={
-              activeTab === "applications" ? styles.admDepTabActive : ""
+              activeTab === "applications" ? styles.depositTabActive : ""
             }
             onClick={() => handleTabChange("applications")}
           >
@@ -667,7 +665,7 @@ Generated Date\t${data.generatedDate}
           </button>
           <button
             className={
-              activeTab === "maturities" ? styles.admDepTabActive : ""
+              activeTab === "maturities" ? styles.depositTabActive : ""
             }
             onClick={() => handleTabChange("maturities")}
           >
@@ -675,7 +673,7 @@ Generated Date\t${data.generatedDate}
           </button>
           <button
             className={
-              activeTab === "withdrawals" ? styles.admDepTabActive : ""
+              activeTab === "withdrawals" ? styles.depositTabActive : ""
             }
             onClick={() => handleTabChange("withdrawals")}
           >
@@ -688,8 +686,8 @@ Generated Date\t${data.generatedDate}
         {activeTab === "withdrawals" && renderWithdrawalsTable()}
 
         {modalData && (
-          <div className={styles.admDepModalBackdrop}>
-            <div className={styles.admDepModal}>
+          <div className={styles.depositModalOverlay}>
+            <div className={styles.depositModalContainer}>
               <h3>Adjust Interest for {modalData.row.user}</h3>
               <input
                 type="number"
@@ -698,10 +696,10 @@ Generated Date\t${data.generatedDate}
                   setModalData({ ...modalData, interest: e.target.value })
                 }
               />
-              <div className={styles.admDepModalActions}>
+              <div className={styles.depositModalButtonGroup}>
                 <button onClick={() => setModalData(null)}>Cancel</button>
                 <button
-                  className={styles.admDepBtnApprove}
+                  className={styles.depositApproveButton}
                   onClick={handleModalSave}
                 >
                   Save & {modalData.action}

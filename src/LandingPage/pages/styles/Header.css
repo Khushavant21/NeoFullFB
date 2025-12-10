@@ -1,0 +1,391 @@
+:root{
+  --brand: #950606;
+  --muted: #555;
+  --transition: 0.3s ease;
+  --container: 1380px; /* widened container (kept for reference) */
+  --hover-bg: #f9f9f9;
+}
+
+/* Header */
+.site-header {
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  padding: 0; /* removed side padding so left/right elements can touch edges */
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Using a full-width header-inner and absolute-positioning for left/center/right
+   so the logo can sit flush to the left edge (with a small safety padding),
+   the nav is perfectly centered, and the login area is flush to the right. */
+.header-inner {
+  position: relative;
+  width: 100%;
+  max-width: none; /* allow full viewport width */
+  margin: 0;
+  padding: 12px 0; /* top/bottom spacing only */
+  box-sizing: border-box;
+  min-height: 72px; /* keeps space for absolutely-positioned items */
+  display: block; /* children positioned absolutely where needed */
+}
+
+/* Left Section (logo + brand) - pinned to the left edge */
+.header-left {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 18px; /* more gap between logo and text */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding-left: 16px; /* small inner gap from exact edge for aesthetics */
+  box-sizing: border-box;
+}
+.header-left:hover {
+  transform: translateY(-50%) scale(1.02);
+}
+.brand-mark {
+  width: 65px; /* bigger logo */
+  height: auto;
+  transition: transform 0.2s ease;
+  display: block;
+}
+.brand-text {
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.brand-name {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #111;
+}
+.brand-id {
+  font-size: 1rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Navigation - perfectly centered in the header */
+.main-nav {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 34px; /* wider gap between items */
+  align-items: center;
+  transition: var(--transition);
+  white-space: nowrap;
+  z-index: 20; /* above background elements */
+}
+.main-nav a {
+  color: #333;
+  text-decoration: none;
+  padding: 10px 8px;
+  font-weight: 500;
+  position: relative;
+  transition: color var(--transition);
+  border-radius: 8px;
+}
+.menu-link.active {
+  background: #900603;
+  color: #fff !important;
+  border-radius: 8px;
+}
+
+/* Optional: disable underline animation for active item */
+.menu-link.active::after {
+  width: 0;
+}
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--brand);
+  transition: width var(--transition);
+}
+.main-nav a:hover::after {
+  width: 100%;
+}
+.main-nav a:hover {
+  color: var(--brand);
+  background: var(--hover-bg);
+}
+
+/* Right Section (phone + login) - pinned to the right edge */
+.header-right {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-right: 16px; /* small inner gap from exact edge for aesthetics */
+  box-sizing: border-box;
+  z-index: 30;
+}
+.phone {
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.login-wrap {
+  position: relative;
+}
+.login-btn {
+  background: linear-gradient(135deg, var(--brand), #d32f2f);
+  border: none;
+  padding: 10px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(149, 6, 6, 0.3);
+}
+.arrow {
+  font-size: 0.75rem;
+}
+
+/* Dropdown */
+.login-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 220px;
+  animation: fadeIn 0.25s ease;
+}
+
+/* Client + Admin Buttons */
+.login-option {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.login-option:first-child {
+  background: #f3f6ff;
+  color: #1a3da3;
+}
+.login-option:first-child:hover {
+  background: #dce6ff;
+  box-shadow: 0 2px 8px rgba(26, 61, 163, 0.2);
+}
+.login-option:last-child {
+  background: #fff2f2;
+  color: #4fe123;
+}
+.login-option:last-child:hover {
+  background: #cef8c5;
+  box-shadow: 0 2px 8px rgba(179, 0, 0, 0.2);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile View */
+.mobile-toggle {
+  display: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #333;
+  background: transparent;
+  border: none;
+  z-index: 40;
+}
+
+/* On smaller screens we switch to a stacked / fullscreen mobile menu.
+   When the nav becomes the open mobile menu we override the absolute-centering
+   so it can expand full width below the header. */
+@media (max-width: 900px) {
+  .main-nav {
+    display: none;
+    position: static;
+    transform: none;
+    left: auto;
+    top: auto;
+    gap: 12px;
+    padding: 8px 16px;
+  }
+  .menu-link.active {
+  background: #900603;
+  color: #fff !important;
+  border-radius: 8px;
+}
+
+/* Optional: disable underline animation for active item */
+.menu-link.active::after {
+  width: 0;
+}
+  .mobile-toggle {
+    display: block;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .header-left {
+    padding-left: 12px;
+  }
+  .header-right {
+    padding-right: 48px; /* allow room for the mobile toggle */
+  }
+  .main-nav.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: calc(100% + 0px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 16px 20px;
+    gap: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    animation: slideDown 0.25s ease;
+    z-index: 25;
+  }
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* =============================== */
+/* 📱 Extra Small Devices (<600px) */
+/* =============================== */
+@media (max-width: 600px) {
+  .header-inner {
+    min-height: 64px;
+    padding: 10px 0;
+  }
+
+  .brand-mark {
+    width: 50px; /* smaller logo */
+  }
+
+  .brand-name {
+    font-size: 1.1rem;
+  }
+
+  .brand-id {
+    font-size: 0.8rem;
+  }
+
+  .header-right .phone {
+    display: none; /* hide phone number on very small screens */
+  }
+
+  .login-btn {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+  }
+
+  .mobile-toggle {
+    font-size: 24px;
+  }
+
+  .main-nav.open {
+    padding: 12px 16px;
+    gap: 10px;
+  }
+
+  .menu-link {
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 10px;
+  }
+}
+
+/* =============================== */
+/* 💻 Medium Screens (Tablets 601–1024px) */
+/* =============================== */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .header-inner {
+    padding: 12px 0;
+  }
+
+  .brand-mark {
+    width: 58px;
+  }
+
+  .brand-name {
+    font-size: 1.3rem;
+  }
+
+  .main-nav {
+    gap: 20px;
+  }
+
+  .menu-link {
+    font-size: 0.95rem;
+  }
+
+  .login-btn {
+    padding: 8px 18px;
+  }
+}
+
+/* =============================== */
+/* 🖥️ Large Screens (>1440px) */
+/* =============================== */
+@media (min-width: 1440px) {
+  .main-nav {
+    gap: 40px; /* more breathing room on ultra-wide screens */
+  }
+
+  .brand-mark {
+    width: 70px;
+  }
+
+  .brand-name {
+    font-size: 1.6rem;
+  }
+
+  .login-btn {
+    padding: 12px 26px;
+    font-size: 1rem;
+  }
+}

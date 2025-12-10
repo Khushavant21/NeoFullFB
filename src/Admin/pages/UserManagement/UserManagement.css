@@ -601,3 +601,23 @@
     width: 100%;
   }
 }
+
+
+.um-approve {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.um-reject {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+}

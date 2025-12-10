@@ -86,6 +86,8 @@
 .neft-col {
   flex: 1;
   min-width: 48%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===== Buttons ===== */
@@ -147,3 +149,17 @@
     flex-direction: column;
   }
 }
+/* ===== Remove spinner (number field arrows) ===== */
+input[type=number] {
+  appearance: none;        /* Standard property */
+  -webkit-appearance: none; /* Chrome, Safari, Edge */
+  -moz-appearance: textfield; /* Firefox */
+}
+
+/* Remove inner spin buttons for WebKit browsers */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+

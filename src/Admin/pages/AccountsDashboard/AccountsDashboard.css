@@ -480,8 +480,8 @@
 .adx-table-actions {
   display: flex;
   gap: 6px;
-  justify-content: center;
-  flex-wrap: wrap;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
 }
 
 .adx-action-btn {
@@ -700,54 +700,11 @@
 
 /* ===== RESPONSIVE BREAKPOINTS ===== */
 
-/* Small tablets and large phones (≥576px) */
-@media (min-width: 640ypx) {
-  .adx-dashboard-container {
-    padding: 20px;
-    margin-top: 40px;
-  }
-  
-  .adx-filters-main {
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  .adx-search-container {
-    flex: 1;
-    min-width: 200px;
-  }
-  
-  .adx-actions-container {
-    justify-content: flex-end;
-    flex-wrap: nowrap;
-    width: auto;
-  }
-  
-  .adx-btn {
-    flex: none;
-    min-width: 120px;
-  }
-  
-  .adx-filters-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .adx-table-header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .adx-table-actions {
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-  }
-  
-  .adx-modal-footer {
-    flex-direction: row;
-    justify-content: flex-end;
-  }
+
+.adx-status-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Tablets (≥768px) */
@@ -913,7 +870,8 @@
   
   .adx-filters-wrapper,
   .adx-actions-container,
-  .adx-table-actions {
+  .adx-table-actions,
+  .adx-pagination-container {
     display: none;
   }
   
@@ -931,24 +889,155 @@
   }
 }
 
-/* React DatePicker Mobile Optimizations */
-@media (max-width: 768px) {
-  .react-datepicker {
-    font-size: 16px !important;
+/* Pagination Styles */
+.adx-pagination-container {
+  padding: clamp(16px, 3vw, 20px);
+  background: #f8f9fa;
+  border-top: 2px solid #e9ecef;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+.adx-pagination-info {
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  color: #6c757d;
+  font-weight: 500;
+  text-align: center;
+}
+
+.adx-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.adx-pagination-btn {
+  padding: clamp(8px, 2vw, 10px) clamp(14px, 3vw, 18px);
+  background: #ffffff;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  font-weight: 600;
+  color: #495057;
+  transition: all 0.3s ease;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.adx-pagination-btn:hover:not(:disabled) {
+  background: #900603;
+  color: #ffffff;
+  border-color: #900603;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(144, 6, 3, 0.2);
+}
+
+.adx-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f8f9fa;
+}
+
+.adx-pagination-numbers {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.adx-pagination-number {
+  padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 14px);
+  background: #ffffff;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  font-weight: 600;
+  color: #495057;
+  transition: all 0.3s ease;
+  min-width: clamp(36px, 8vw, 40px);
+  min-height: clamp(36px, 8vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adx-pagination-number:hover {
+  background: #e9ecef;
+  border-color: #900603;
+  color: #900603;
+  transform: translateY(-1px);
+}
+
+.adx-pagination-active {
+  background: linear-gradient(135deg, #900603 0%, #b30805 100%) !important;
+  color: #ffffff !important;
+  border-color: #900603 !important;
+  box-shadow: 0 2px 8px rgba(144, 6, 3, 0.3);
+}
+
+.adx-pagination-active:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(144, 6, 3, 0.4);
+}
+
+.adx-pagination-ellipsis {
+  padding: clamp(8px, 2vw, 10px) clamp(6px, 2vw, 8px);
+  color: #6c757d;
+  font-weight: 600;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(24px, 6vw, 28px);
+}
+
+/* Responsive Pagination */
+@media (max-width: 576px) {
+  .adx-pagination-container {
+    padding: 16px 12px;
   }
   
-  .react-datepicker__month-container {
-    width: 100% !important;
+  .adx-pagination-controls {
+    width: 100%;
   }
   
-  .react-datepicker__day {
-    height: 44px !important;
-    width: 44px !important;
-    line-height: 44px !important;
-    font-size: 16px !important;
+  .adx-pagination-btn {
+    flex: 1;
+    justify-content: center;
   }
   
-  .react-datepicker__navigation {
-    top: 16px !important;
+  .adx-pagination-numbers {
+    width: 100%;
+    order: -1;
+    margin-bottom: 8px;
+  }
+  
+  .adx-pagination-prev {
+    order: 1;
+  }
+  
+  .adx-pagination-next {
+    order: 2;
+  }
+}
+
+@media (min-width: 768px) {
+  .adx-pagination-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .adx-pagination-info {
+    text-align: left;
   }
 }

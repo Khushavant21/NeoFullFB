@@ -1,8 +1,7 @@
-
 import React from "react";
 import { Home, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import "./style/ActiveLoanCard.css"; // custom CSS file
+import "./style/ActiveLoanCard.css"; // unique CSS file
 
 function ActiveLoanCard() {
   const navigate = useNavigate();
@@ -11,27 +10,28 @@ function ActiveLoanCard() {
   };
 
   return (
-    <div className="loan-card-container">
-      <div className="loan-card">
-        <div className="loan-card-body">
+    <div className="client-loan-card-container">
+      <div className="client-loan-card">
+        <div className="client-loan-card-body">
           {/* Header */}
-          <div className="loan-header">
+          <div className="client-loan-header">
             <div>
               <h5>My Active Loan</h5>
               <p>Track your current loan details</p>
             </div>
 
-            <div className="loan-status">
-              <CheckCircle size={16}  color="white"/>
+            <div className="client-loan-status">
+              <CheckCircle size={16} color="white" />
               <span style={{ color: "white" }}>Active</span>
             </div>
           </div>
 
-          <div className="loan-content">
+          {/* Content */}
+          <div className="client-loan-content">
             {/* Left section - loan details */}
-            <div className="loan-details">
-              <div className="loan-type">
-                <div className="loan-icon">
+            <div className="client-loan-details">
+              <div className="client-loan-type">
+                <div className="client-loan-icon">
                   <Home size={24} color="#ffc107" />
                 </div>
                 <div>
@@ -61,24 +61,27 @@ function ActiveLoanCard() {
             </div>
 
             {/* Right section - progress + actions */}
-            <div className="loan-progress-section">
-              <div className="loan-progress">
-                <div className="loan-progress-header">
+            <div className="client-loan-progress-section">
+              <div className="client-loan-progress">
+                <div className="client-loan-progress-header">
                   <span>Loan Progress</span>
                   <span>25%</span>
                 </div>
-                <div className="loan-progress-bar">
-                  <div className="loan-progress-fill"></div>
+                <div className="client-loan-progress-bar">
+                  <div className="client-loan-progress-fill"></div>
                 </div>
-                <div className="loan-progress-info">
+                <div className="client-loan-progress-info">
                   <span>60 months paid</span>
                   <span>180 months remaining</span>
                 </div>
               </div>
 
-              <div className="loan-actions">
-                <button className="btn-primary">Make Payment</button>
-                <button className="btn-outline" onClick={handleStatement}>
+              <div className="client-loan-actions">
+                <button className="client-loan-btn-primary">Make Payment</button>
+                <button
+                  className="client-loan-btn-outline"
+                  onClick={handleStatement}
+                >
                   View Statement
                 </button>
               </div>

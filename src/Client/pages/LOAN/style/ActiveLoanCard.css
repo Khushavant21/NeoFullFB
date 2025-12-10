@@ -1,130 +1,129 @@
-.loan-card-container {
+.client-loan-card-container {
   margin: 1.5rem;
 }
 
-.loan-card {
+.client-loan-card {
   background: #fff;
   border-radius: 1rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
-.loan-card-body {
+.client-loan-card-body {
   padding: 1.5rem;
 }
 
 /* Header */
-.loan-header {
+.client-loan-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
 }
 
-.loan-header h5 {
+.client-loan-header h5 {
   font-weight: 600;
   margin-bottom: 0.2rem;
 }
 
-.loan-header p {
+.client-loan-header p {
   font-size: 0.85rem;
   color: #6c757d;
   margin: 0;
 }
 
-.loan-status {
+.client-loan-status {
   display: flex;
   align-items: center;
   justify-content: right;
   gap: 0.5rem;
-  
   padding: 0.3rem 0.8rem;
-  
   font-weight: 500;
   color: #900603;
   font-size: 0.85rem;
-
+  background-color: #900603;
+  border-radius: 6px;
 }
 
 /* Content Layout */
-.loan-content {
+.client-loan-content {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
 }
 
 @media (min-width: 768px) {
-  .loan-content {
+  .client-loan-content {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 /* Loan details */
-.loan-type {
+.client-loan-type {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.2rem;
 }
 
-.loan-icon {
+.client-loan-icon {
   padding: 0.6rem;
   border-radius: 6px;
   background-color: #900503;
 }
 
-.loan-type h6 {
+.client-loan-type h6 {
   font-weight: 600;
   margin: 0;
 }
 
-.loan-type small {
+.client-loan-type small {
   color: #6c757d;
 }
 
-.loan-details ul {
+.client-loan-details ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.loan-details li {
+.client-loan-details li {
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.6rem;
   font-size: 0.9rem;
 }
 
-.loan-details li span:first-child {
+.client-loan-details li span:first-child {
   color: #6c757d;
 }
 
 /* Loan progress */
-.loan-progress {
+.client-loan-progress {
   margin-bottom: 1.5rem;
 }
 
-.loan-progress-header {
+.client-loan-progress-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.4rem;
   font-weight: 500;
 }
 
-.loan-progress-bar {
+.client-loan-progress-bar {
   background: #e9ecef;
   border-radius: 10px;
   height: 8px;
   overflow: hidden;
 }
 
-.loan-progress-fill {
+.client-loan-progress-fill {
   width: 25%;
   height: 100%;
   background-color: #900603;
 }
 
-.loan-progress-info {
+.client-loan-progress-info {
   display: flex;
   justify-content: space-between;
   margin-top: 0.4rem;
@@ -133,12 +132,12 @@
 }
 
 /* Buttons */
-.loan-actions {
+.client-loan-actions {
   display: flex;
   gap: 1rem;
 }
 
-.btn-primary {
+.client-loan-btn-primary {
   flex: 1;
   padding: 0.6rem;
   border: none;
@@ -150,11 +149,11 @@
   transition: 0.3s;
 }
 
-.btn-primary:hover {
+.client-loan-btn-primary:hover {
   background: #a10a0a;
 }
 
-.btn-outline {
+.client-loan-btn-outline {
   flex: 1;
   padding: 0.6rem;
   border: 2px solid #900603;
@@ -166,7 +165,7 @@
   transition: 0.3s;
 }
 
-.btn-outline:hover {
+.client-loan-btn-outline:hover {
   background: #900603;
   color: white;
 }

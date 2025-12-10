@@ -1,0 +1,307 @@
+/* Container layout */
+.banking-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 80px;
+  background: #f9fafb;
+  gap: 100px;
+}
+
+/* Left section - phone */
+.banking-left .phone-mockup {
+  background: #fff;
+  border-radius: 40px;                /* more rounded edges */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  padding: 25px;
+  width: 330px;                       /* slightly wider */
+  border: 12px solid #900603;         /* 🔴 red border instead of black */
+}
+
+.transaction-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  background: #f4cdd1;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+
+.balance-label {
+  font-size: 14px;
+  color: #555;
+}
+
+.balance-amount {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 10px 0 20px 0;
+  color: #111;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  background: #fde9eb;   /* softer pink */
+  padding: 20px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.action-btn:hover {
+  background: #f1d0d3;
+}
+
+.transactions h4 {
+  font-size: 15px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.transactions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.transactions li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e7ecef;
+  padding: 3px 8px;
+  margin-bottom: 12px;
+  border-radius: 12px;              /* rounded white cards */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+
+.debit {
+  color: #900603;
+  font-weight: bold;
+}
+
+/* Right section */
+.banking-right {
+  max-width: 500px;
+}
+
+.banking-title {
+  font-size: 38px;
+  font-weight: bold;
+  color: #0c1b33;
+  margin-bottom: 20px;
+}
+
+.banking-subtitle {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.features-list {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+}
+
+.features-list li {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+/* Store buttons */
+.download-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.store-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.appstore {
+  background: #000;
+  color: #fff;
+}
+
+.playstore {
+  background: #900603;
+  color: #fff;
+}
+
+.appstore:hover {
+  background: #333;
+}
+
+.playstore:hover {
+  background: #900603;
+}
+
+/* Rating */
+.rating {
+  margin-top: 20px;
+  font-size: 15px;
+  color: #444;
+}
+
+@media (max-width: 992px) {
+  .banking-container {
+    flex-direction: column;
+    padding: 50px 30px;
+    gap: 50px;
+  }
+
+  .banking-left .phone-mockup {
+    width: 300px;
+    padding: 20px;
+    border-width: 10px;
+  }
+
+  .banking-right {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .banking-title {
+    font-size: 30px;
+  }
+
+  .banking-subtitle {
+    font-size: 15px;
+  }
+
+  .download-buttons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Make action buttons stack nicely on tablet */
+  .action-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+}
+
+/* For mobile devices */
+@media (max-width: 768px) {
+  .banking-container {
+    flex-direction: column;
+    padding: 30px 20px;
+    gap: 40px;
+  }
+
+  .banking-left .phone-mockup {
+    width: 260px;
+    padding: 18px;
+    border-width: 8px;
+  }
+
+  /* Mobile: stack action buttons vertically */
+  .action-grid {
+    grid-template-columns: 1fr; /* single column */
+    gap: 12px;
+  }
+
+  .action-btn {
+    width: 100%;       /* full width */
+    padding: 16px;
+  }
+
+  .banking-title {
+    font-size: 26px;
+  }
+
+  .banking-subtitle {
+    font-size: 14px;
+  }
+
+  .features-list li {
+    font-size: 14px;
+  }
+
+  .download-buttons {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .store-btn {
+    width: 80%;
+    text-align: center;
+  }
+}
+
+/* For very small phones */
+@media (max-width: 480px) {
+  .banking-container {
+    padding: 20px 15px;
+    gap: 30px;
+  }
+
+  .banking-left .phone-mockup {
+    width: 220px;
+    padding: 15px;
+    border-width: 6px;
+  }
+
+  .action-grid {
+    grid-template-columns: 1fr; /* ensure buttons stay stacked */
+  }
+
+  .action-btn {
+    font-size: 13px;
+    padding: 12px;
+    width: 100%;
+  }
+
+  .transactions li {
+    font-size: 13px;
+    padding: 5px 6px;
+  }
+
+  .balance-amount {
+    font-size: 22px;
+  }
+
+  .banking-title {
+    font-size: 22px;
+  }
+
+  .banking-subtitle {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .download-buttons {
+    gap: 8px;
+  }
+
+  .store-btn {
+    width: 100%;
+  }
+}

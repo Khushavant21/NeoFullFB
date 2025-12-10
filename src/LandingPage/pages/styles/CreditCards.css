@@ -1,0 +1,662 @@
+/* ===================== Credit Cards ===================== */
+.differentcard-section {
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.differentcard-section::before {
+  content: "";
+  position: absolute;
+  top: -150px;
+  right: -150px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: rgba(144, 6, 3, 0.05);
+  z-index: 0;
+}
+
+.differentcard-section::after {
+  content: "";
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(144, 6, 3, 0.05);
+  z-index: 0;
+}
+
+.differentcard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.differentcard-section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.differentcard-section-title {
+  font-size: 42px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 15px;
+  position: relative;
+  display: inline-block;
+}
+
+.differentcard-section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #900603, #c41e3a);
+  border-radius: 2px;
+}
+
+.differentcard-section-subtitle {
+  font-size: 18px;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.differentcard-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+/* ============= Card Wrapper ============= */
+.differentcard-card-wrapper {
+  flex: 1 1 320px;
+  max-width: 380px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.differentcard-card-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.differentcard-card-wrapper:hover::before {
+  opacity: 1;
+}
+
+.differentcard-card-wrapper:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Card specific styles */
+.differentcard-platinum .differentcard-card-visual {
+  border: 1px solid rgba(144, 6, 3, 0.3);
+}
+
+.differentcard-gold .differentcard-card-visual {
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.differentcard-classic .differentcard-card-visual {
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* ============= Visual Card ============= */
+.differentcard-card-visual {
+  width: 100%;
+  height: 220px;
+  border-radius: 16px;
+  padding: 20px;
+  color: white;
+  position: relative;
+  margin-bottom: 20px;
+  background-size: 300% 300%;
+  background-position: center;
+  animation: differentcard-gradientShift 12s ease infinite alternate;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.differentcard-card-visual::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(30deg);
+  transition: all 1s;
+  opacity: 0;
+}
+
+.differentcard-card-wrapper:hover .differentcard-card-visual::after {
+  animation: differentcard-shine 0.8s ease-in-out;
+}
+
+@keyframes differentcard-gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes differentcard-shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(30deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(30deg);
+    opacity: 0;
+  }
+}
+
+/* ============= Card Header ============= */
+.differentcard-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.differentcard-neo-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.differentcard-logo-icon {
+  width: 40px;
+  height: 40px;
+  background: white;
+  color: #900603;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 18px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.differentcard-logo-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.8px;
+}
+
+.differentcard-contactless-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+}
+
+/* ============= Chip ============= */
+.differentcard-chip-container {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.differentcard-chip {
+  width: 50px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffd700, #e6b800);
+  position: relative;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.differentcard-chip::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  border-radius: 6px;
+  border: 1px solid #b8860b;
+}
+
+.differentcard-chip-lines {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  height: 100%;
+  align-items: flex-end;
+  padding-bottom: 6px;
+}
+
+.differentcard-chip-lines div {
+  width: 3px;
+  height: 12px;
+  background: rgba(184, 134, 11, 0.95);
+  border-radius: 1px;
+}
+
+/* ============= Card Texts ============= */
+.differentcard-card-number {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin: 15px 0;
+  color: white;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  font-family: 'Courier New', monospace;
+}
+
+.differentcard-card-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 12px;
+  color: white;
+}
+
+.differentcard-valid-thru {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.differentcard-label {
+  font-size: 9px;
+  line-height: 11px;
+  opacity: 0.8;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.differentcard-date {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.differentcard-cardholder {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  opacity: 0.95;
+  text-transform: uppercase;
+}
+
+.differentcard-network-logo {
+  font-size: 16px;
+  font-weight: 800;
+  font-style: italic;
+  opacity: 0.9;
+  letter-spacing: 1px;
+}
+
+/* ============= Card Info Below ============= */
+.differentcard-card-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.differentcard-card-info h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.differentcard-card-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.differentcard-highlight-badge {
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: right;
+  display: inline-block;
+}
+
+.differentcard-perks-container {
+  margin-bottom: 20px;
+}
+
+.differentcard-card-perks {
+  margin: 10px 0 0 0;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.differentcard-best-for-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #900603, #c41e3a);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(144, 6, 3, 0.3);
+}
+
+/* ============= Buttons ============= */
+.differentcard-card-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.differentcard-btn {
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  border: none;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.differentcard-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.differentcard-btn:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+.differentcard-primary {
+  background: linear-gradient(135deg, #900603, #c41e3a);
+  color: white;
+  box-shadow: 0 4px 15px rgba(144, 6, 3, 0.3);
+}
+
+.differentcard-primary:hover {
+  background: linear-gradient(135deg, #c41e3a, #900603);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(144, 6, 3, 0.45);
+}
+
+.differentcard-pulse {
+  animation: differentcard-pulse 1.5s infinite;
+}
+
+@keyframes differentcard-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(144, 6, 3, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(144, 6, 3, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(144, 6, 3, 0);
+  }
+}
+
+.differentcard-ghost {
+  background: transparent;
+  color: #900603;
+  border: 2px solid #900603;
+}
+
+.differentcard-ghost:hover {
+  background: rgba(144, 6, 3, 0.05);
+  border-color: #c41e3a;
+  color: #c41e3a;
+  transform: translateY(-2px);
+}
+
+/* ============= Toast Notification ============= */
+.differentcard-toast-notification {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  animation: differentcard-slideIn 0.3s ease-out;
+  max-width: 350px;
+  border-left: 4px solid #900603;
+}
+
+@keyframes differentcard-slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.differentcard-toast-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.differentcard-toast-icon {
+  width: 36px;
+  height: 36px;
+  background: #900603;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.differentcard-toast-title {
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.differentcard-toast-message {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* ===================== Responsive ===================== */
+
+/* For large tablets */
+@media (max-width: 1024px) {
+  .differentcard-section {
+    padding: 70px 20px;
+  }
+
+  .differentcard-card-wrapper {
+    flex: 1 1 340px;
+    max-width: 360px;
+  }
+
+  .differentcard-card-info h3 {
+    font-size: 22px;
+  }
+}
+
+/* For tablets and small laptops */
+@media (max-width: 768px) {
+  .differentcard-section {
+    padding: 60px 20px;
+  }
+
+  .differentcard-section-title {
+    font-size: 36px;
+  }
+
+  .differentcard-cards-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .differentcard-card-wrapper {
+    width: 90%;
+    max-width: 380px;
+  }
+
+  .differentcard-card-visual {
+    height: 200px;
+  }
+
+  .differentcard-card-number {
+    font-size: 18px;
+  }
+
+  .differentcard-card-info h3 {
+    font-size: 22px;
+  }
+}
+
+/* For mobile devices */
+@media (max-width: 480px) {
+  .differentcard-section {
+    padding: 50px 15px;
+  }
+
+  .differentcard-section-title {
+    font-size: 30px;
+  }
+
+  .differentcard-section-subtitle {
+    font-size: 16px;
+  }
+
+  .differentcard-card-wrapper {
+    width: 100%;
+    max-width: 340px;
+    padding: 15px;
+  }
+
+  .differentcard-card-visual {
+    height: 180px;
+    padding: 15px;
+  }
+
+  .differentcard-logo-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .differentcard-logo-text {
+    font-size: 18px;
+  }
+
+  .differentcard-card-number {
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  .differentcard-card-details {
+    font-size: 10px;
+  }
+
+  .differentcard-card-info h3 {
+    font-size: 20px;
+  }
+
+  .differentcard-card-perks {
+    font-size: 14px;
+  }
+
+  .differentcard-btn {
+    font-size: 14px;
+    padding: 12px 18px;
+  }
+
+  .differentcard-toast-notification {
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    max-width: none;
+  }
+}
+
+/* For extra-small phones */
+@media (max-width: 360px) {
+  .differentcard-card-visual {
+    height: 160px;
+  }
+
+  .differentcard-card-number {
+    font-size: 14px;
+  }
+
+  .differentcard-btn {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+}

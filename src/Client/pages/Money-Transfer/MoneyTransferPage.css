@@ -45,12 +45,19 @@
   }
 }
 
-.feature-cards-grid {
+/* .feature-cards-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
   margin-bottom: 2rem;
+} */
+
+.feature-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cards in first row */
+  gap: 20px;
 }
+
 
 @media (min-width: 576px) {
   .feature-cards-grid {

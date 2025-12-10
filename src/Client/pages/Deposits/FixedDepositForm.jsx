@@ -8,10 +8,23 @@ const FixedDepositForm = () => {
   const navigate = useNavigate();
   const data = location.state || {};
 
+  // 🔥 Fetch logged-in user data from localStorage
+  const userData = JSON.parse(localStorage.getItem("userData")) || {};
+
   const depositType = data.type || "Fixed Deposit";
   const [amount, setAmount] = useState(data.amount || 5000);
   const [duration, setDuration] = useState(data.duration || 6);
+
+  // NEW FIELDS
   const [account, setAccount] = useState("");
+  const [customerName] = useState("Poonam Singh");
+
+  // ⭐ Customer ID from backend (login API)
+  const [cif] = useState(userData.customerId || "");
+
+  const [mobile] = useState("9876543210");
+  const [email] = useState("poonam@example.com");
+
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [branch, setBranch] = useState("");
@@ -41,7 +54,6 @@ const FixedDepositForm = () => {
       ),
   });
 
-  // Auto recalc when amount/duration changes
   useEffect(() => {
     if (!amount || !duration) {
       setCalculated({ interestRate: 0, maturity: 0 });
@@ -62,24 +74,44 @@ const FixedDepositForm = () => {
       {amount && duration && calculated.maturity > 0 && (
         <div className="fd-summary-alert">
           <strong>Summary from Calculator:</strong> You selected ₹
-          {amount.toLocaleString()} for {duration} months at {data.interestRate}% → Expected
-          Maturity: ₹{data.maturity.toLocaleString()}
+          {amount.toLocaleString()} for {duration} months at {calculated.interestRate}% → Expected
+          Maturity: ₹{calculated.maturity.toLocaleString()}
         </div>
       )}
 
       <div className="fd-card15">
-        {/* Account */}
+
+      
         <div className="fd-form-group">
-          <label>Your Saving A/C No.</label>
-          <input
-            type="text"
-            placeholder="Enter your Account Number"
-            value={account}
-            onChange={(e) => setAccount(e.target.value)}
-          />
+          <label>Account Holder Name</label>
+          <input type="text" value={customerName} readOnly />
         </div>
 
-        {/* Location */}
+        <div className="fd-form-group">
+          <label>Customer ID (CIF)</label>
+          <input type="text" value={cif} readOnly />
+        </div>
+
+        <div className="fd-form-group">
+          <label>Registered Mobile</label>
+          <input type="text" value={mobile} readOnly />
+        </div>
+
+        <div className="fd-form-group">
+          <label>Email ID</label>
+          <input type="email" value={email} readOnly />
+        </div>
+
+        <div className="fd-form-group">
+          <label>Select Savings Account</label>
+          <select value={account} onChange={(e) => setAccount(e.target.value)}>
+            <option value="">Select Account</option>
+            <option value="123412341234">1234 1234 1234</option>
+            <option value="987698769876">9876 9876 9876</option>
+          </select>
+        </div>
+
+        {/* LOCATION */}
         <div className="fd-form-row">
           <div className="fd-form-col">
             <label>State</label>
@@ -89,6 +121,7 @@ const FixedDepositForm = () => {
               <option value="State2">State2</option>
             </select>
           </div>
+
           <div className="fd-form-col">
             <label>City</label>
             <select value={city} onChange={(e) => setCity(e.target.value)}>
@@ -97,6 +130,7 @@ const FixedDepositForm = () => {
               <option value="City2">City2</option>
             </select>
           </div>
+
           <div className="fd-form-col">
             <label>Branch</label>
             <select value={branch} onChange={(e) => setBranch(e.target.value)}>
@@ -135,15 +169,14 @@ const FixedDepositForm = () => {
         {calculated.maturity > 0 && (
           <div className="fd-maturity-card">
             <h5>💰 Interest & Maturity Summary</h5>
-            <p>📈 Interest Rate: {data.interestRate}% Per Annum</p>
-            <p>🎯 Estimated Maturity: ₹{data.maturity.toLocaleString()}</p>
+            <p>📈 Interest Rate: {calculated.interestRate}% Per Annum</p>
+            <p>🎯 Estimated Maturity: ₹{calculated.maturity.toLocaleString()}</p>
           </div>
         )}
 
-        {/* Action Buttons */}
+        {/* Buttons */}
         <div className="fd-buttons54">
           <button className="btn-primary55">Open FD</button>
-          {/* ⬅️ Back button replaces Clear */}
           <button className="btn-outline56" onClick={() => navigate(-1)}>
             Back
           </button>
@@ -152,5 +185,4 @@ const FixedDepositForm = () => {
     </div>
   );
 };
-
 export default FixedDepositForm;

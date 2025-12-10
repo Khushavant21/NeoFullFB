@@ -1,0 +1,350 @@
+
+.client-notif-page {
+  width: 100%;
+  min-height: 100vh;
+  background: white;
+  padding: 25px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.client-notif-header {
+  background: #900603;
+  padding: 27px 24px;
+  border-radius: 10px;
+  border: 1px solid #262626;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.client-notif-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.client-notif-title h2 {
+  font-size: 20px;
+  margin: 0;
+}
+
+/* ============================
+   SEARCH BAR
+============================ */
+.client-notif-search {
+  background: #900603;
+  border: 1px solid #2a2a2a;
+  padding: 6px 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 230px;
+  position: relative;
+}
+
+.client-notif-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  width: 100%;
+  font-size: 14px;
+}
+
+.client-notif-clear-search {
+  background: none;
+  border: none;
+  color: #900603;
+  cursor: pointer;
+  position: absolute;
+  right: 8px;
+}
+
+.client-notif-clear-search:hover {
+  opacity: 0.7;
+}
+
+/* ============================
+   HEADER ACTION BUTTONS
+============================ */
+.client-notif-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.client-notif-btn {
+  background: #900603;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.client-notif-btn:hover {
+  background: #b30708;
+}
+
+.client-notif-btn.danger {
+  background: #900603;
+  border: 1px solid #900603;
+}
+
+.client-notif-btn.danger:hover {
+  background: #900603;
+}
+
+/* ============================
+   PAGE BODY WRAPPER
+============================ */
+.client-notif-body {
+  display: flex;
+  gap: 20px;
+}
+
+/* ============================
+   SIDEBAR
+============================ */
+.client-notif-sidebar {
+  width: 220px;
+  background: #900603;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid #262626;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.client-notif-tab {
+  background: #1f1f1f;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #ddd;
+  border: 1px solid #2a2a2a;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  transition: 0.2s;
+}
+
+.client-notif-tab.active {
+  background: #900603;
+  border-color: #b50808;
+  color: #fff;
+}
+
+.client-notif-tab:hover {
+  background: #2b2b2b;
+}
+
+.client-notif-tab.active:hover {
+  background: #a40606;
+}
+
+.client-notif-count {
+  background: black;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #fff;
+}
+
+/* ============================
+   CONTENT AREA
+============================ */
+.client-notif-list-wrap {
+  flex: 1;
+  background: #900603;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #262626;
+}
+
+.client-notif-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ============================
+   SINGLE NOTIFICATION CARD
+============================ */
+.client-notif-item {
+  background: #1f1f1f;
+  border: 1px solid #2a2a2a;
+  padding: 12px 16px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  transition: 0.2s;
+}
+
+.client-notif-item.unread {
+  border-color: #900603;
+  background: #2b0202;
+}
+
+.client-notif-item:hover {
+  background: #2a2a2a;
+}
+
+.client-notif-left {
+  display: flex;
+  gap: 12px;
+  width: 80%;
+}
+
+.client-notif-bullet svg {
+  color: #900603;
+}
+
+.client-notif-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.client-notif-headline {
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 15px;
+}
+
+.client-notif-datetime {
+  color: #aaa;
+  font-size: 12px;
+}
+
+.client-notif-message {
+  color: #ccc;
+  font-size: 14px;
+}
+
+/* ============================
+   CARD ICON BUTTONS
+============================ */
+.client-notif-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.client-notif-control {
+  background: #2a2a2a;
+  color: #fff;
+  border: none;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.client-notif-control:hover {
+  background: #900603;
+}
+
+.client-notif-control.danger:hover {
+  background: #b30909;
+}
+
+/* ============================
+   EMPTY STATE
+============================ */
+.client-notif-empty {
+  text-align: center;
+  padding: 80px 0;
+  color: #ccc;
+}
+
+.client-notif-empty p {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.client-notif-empty small {
+  color: #888;
+}
+
+/* ============================
+   PAGINATION
+============================ */
+.client-notif-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  align-items: center;
+}
+
+.client-notif-page-btn {
+  background: #900603;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  transition: 0.2s;
+}
+
+.client-notif-page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.client-notif-page-btn:hover:not(:disabled) {
+  background: #b30708;
+}
+
+.client-notif-page-indicator {
+  font-size: 14px;
+  color: #ddd;
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+@media (max-width: 900px) {
+  .client-notif-body {
+    flex-direction: column;
+  }
+
+  .client-notif-sidebar {
+    flex-direction: row;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .client-notif-tab {
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 600px) {
+  .client-notif-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .client-notif-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

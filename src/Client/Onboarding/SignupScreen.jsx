@@ -1,24 +1,62 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useOnboarding } from '../context/OnboardingContext';
-import './SignupScreen.css'; // Make sure to use the updated CSS
+import './SignupScreen.css';
+import BASE_URL from '../../api/apiConfig';
 
-export default function SignupScreen() {
+export default function SignupScreen({ onComplete }) {
+  const navigate = useNavigate();
   const { setCurrentStep, updateUserData } = useOnboarding();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    mobileNumber: '',
+    mobile: '',
+    dateOfBirth: '',
+    gender: '',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    updateUserData(formData);
-    setCurrentStep('aadhar'); // or the next step in your flow
+
+    const userData = {
+      fullName: formData.fullName,
+      email: formData.email,
+      mobile: formData.mobile,
+      dob: formData.dateOfBirth,
+      gender: formData.gender,
+
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/auth/register`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to register user");
+      }
+
+      const data = await response.json();
+      console.log("User Registered Successfully", data);
+      localStorage.setItem("userEmail", formData.email);
+      updateUserData(formData);
+
+
+      console.log('Navigating to Aadhar step');
+      setCurrentStep('aadhar');
+
+    } catch (error) {
+      alert("Error registering user: " + error.message);
+    }
+
   };
 
   return (
     <div className="signupscreen-container">
-
       {/* Back and Next Buttons */}
       <button
         onClick={() => setCurrentStep('welcome')}
@@ -75,14 +113,46 @@ export default function SignupScreen() {
             <input
               type="tel"
               required
-              value={formData.mobileNumber}
+              value={formData.mobile}
               onChange={(e) =>
-                setFormData({ ...formData, mobileNumber: e.target.value })
+                setFormData({ ...formData, mobile: e.target.value })
               }
               placeholder="+91 XXXXXXXXXX"
               pattern="[+]?[0-9]{10,13}"
               className="signupscreen-input"
             />
+          </div>
+
+          {/* Date of Birth */}
+          <div className="signupscreen-form-group">
+            <label className="signupscreen-label">Date of Birth</label>
+            <input
+              type="date"
+              required
+              value={formData.dateOfBirth}
+              onChange={(e) =>
+                setFormData({ ...formData, dateOfBirth: e.target.value })
+              }
+              className="signupscreen-input signupscreen-date-input"
+            />
+          </div>
+
+          {/* Gender Selection */}
+          <div className="signupscreen-form-group">
+            <label className="signupscreen-label">Gender</label>
+            <select
+              required
+              value={formData.gender}
+              onChange={(e) =>
+                setFormData({ ...formData, gender: e.target.value })
+              }
+              className="signupscreen-input signupscreen-select"
+            >
+              <option value="">Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
           </div>
 
           <button type="submit" className="signupscreen-continue-btn">
@@ -97,3 +167,4 @@ export default function SignupScreen() {
     </div>
   );
 }
+

@@ -118,6 +118,10 @@ const AccountsDashboard = () => {
   const [editingAccount, setEditingAccount] = useState(null);
   const [editFormData, setEditFormData] = useState({});
   const [showFilters, setShowFilters] = useState(false);
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(3);
 
   const totalAccounts = accounts.length;
   const activeAccounts = accounts.filter((acc) => acc.status === "Active").length;
@@ -170,7 +174,38 @@ const AccountsDashboard = () => {
     }
 
     setFilteredAccounts(filtered);
+    setCurrentPage(1);
   }, [accounts, searchTerm, statusFilter, typeFilter, balanceRangeFilter, dateFromFilter, dateToFilter]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredAccounts.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentAccounts = filteredAccounts.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const getPageNumbers = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
+  };
 
   const StatusBadge = ({ status }) => {
     return <span className={`adx-status-badge adx-status-${status.toLowerCase()}`}>{status}</span>;
@@ -275,17 +310,6 @@ const AccountsDashboard = () => {
     })
   };
 
-  // Custom styles for React DatePicker
-  const customDatePickerStyles = {
-    width: '100%',
-    padding: '12px 14px',
-    border: '2px solid #e9ecef',
-    borderRadius: '8px',
-    fontSize: '14px',
-    backgroundColor: '#ffffff',
-    transition: 'all 0.3s ease'
-  };
-
   return (
     <>
       {/* Header */}
@@ -339,7 +363,6 @@ const AccountsDashboard = () => {
                 🔍 Filters
               </button>
               <button className="adx-btn adx-btn-primary">⬇ Export</button>
-              <button className="adx-btn adx-btn-primary">➕ New Account</button>
             </div>
           </div>
 
@@ -434,7 +457,6 @@ const AccountsDashboard = () => {
         <div className="adx-table-section">
           <div className="adx-table-header">
             <h5 className="adx-table-title">All Accounts</h5>
-            <span className="adx-table-count">{filteredAccounts.length} accounts</span>
           </div>
           <div className="adx-table-scroll-container">
             <table className="adx-data-table">
@@ -450,58 +472,101 @@ const AccountsDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredAccounts.map((acc, index) => (
-                  <tr
-                    key={acc.id}
-                    className={index % 2 === 0 ? "adx-table-row-even" : "adx-table-row-odd"}
-                    onClick={() => setSelectedAccount(acc)}
-                  >
-                    <td>
-                      <div>
-                        <strong>{acc.customerName}</strong>
-                        <br />
-                        <small>{acc.accountNumber}</small>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="adx-type-badge">{acc.accountType}</span>
-                    </td>
-                    <td>${acc.balance.toLocaleString()}</td>
-                    <td>${acc.walletBalance.toLocaleString()}</td>
-                    <td>
-                      <StatusBadge status={acc.status} />
-                    </td>
-                    <td>{acc.lastTransaction}</td>
-                    <td>
-                      <div className="adx-table-actions">
-                        <button
-                          className="adx-action-btn adx-action-view"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedAccount(acc);
-                          }}
-                        >
-                          👁 View
-                        </button>
-                        <button
-                          className="adx-action-btn adx-action-edit"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleEdit(acc);
-                          }}
-                        >
-                          ✏ Edit
-                        </button>
-                        <button className="adx-action-btn adx-action-more">
-                          ⋯ More
-                        </button>
-                      </div>
+                {currentAccounts.length > 0 ? (
+                  currentAccounts.map((acc, index) => (
+                    <tr
+                      key={acc.id}
+                      className={index % 2 === 0 ? "adx-table-row-even" : "adx-table-row-odd"}
+                      onClick={() => setSelectedAccount(acc)}
+                    >
+                      <td>
+                        <div>
+                          <strong>{acc.customerName}</strong>
+                          <br />
+                          <small>{acc.accountNumber}</small>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="adx-type-badge">{acc.accountType}</span>
+                      </td>
+                      <td>${acc.balance.toLocaleString()}</td>
+                      <td>${acc.walletBalance.toLocaleString()}</td>
+                      <td>
+                        <StatusBadge status={acc.status} />
+                      </td>
+                      <td>{acc.lastTransaction}</td>
+                      <td>
+                        <div className="adx-table-actions">
+                          <button
+                            className="adx-action-btn adx-action-view"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedAccount(acc);
+                            }}
+                          >
+                            👁 View
+                          </button>
+                          <button
+                            className="adx-action-btn adx-action-edit"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEdit(acc);
+                            }}
+                          >
+                            ✏ Edit
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" style={{ textAlign: 'center', padding: '20px' }}>
+                      No accounts found
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
+          
+          {/* Pagination Section */}
+          {filteredAccounts.length > 0 && (
+            <div className="adx-pagination-container">
+              <div className="adx-pagination-info">
+                Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredAccounts.length)} of {filteredAccounts.length} accounts
+              </div>
+              <div className="adx-pagination-controls">
+                <button 
+                  className="adx-pagination-btn adx-pagination-prev"
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                >
+                  ← Previous
+                </button>
+                
+                <div className="adx-pagination-numbers">
+                  {getPageNumbers().map((page) => (
+                    <button
+                      key={page}
+                      className={`adx-pagination-number ${currentPage === page ? 'adx-pagination-active' : ''}`}
+                      onClick={() => handlePageChange(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+                
+                <button 
+                  className="adx-pagination-btn adx-pagination-next"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Account Detail Modal */}
