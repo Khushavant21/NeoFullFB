@@ -3,7 +3,9 @@ package com.example.neobank.controller;
 import com.example.neobank.config.JwtUtil;
 import com.example.neobank.dto.*;
 import com.example.neobank.entity.User;
+import com.example.neobank.entity.ClientProfileInfo;
 import com.example.neobank.repository.UserRepository;
+import com.example.neobank.repository.ClientProfileInfoRepository;
 import com.example.neobank.services.FileUploadService;
 import com.example.neobank.services.OtpService;
 import com.example.neobank.services.PasswordService;
@@ -28,6 +30,7 @@ public class AuthController
     private final JwtUtil jwtUtil;
 
     private final UserRepository userRepository;
+    private final ClientProfileInfoRepository clientProfileInfoRepository;
     private final FileUploadService fileUploadService;
 
     public AuthController(UserService userService,
@@ -35,6 +38,7 @@ public class AuthController
                           PasswordService passwordService,
                           JwtUtil jwtUtil,
                           UserRepository userRepository,
+                          ClientProfileInfoRepository clientProfileInfoRepository,
                           FileUploadService fileUploadService) {
 
         this.userService = userService;
@@ -42,6 +46,7 @@ public class AuthController
         this.passwordService = passwordService;
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
+        this.clientProfileInfoRepository = clientProfileInfoRepository;
         this.fileUploadService = fileUploadService;
     }
 
@@ -64,6 +69,15 @@ public class AuthController
             u.setDob(req.getDob());
             u.setGender(req.getGender());
             userService.createUserDraft(u);
+
+            // Create ClientProfileInfo
+            ClientProfileInfo profile = new ClientProfileInfo();
+            profile.setEmail(req.getEmail());
+            profile.setFullName(req.getFullName());
+            profile.setMobile(req.getMobile());
+            profile.setDob(req.getDob());
+            profile.setGender(req.getGender());
+            clientProfileInfoRepository.save(profile);
 
             return ResponseEntity.ok(Map.of(
                     "email", req.getEmail(),
@@ -330,12 +344,54 @@ public class AuthController
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<User> getUserProfile(@RequestParam String email) {
-        java.util.Optional<User> userOpt = userRepository.findByEmail(email);
-        if (userOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<ClientProfileInfo> getUserProfile(@RequestParam String email) {
+        java.util.Optional<ClientProfileInfo> opt = clientProfileInfoRepository.findByEmail(email);
+        if (opt.isPresent()) {
+            return ResponseEntity.ok(opt.get());
         }
-        return ResponseEntity.ok(userOpt.get());
+
+        // Fallback or Sync from User if missing
+        java.util.Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isPresent()) {
+            User u = userOpt.get();
+            ClientProfileInfo profile = new ClientProfileInfo();
+            profile.setEmail(u.getEmail());
+            profile.setFullName(u.getFullName());
+            profile.setMobile(u.getMobile());
+            profile.setDob(u.getDob());
+            profile.setGender(u.getGender());
+            profile.setProfileImageUrl(u.getProfileImageUrl());
+            clientProfileInfoRepository.save(profile);
+            return ResponseEntity.ok(profile);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/profile/update")
+    public ResponseEntity<?> updateProfile(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        if (email == null) return ResponseEntity.badRequest().body(Map.of("error", "Email required"));
+
+        var opt = clientProfileInfoRepository.findByEmail(email);
+        if (opt.isEmpty()) return ResponseEntity.notFound().build();
+
+        ClientProfileInfo profile = opt.get();
+        if (body.containsKey("fullName")) profile.setFullName(body.get("fullName"));
+        if (body.containsKey("mobile")) profile.setMobile(body.get("mobile"));
+        if (body.containsKey("address")) profile.setAddress(body.get("address"));
+        // Add other fields as needed
+        
+        clientProfileInfoRepository.save(profile);
+        
+        // Also sync basic User details if needed (optional, keeping User as Auth/Core identity)
+        userRepository.findByEmail(email).ifPresent(u -> {
+           if (body.containsKey("fullName")) u.setFullName(body.get("fullName"));
+           if (body.containsKey("mobile")) u.setMobile(body.get("mobile"));
+           userRepository.save(u);
+        });
+
+        return ResponseEntity.ok(Map.of("message", "Profile updated successfully"));
     }
 
     @PostMapping("/profile/upload")
@@ -351,6 +407,14 @@ public class AuthController
             String fileName = email + "_" + System.currentTimeMillis() + ".jpg";
             // In a real application, you'd save to a proper location
             String imageUrl = "/uploads/" + fileName; // Placeholder URL
+
+            // Update ClientProfileInfo
+            java.util.Optional<ClientProfileInfo> profileOpt = clientProfileInfoRepository.findByEmail(email);
+            if (profileOpt.isPresent()) {
+                ClientProfileInfo profile = profileOpt.get();
+                profile.setProfileImageUrl(imageUrl);
+                clientProfileInfoRepository.save(profile);
+            }
 
             user.setProfileImageUrl(imageUrl);
             userRepository.save(user);

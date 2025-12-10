@@ -61,7 +61,8 @@ const ProfileSection = () => {
           phone: userData.mobile || '',
           dateOfBirth: userData.dob || '',
           gender: userData.gender || '',
-          profileImage: userData.profileImageUrl || prev.profileImage
+          address: userData.address || '',
+          profileImageUrl: userData.profileImageUrl || prev.profileImage
         }));
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -147,20 +148,43 @@ const ProfileSection = () => {
     setActiveModal('edit-profile');
   };
 
-  const handleProfileUpdate = () => {
+  const handleProfileUpdate = async () => {
     if (!formData.name || !formData.email || !formData.phone || !formData.address) {
       alert('Please fill in all fields.');
       return;
     }
-    setUser(prev => ({
-      ...prev,
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      address: formData.address
-    }));
-    alert('Profile updated successfully!');
-    setActiveModal(null);
+
+    try {
+      const response = await fetch(`${BASE_URL}/auth/profile/update`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          fullName: formData.name,
+          mobile: formData.phone,
+          address: formData.address
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+
+      setUser(prev => ({
+        ...prev,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address
+      }));
+      alert('Profile updated successfully!');
+      setActiveModal(null);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile. Please try again.');
+    }
   };
 
   const handleQuickAction = (action) => {
