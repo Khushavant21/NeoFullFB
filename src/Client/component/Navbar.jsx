@@ -13,11 +13,18 @@ import logo from "../assets/logo.png";
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [secondaryOpen, setSecondaryOpen] = useState(false);
+  const [userName, setUserName] = useState("Amit Rajput");
   const location = useLocation();
 
   useEffect(() => {
     setMobileMenuOpen(false);
     setSecondaryOpen(false);
+
+    // Update user name from localStorage
+    const storedName = localStorage.getItem("userFullName");
+    if (storedName) {
+      setUserName(storedName);
+    }
   }, [location.pathname]);
 
   const menuItems = [
@@ -75,7 +82,7 @@ const Navbar = () => {
             style={{ transition: "all 0.3s ease" }}
           >
             <User size={20} className="me-2 text-danger" />
-            <span className="fw-semibold">Amit Rajput</span>
+            <span className="fw-semibold">{userName}</span>
           </Link>
           {/* keep menu separate so JD is always right-aligned */}
           <button

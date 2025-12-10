@@ -43,6 +43,7 @@ export default function SignupScreen({ onComplete }) {
       const data = await response.json();
       console.log("User Registered Successfully", data);
       localStorage.setItem("userEmail", formData.email);
+      localStorage.setItem("userFullName", formData.fullName);
       updateUserData(formData);
 
 
