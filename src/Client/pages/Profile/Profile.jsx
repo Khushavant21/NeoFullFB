@@ -10,6 +10,27 @@ import {
 import './Profile.css';
 import BASE_URL from '../../../api/apiConfig';
 
+const Modal = ({ isOpen, onClose, title, children }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="ps-modal-overlay" role="dialog" aria-modal="true">
+      <div className="ps-modal-dialog">
+        <div className="ps-modal-content">
+          <div className="ps-modal-header">
+            <h5 className="ps-modal-title">{title}</h5>
+            <button type="button" className="ps-modal-close" onClick={onClose} aria-label="Close">
+              <X size={20} />
+            </button>
+          </div>
+          <div className="ps-modal-body">
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ProfileSection = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [showBalance, setShowBalance] = useState(false);
@@ -280,26 +301,7 @@ const ProfileSection = () => {
     fileInputRef.current?.click();
   };
 
-  const Modal = ({ isOpen, onClose, title, children }) => {
-    if (!isOpen) return null;
-    return (
-      <div className="ps-modal-overlay" role="dialog" aria-modal="true">
-        <div className="ps-modal-dialog">
-          <div className="ps-modal-content">
-            <div className="ps-modal-header">
-              <h5 className="ps-modal-title">{title}</h5>
-              <button type="button" className="ps-modal-close" onClick={onClose} aria-label="Close">
-                <X size={20} />
-              </button>
-            </div>
-            <div className="ps-modal-body">
-              {children}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
+
 
   return (
     <>

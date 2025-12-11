@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./AdminLogin.css";
 
 export default function AdminLogin({ onLogin }) {
@@ -7,7 +7,7 @@ export default function AdminLogin({ onLogin }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
- const handleLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -94,7 +94,7 @@ export default function AdminLogin({ onLogin }) {
         </p>
 
         <p className="admin-info">
-          Use <strong>admin@neobank.com</strong> / <strong>Admin123</strong> for demo
+          Use <strong>admin@neobank.com</strong> / <strong>Admin@123</strong> for demo
         </p>
       </div>
     </div>
