@@ -395,33 +395,63 @@ public class AuthController
     }
 
     @PostMapping("/profile/upload")
-    public ResponseEntity<String> uploadProfileImage(@RequestParam("file") MultipartFile file, @RequestParam String email) {
+    public ResponseEntity<Map<String, String>> uploadProfileImage(@RequestParam("file") MultipartFile file, @RequestParam String email) {
         try {
             java.util.Optional<User> userOpt = userRepository.findByEmail(email);
             if (userOpt.isEmpty()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body(Map.of("error", "User not found"));
             }
             User user = userOpt.get();
 
-            // Save file to a directory or cloud storage (simplified for demo)
-            String fileName = email + "_" + System.currentTimeMillis() + ".jpg";
-            // In a real application, you'd save to a proper location
-            String imageUrl = "/uploads/" + fileName; // Placeholder URL
+            // 1. Create uploads directory if not exists
+            java.nio.file.Path uploadDir = java.nio.file.Paths.get("uploads");
+            if (!java.nio.file.Files.exists(uploadDir)) {
+                java.nio.file.Files.createDirectories(uploadDir);
+            }
 
-            // Update ClientProfileInfo
+            // 2. Generate safe unique filename
+            String originalFilename = file.getOriginalFilename();
+            String extension = "";
+            if (originalFilename != null && originalFilename.contains(".")) {
+                 extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            }
+            String newFilename = java.util.UUID.randomUUID().toString() + extension;
+            
+            // 3. Save file locally
+            java.nio.file.Path targetPath = uploadDir.resolve(newFilename);
+            java.nio.file.Files.copy(file.getInputStream(), targetPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+
+            // 4. Set generic URL (relative path)
+            String imageUrl = "/uploads/" + newFilename;
+
+            // 5. Update User entity
+            user.setProfileImageUrl(imageUrl);
+            userRepository.save(user);
+
+            // 6. Update ClientProfileInfo entity if exists
             java.util.Optional<ClientProfileInfo> profileOpt = clientProfileInfoRepository.findByEmail(email);
             if (profileOpt.isPresent()) {
                 ClientProfileInfo profile = profileOpt.get();
                 profile.setProfileImageUrl(imageUrl);
                 clientProfileInfoRepository.save(profile);
+            } else {
+                 // Create if missing
+                ClientProfileInfo profile = new ClientProfileInfo();
+                profile.setEmail(user.getEmail());
+                profile.setFullName(user.getFullName());
+                profile.setMobile(user.getMobile());
+                profile.setDob(user.getDob());
+                profile.setGender(user.getGender());
+                profile.setProfileImageUrl(imageUrl);
+                clientProfileInfoRepository.save(profile);
             }
 
-            user.setProfileImageUrl(imageUrl);
-            userRepository.save(user);
+            // 7. Return JSON with the new URL
+            return ResponseEntity.ok(Map.of("profileImageUrl", imageUrl));
 
-            return ResponseEntity.ok("Profile image uploaded successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to upload image");
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("error", "Failed to upload image: " + e.getMessage()));
         }
     }
 }

@@ -75,6 +75,15 @@ const ProfileSection = () => {
           throw new Error('Failed to fetch user profile');
         }
         const userData = await response.json();
+
+        // Helper to construct full image URL
+        const getFullImageUrl = (path) => {
+          if (!path) return 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1';
+          if (path.startsWith('http')) return path;
+          const baseUrl = 'http://localhost:8080';
+          return `${baseUrl}${path}`;
+        };
+
         setUser(prev => ({
           ...prev,
           name: userData.fullName || '',
@@ -83,7 +92,7 @@ const ProfileSection = () => {
           dateOfBirth: userData.dob || '',
           gender: userData.gender || '',
           address: userData.address || '',
-          profileImageUrl: userData.profileImageUrl || prev.profileImage
+          profileImage: getFullImageUrl(userData.profileImageUrl)
         }));
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -279,15 +288,18 @@ const ProfileSection = () => {
           throw new Error('Failed to upload image');
         }
 
-        // Refresh user profile to get updated image URL
-        const profileResponse = await fetch(`${BASE_URL}/auth/profile?email=${encodeURIComponent(email)}`);
-        if (profileResponse.ok) {
-          const userData = await profileResponse.json();
-          setUser(prev => ({
-            ...prev,
-            profileImage: userData.profileImageUrl || prev.profileImage
-          }));
-        }
+        const result = await response.json();
+
+        // Update user state immediately with the new URL
+        const baseUrl = 'http://localhost:8080';
+        const newImageUrl = result.profileImageUrl.startsWith('http')
+          ? result.profileImageUrl
+          : `${baseUrl}${result.profileImageUrl}`;
+
+        setUser(prev => ({
+          ...prev,
+          profileImage: newImageUrl
+        }));
 
         alert('Profile image uploaded successfully!');
       } catch (error) {
