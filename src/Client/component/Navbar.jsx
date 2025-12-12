@@ -21,10 +21,20 @@ const Navbar = () => {
     setSecondaryOpen(false);
 
     // Update user name from localStorage
-    const storedName = localStorage.getItem("userFullName");
-    if (storedName) {
-      setUserName(storedName);
-    }
+    const updateName = () => {
+      const storedName = localStorage.getItem("userFullName");
+      if (storedName) {
+        setUserName(storedName);
+      }
+    };
+
+    updateName();
+
+    window.addEventListener("userProfileUpdate", updateName);
+
+    return () => {
+      window.removeEventListener("userProfileUpdate", updateName);
+    };
   }, [location.pathname]);
 
   const menuItems = [

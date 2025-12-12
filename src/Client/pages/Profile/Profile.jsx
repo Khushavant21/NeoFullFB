@@ -210,6 +210,11 @@ const ProfileSection = () => {
         address: formData.address
       }));
       alert('Profile updated successfully!');
+      
+      // Update localStorage and trigger event for Navbar update
+      localStorage.setItem("userFullName", formData.name);
+      window.dispatchEvent(new Event("userProfileUpdate"));
+      
       setActiveModal(null);
     } catch (error) {
       console.error('Error updating profile:', error);
