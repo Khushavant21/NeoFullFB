@@ -46,7 +46,9 @@ const ProfileSection = () => {
     name: '',
     email: '',
     phone: '',
-    address: ''
+    address: '',
+    dateOfBirth: '',
+    gender: ''
   });
   const [user, setUser] = useState({
     name: '',
@@ -173,7 +175,9 @@ const ProfileSection = () => {
       name: user.name,
       email: user.email,
       phone: user.phone,
-      address: user.address
+      address: user.address,
+      dateOfBirth: user.dateOfBirth,
+      gender: user.gender
     }));
     setActiveModal('edit-profile');
   };
@@ -194,7 +198,9 @@ const ProfileSection = () => {
           email: formData.email,
           fullName: formData.name,
           mobile: formData.phone,
-          address: formData.address
+          address: formData.address,
+          dob: formData.dateOfBirth,
+          gender: formData.gender
         })
       });
 
@@ -207,14 +213,16 @@ const ProfileSection = () => {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        address: formData.address
+        address: formData.address,
+        dateOfBirth: formData.dateOfBirth,
+        gender: formData.gender
       }));
       alert('Profile updated successfully!');
-      
+
       // Update localStorage and trigger event for Navbar update
       localStorage.setItem("userFullName", formData.name);
       window.dispatchEvent(new Event("userProfileUpdate"));
-      
+
       setActiveModal(null);
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -818,12 +826,27 @@ const ProfileSection = () => {
 
           <div className="ps-form-row">
             <label htmlFor="editEmail">Email Address</label>
-            <input id="editEmail" type="email" value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)} required />
+            <input id="editEmail" type="email" value={formData.email} readOnly />
           </div>
 
           <div className="ps-form-row">
             <label htmlFor="editPhone">Phone Number</label>
             <input id="editPhone" type="tel" value={formData.phone} readOnly />
+          </div>
+
+          <div className="ps-form-row">
+            <label htmlFor="editDob">Date of Birth</label>
+            <input id="editDob" type="date" value={formData.dateOfBirth} onChange={(e) => handleInputChange('dateOfBirth', e.target.value)} />
+          </div>
+
+          <div className="ps-form-row">
+            <label htmlFor="editGender">Gender</label>
+            <select id="editGender" className="ps-select" value={formData.gender} onChange={(e) => handleInputChange('gender', e.target.value)}>
+              <option value="">Select Gender</option>
+              <option value="male">male</option>
+              <option value="female">female</option>
+              <option value="other">other</option>
+            </select>
           </div>
 
           <div className="ps-form-row">

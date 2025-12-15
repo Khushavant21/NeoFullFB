@@ -380,6 +380,8 @@ public class AuthController
         if (body.containsKey("fullName")) profile.setFullName(body.get("fullName"));
         if (body.containsKey("mobile")) profile.setMobile(body.get("mobile"));
         if (body.containsKey("address")) profile.setAddress(body.get("address"));
+        if (body.containsKey("dob")) profile.setDob(body.get("dob"));
+        if (body.containsKey("gender")) profile.setGender(body.get("gender"));
         // Add other fields as needed
         
         clientProfileInfoRepository.save(profile);
@@ -388,6 +390,8 @@ public class AuthController
         userRepository.findByEmail(email).ifPresent(u -> {
            if (body.containsKey("fullName")) u.setFullName(body.get("fullName"));
            if (body.containsKey("mobile")) u.setMobile(body.get("mobile"));
+           if (body.containsKey("dob")) u.setDob(body.get("dob"));
+           if (body.containsKey("gender")) u.setGender(body.get("gender"));
            userRepository.save(u);
         });
 
