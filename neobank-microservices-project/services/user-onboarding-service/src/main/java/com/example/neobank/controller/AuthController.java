@@ -407,26 +407,8 @@ public class AuthController
             }
             User user = userOpt.get();
 
-            // 1. Create uploads directory if not exists
-            java.nio.file.Path uploadDir = java.nio.file.Paths.get("uploads");
-            if (!java.nio.file.Files.exists(uploadDir)) {
-                java.nio.file.Files.createDirectories(uploadDir);
-            }
-
-            // 2. Generate safe unique filename
-            String originalFilename = file.getOriginalFilename();
-            String extension = "";
-            if (originalFilename != null && originalFilename.contains(".")) {
-                 extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-            }
-            String newFilename = java.util.UUID.randomUUID().toString() + extension;
-            
-            // 3. Save file locally
-            java.nio.file.Path targetPath = uploadDir.resolve(newFilename);
-            java.nio.file.Files.copy(file.getInputStream(), targetPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-
-            // 4. Set generic URL (relative path)
-            String imageUrl = "/uploads/" + newFilename;
+            // Upload using FileUploadService (Cloudinary)
+            String imageUrl = fileUploadService.uploadFile(file);
 
             // 5. Update User entity
             user.setProfileImageUrl(imageUrl);
