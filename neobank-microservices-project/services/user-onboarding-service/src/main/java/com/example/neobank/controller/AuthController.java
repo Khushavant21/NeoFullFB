@@ -4,8 +4,10 @@ import com.example.neobank.config.JwtUtil;
 import com.example.neobank.dto.*;
 import com.example.neobank.entity.User;
 import com.example.neobank.entity.ClientProfileInfo;
+import com.example.neobank.entity.AdminUserInfo; // ✅ Added
 import com.example.neobank.repository.UserRepository;
 import com.example.neobank.repository.ClientProfileInfoRepository;
+import com.example.neobank.repository.AdminUserInfoRepository; // ✅ Added
 import com.example.neobank.services.FileUploadService;
 import com.example.neobank.services.OtpService;
 import com.example.neobank.services.PasswordService;
@@ -31,6 +33,7 @@ public class AuthController
 
     private final UserRepository userRepository;
     private final ClientProfileInfoRepository clientProfileInfoRepository;
+    private final com.example.neobank.repository.AdminUserInfoRepository adminUserInfoRepository; // ✅ Added
     private final FileUploadService fileUploadService;
 
     public AuthController(UserService userService,
@@ -39,6 +42,7 @@ public class AuthController
                           JwtUtil jwtUtil,
                           UserRepository userRepository,
                           ClientProfileInfoRepository clientProfileInfoRepository,
+                          com.example.neobank.repository.AdminUserInfoRepository adminUserInfoRepository, // ✅ Added
                           FileUploadService fileUploadService) {
 
         this.userService = userService;
@@ -47,6 +51,7 @@ public class AuthController
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
         this.clientProfileInfoRepository = clientProfileInfoRepository;
+        this.adminUserInfoRepository = adminUserInfoRepository; // ✅ Added
         this.fileUploadService = fileUploadService;
     }
 
@@ -130,8 +135,29 @@ public class AuthController
 
         userService.findByEmail(email).ifPresent(u -> {
             u.setAadhaarVerified(true);
-            u.setAadhaar("aadhaar");
+            u.setAadhaar(aadhaar); // ✅ FIX: Use actual aadhaar number
             userService.save(u);
+            
+            // ✅ Sync to ClientProfileInfo immediately
+            clientProfileInfoRepository.findByEmail(email).ifPresent(profile -> {
+                profile.setAadhaar(aadhaar);
+                clientProfileInfoRepository.save(profile);
+            });
+
+            // ✅ Sync to AdminUserInfo immediately
+            adminUserInfoRepository.findByEmail(email).ifPresentOrElse(adminUser -> {
+                adminUser.setAadhaar(aadhaar); // Update Aadhaar
+                adminUserInfoRepository.save(adminUser);
+            }, () -> {
+                // If not found (rare case if sync missed), create new
+                AdminUserInfo newUser = new AdminUserInfo();
+                newUser.setEmail(email);
+                newUser.setFullName(u.getFullName());
+                newUser.setMobile(u.getMobile());
+                newUser.setAadhaar(aadhaar);
+                newUser.setStatus("Pending"); // Default
+                adminUserInfoRepository.save(newUser);
+            });
         });
         return ResponseEntity.ok(Map.of("message","Aadhaar verified successfully"));
     }
@@ -361,6 +387,7 @@ public class AuthController
             profile.setDob(u.getDob());
             profile.setGender(u.getGender());
             profile.setProfileImageUrl(u.getProfileImageUrl());
+            profile.setAadhaar(u.getAadhaar()); // ✅ Sync Aadhaar
             clientProfileInfoRepository.save(profile);
             return ResponseEntity.ok(profile);
         }
@@ -382,7 +409,8 @@ public class AuthController
         if (body.containsKey("address")) profile.setAddress(body.get("address"));
         if (body.containsKey("dob")) profile.setDob(body.get("dob"));
         if (body.containsKey("gender")) profile.setGender(body.get("gender"));
-        // Add other fields as needed
+        if (body.containsKey("fatherName")) profile.setFatherName(body.get("fatherName"));
+        if (body.containsKey("aadhaar")) profile.setAadhaar(body.get("aadhaar")); // ✅ Sync to ClientProfileInfo
         
         clientProfileInfoRepository.save(profile);
         
@@ -392,6 +420,7 @@ public class AuthController
            if (body.containsKey("mobile")) u.setMobile(body.get("mobile"));
            if (body.containsKey("dob")) u.setDob(body.get("dob"));
            if (body.containsKey("gender")) u.setGender(body.get("gender"));
+           if (body.containsKey("aadhaar")) u.setAadhaar(body.get("aadhaar")); // ✅ Support Aadhaar update
            userRepository.save(u);
         });
 

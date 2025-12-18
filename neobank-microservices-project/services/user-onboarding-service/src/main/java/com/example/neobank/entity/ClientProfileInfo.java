@@ -15,6 +15,8 @@ public class ClientProfileInfo {
     private String email;
     
     private String fullName;
+    private String fatherName;
+    private String aadhaar;
     private String mobile;
     private String dob;
     private String gender;

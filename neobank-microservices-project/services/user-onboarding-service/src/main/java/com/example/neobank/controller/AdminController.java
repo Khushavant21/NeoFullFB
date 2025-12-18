@@ -39,6 +39,7 @@ public class AdminController
         user.setCustomerId(customerId);
         user.setPasswordHash(userService.encodePassword(rawPassword));
         user.setPanApprovedByAdmin(true);
+        user.setPanVerified(true); // ✅ Fix: Mark as Verified so UI shows Active
         user.setPanApprovalPending(false);
 
         userService.save(user);
@@ -84,6 +85,14 @@ public class AdminController
                 "Neobank – PAN Approval Confirmation",
                 htmlMessage
         );
+
+        // ✅ SYNC Status Update
+        try {
+             com.example.neobank.entity.ClientProfileInfo profile = clientProfileInfoRepository.findByEmail(email).orElse(null);
+             syncAdminUserInfo(user, profile);
+        } catch (Exception e) {
+             System.err.println("Sync failed on approve: " + e.getMessage());
+        }
 
         return ResponseEntity.ok(Map.of("message", "Approved"));
     }
@@ -138,6 +147,75 @@ public class AdminController
                 htmlMessage
         );
 
+        // ✅ SYNC Status Update
+        try {
+             com.example.neobank.entity.ClientProfileInfo profile = clientProfileInfoRepository.findByEmail(email).orElse(null);
+             syncAdminUserInfo(user, profile);
+        } catch (Exception e) {
+             System.err.println("Sync failed on reject: " + e.getMessage());
+        }
+
         return ResponseEntity.ok(Map.of("message", "Rejected"));
+    }
+    @Autowired
+    private com.example.neobank.repository.ClientProfileInfoRepository clientProfileInfoRepository;
+    @Autowired
+    private com.example.neobank.repository.AdminUserInfoRepository adminUserInfoRepository;
+
+    // ✅ Get Full User Details (User + Client Profile)
+    @GetMapping("/user-details/{email}")
+    public ResponseEntity<?> getFullUserDetails(@PathVariable String email) {
+        User user = userService.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        com.example.neobank.entity.ClientProfileInfo profile = clientProfileInfoRepository.findByEmail(email)
+            .orElse(null);
+
+        // ✅ SYNC to AdminUserInfo Collection (Physical Storage)
+        syncAdminUserInfo(user, profile);
+
+        return ResponseEntity.ok(new com.example.neobank.dto.AdminDetailDTO(user, profile));
+    }
+
+    // Helper to sync data
+    private void syncAdminUserInfo(User user, com.example.neobank.entity.ClientProfileInfo profile) {
+        try {
+            com.example.neobank.entity.AdminUserInfo adminUser = adminUserInfoRepository.findByEmail(user.getEmail())
+                    .orElse(new com.example.neobank.entity.AdminUserInfo());
+            
+            adminUser.setEmail(user.getEmail());
+            adminUser.setFullName(user.getFullName());
+            adminUser.setMobile(user.getMobile());
+            adminUser.setDob(user.getDob());
+            adminUser.setGender(user.getGender());
+            adminUser.setAadhaar(user.getAadhaar());
+            adminUser.setPan(user.getPan());
+            adminUser.setAccountNumber(user.getAccountNumber());
+            
+            // Map status
+            String status = "Pending KYC";
+            if (user.isPanVerified()) status = "Active";
+            else if (user.isPanRejectedByAdmin()) status = "Suspended";
+            adminUser.setStatus(status);
+            
+            // Map Profile Info
+            if (profile != null) {
+                adminUser.setAddress(profile.getAddress());
+                adminUser.setFatherName(profile.getFatherName());
+                adminUser.setPhotoUrl(profile.getProfileImageUrl()); // Prefer profile
+            } else {
+                 adminUser.setPhotoUrl(user.getProfileImageUrl());
+            }
+            
+            // Map Docs
+            adminUser.setAadhaarFrontUrl(user.getAadhaarPhotoUrl());
+            adminUser.setSignatureUrl(user.getSignatureUrl());
+            
+            adminUser.setLastSyncedAt(java.time.Instant.now());
+            adminUserInfoRepository.save(adminUser);
+            
+        } catch (Exception e) {
+            System.err.println("Failed to sync AdminUserInfo: " + e.getMessage());
+        }
     }
 }

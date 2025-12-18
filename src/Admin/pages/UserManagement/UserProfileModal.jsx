@@ -13,6 +13,35 @@ export default function UserProfileModal({ user, onClose, onUpdate }) {
     onClose();
   };
 
+  // ✅ Fetch full details on mount
+  React.useEffect(() => {
+    if (user?.email) {
+      const token = localStorage.getItem("adminToken");
+      fetch(`http://localhost:8080/api/admin/user-details/${user.email}`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      })
+        .then(res => res.json())
+        .then(data => {
+          // Merge User and ClientProfile data
+          const fullData = { ...data.user, ...data.clientProfile };
+          const timestamp = Date.now();
+
+          // Map User/Profile fields to UI expected fields
+          const mappedData = {
+            ...fullData,
+            aadhaar: data.user?.aadhaar || fullData.aadhaar,
+            aadhaarFront: fullData.aadhaarPhotoUrl ? `${fullData.aadhaarPhotoUrl}?t=${timestamp}` : null,
+            signature: fullData.signatureUrl ? `${fullData.signatureUrl}?t=${timestamp}` : null,
+            photo: (fullData.profileImageUrl || fullData.photo) ? `${(fullData.profileImageUrl || fullData.photo)}?t=${timestamp}` : null,
+            fatherName: data.clientProfile?.fatherName || fullData.fatherName
+          };
+
+          setEditableUser(prev => ({ ...prev, ...mappedData }));
+        })
+        .catch(err => console.error("Failed to fetch user details", err));
+    }
+  }, [user]);
+
   const docsArray = [
     { title: "Aadhaar", imgs: [editableUser.aadhaarFront, editableUser.aadhaarBack] },
     { title: "PAN Card", img: editableUser.panCard },
@@ -84,7 +113,7 @@ export default function UserProfileModal({ user, onClose, onUpdate }) {
 
           {/* Right Column */}
           <div className="upm-details-card">
-            {[ 
+            {[
               { label: "Name", field: "name", editable: true },
               { label: "Father's Name", field: "fatherName", editable: true },
               { label: "Address", field: "address", editable: true },
@@ -118,15 +147,18 @@ export default function UserProfileModal({ user, onClose, onUpdate }) {
             <div className="upm-preview-modal" onClick={(e) => e.stopPropagation()}>
               <h4>{previewDoc.title} Preview</h4>
 
-              {previewDoc.imgs ? (
-                <div className="upm-preview-images">
-                  {previewDoc.imgs.map((i, idx) => (
-                    <img key={idx} src={i} alt={previewDoc.title} />
-                  ))}
-                </div>
-              ) : (
-                <img src={previewDoc.img} alt={previewDoc.title} />
-              )}
+              <div className="upm-preview-content">
+                {previewDoc.imgs ? (
+                  <div className="upm-preview-images-large">
+                    {previewDoc.imgs.filter(img => img).map((i, idx) => ( // Filter nulls
+                      <img key={idx} src={i} alt={previewDoc.title} />
+                    ))}
+                    {previewDoc.imgs.filter(img => img).length === 0 && <p>No images available</p>}
+                  </div>
+                ) : (
+                  <img src={previewDoc.img} alt={previewDoc.title} className="upm-single-preview" />
+                )}
+              </div>
 
               <div className="upm-preview-actions">
                 <button

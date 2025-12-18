@@ -48,7 +48,8 @@ const ProfileSection = () => {
     phone: '',
     address: '',
     dateOfBirth: '',
-    gender: ''
+    gender: '',
+    aadhaar: ''
   });
   const [user, setUser] = useState({
     name: '',
@@ -60,7 +61,8 @@ const ProfileSection = () => {
     accountType: 'Premium Savings',
     balance: 48748.00,
     profileImage: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1',
-    gender: ''
+    gender: '',
+    aadhaar: ''
   });
 
   useEffect(() => {
@@ -94,7 +96,8 @@ const ProfileSection = () => {
           dateOfBirth: userData.dob || '',
           gender: userData.gender || '',
           address: userData.address || '',
-          profileImage: getFullImageUrl(userData.profileImageUrl)
+          profileImage: getFullImageUrl(userData.profileImageUrl),
+          aadhaar: userData.aadhaar || ''
         }));
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -177,7 +180,8 @@ const ProfileSection = () => {
       phone: user.phone,
       address: user.address,
       dateOfBirth: user.dateOfBirth,
-      gender: user.gender
+      gender: user.gender,
+      aadhaar: user.aadhaar
     }));
     setActiveModal('edit-profile');
   };
@@ -200,7 +204,8 @@ const ProfileSection = () => {
           mobile: formData.phone,
           address: formData.address,
           dob: formData.dateOfBirth,
-          gender: formData.gender
+          gender: formData.gender,
+          aadhaar: formData.aadhaar
         })
       });
 
@@ -215,7 +220,8 @@ const ProfileSection = () => {
         phone: formData.phone,
         address: formData.address,
         dateOfBirth: formData.dateOfBirth,
-        gender: formData.gender
+        gender: formData.gender,
+        aadhaar: formData.aadhaar
       }));
       alert('Profile updated successfully!');
 
@@ -464,6 +470,17 @@ const ProfileSection = () => {
                           <div className="ps-info-text">
                             <div className="ps-info-label">Gender</div>
                             <div className="ps-info-value" style={{ textTransform: 'capitalize' }}>{user.gender}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="ps-col">
+                        <div className="ps-info-item">
+                          <div className="ps-info-icon">
+                            <Shield size={20} />
+                          </div>
+                          <div className="ps-info-text">
+                            <div className="ps-info-label">Aadhaar Number</div>
+                            <div className="ps-info-value">{user.aadhaar || 'Not updated'}</div>
                           </div>
                         </div>
                       </div>
@@ -847,6 +864,19 @@ const ProfileSection = () => {
               <option value="female">female</option>
               <option value="other">other</option>
             </select>
+          </div>
+
+          <div className="ps-form-row">
+            <label htmlFor="editAadhaar">Aadhaar Number</label>
+            <input
+              id="editAadhaar"
+              type="text"
+              value={formData.aadhaar}
+              onChange={(e) => handleInputChange('aadhaar', e.target.value)}
+              placeholder={user.aadhaar ? "Verified - Cannot Change" : "Update your Aadhaar Number"}
+              readOnly={!!user.aadhaar && user.aadhaar.trim().toLowerCase() !== "aadhaar"} // Lock if set and not the bugged "aadhaar" string
+              className={!!user.aadhaar && user.aadhaar.trim().toLowerCase() !== "aadhaar" ? "ps-input ps-input-readonly" : "ps-input"}
+            />
           </div>
 
           <div className="ps-form-row">
