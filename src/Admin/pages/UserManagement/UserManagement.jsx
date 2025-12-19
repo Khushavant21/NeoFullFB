@@ -509,7 +509,9 @@ export default function UserManagement() {
               : "Pending KYC",
           frozen: false,
           lastLogin: u.createdAt,
-          photo: `https://i.pravatar.cc/150?u=${u.email}`,
+          photo: u.profileImageUrl
+            ? (u.profileImageUrl.startsWith("http") ? u.profileImageUrl : `http://localhost:8080${u.profileImageUrl.startsWith("/") ? "" : "/"}${u.profileImageUrl}`)
+            : `https://i.pravatar.cc/150?u=${u.email}`,
           aadhaar: u.aadhaar || "N/A",
           pan: u.pan || "N/A",
         }));
@@ -529,7 +531,7 @@ export default function UserManagement() {
   const handleApprove = async (email) => {
     try {
       const token = localStorage.getItem("adminToken");
-      console.log(token,"reav")
+      console.log(token, "reav")
       if (!token) {
         alert("Unauthorized: Please login again.");
         return;
