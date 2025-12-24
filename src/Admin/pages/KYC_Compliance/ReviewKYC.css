@@ -1,534 +1,334 @@
-/* KYC Review Component Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary-red: #900603;
+  --dark-red: #720502;
+  --bg-color: #f8fafc;
+  --text-primary: #111827;
+  --text-white: #ffffff;
+  --border-color: #e2e8f0;
+}
+
 .kyc-review-container {
-  padding: 20px;
-  background: #f9f9f9;
-  font-family: sans-serif;
-  /* margin-top: 120px; */
-}
-
-/* ===== Header with Same Size ===== */
-.kyc-review-header {
-  background-color: #900603;
-  padding: 20px 2rem;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  min-height: 80px;
-}
-
-.kyc-header-content {
-  flex: 1;
-}
-
-.kyc-review-header h2 {
-  font-size: 1.75rem;
-  margin-bottom: 6px;
-  font-weight: bold;
-}
-
-.kyc-review-header p {
-  font-size: 0.95rem;
-  color: #f0f0f0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  font-family: 'Inter', sans-serif;
   margin: 0;
+  padding: 0;
 }
 
-/* ===== Unique KYC Back Button - RIGHT SIDE ===== */
-.kyc-back-btn-container {
+/* --- Red Matching Header --- */
+.kyc-review-header {
+  background: var(--primary-red);
+  padding: 1.25rem 2.5rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-white);
+  box-shadow: 0 4px 12px rgba(144, 6, 3, 0.15);
+}
+
+.kyc-header-content h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.kyc-header-content p {
+  margin: 0.1rem 0 0 0;
+  font-size: 0.85rem;
+  opacity: 0.9;
 }
 
 .kyc-back-btn {
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.15);
   color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.8rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  gap: 0.5rem;
+  transition: all 0.2s;
 }
 
 .kyc-back-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateX(5px);
+  background: white;
+  color: var(--primary-red);
 }
 
-.kyc-back-btn-icon {
-  font-size: 12px;
-}
-
-.kyc-back-btn-text {
-  white-space: nowrap;
-}
-
-/* Search Bar */
-
-/* Search Bar - Full Width */
-.kyc-search-bar {
-  margin-bottom: 20px;
+/* --- Content Wrapper --- */
+.kyc-page-body {
+  padding: 2rem;
   width: 100%;
 }
 
-.kyc-search-input {
+/* --- Search Field --- */
+.kyc-search-bar {
+  background: white;
   display: flex;
   align-items: center;
-  box-shadow: 0 0 6px rgba(0,0,0,0.1);
-  border-radius: 6px;
-  overflow: hidden;
-  width: 100%;
-  max-width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  max-width: 450px;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.kyc-search-input input {
-  flex: 1;
-  padding: 12px 16px;
-  border: 1px solid #900603;
-  font-size: 0.9rem;
-  outline: none;
-  border-right: none;
-  width: 100%;
+.kyc-search-bar svg {
+  color: #94a3b8;
+  margin-right: 0.75rem;
 }
 
-.kyc-search-icon {
-  padding: 12px 16px;
-  background-color: #900603;
-  color: #fff;
+.kyc-search-bar input {
   border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  outline: none;
+  width: 100%;
+  font-size: 0.95rem;
+  font-family: inherit;
 }
 
-.kyc-search-icon:hover {
-  background-color: #900603;
-}
-/* Alerts */
-.kyc-alert {
-  padding: 12px 15px;
-  border-radius: 6px;
-  margin-bottom: 15px;
-  font-weight: 600;
-  text-align: center;
-}
-
-.kyc-alert-success { 
-  background: #28a745; 
-  color: #fff; 
-}
-
-.kyc-alert-danger { 
-  background: #dc3545; 
-  color: #fff; 
-}
-
-.kyc-alert-warning { 
-  background: #ffc107; 
-  color: #212529; 
-}
-
-.kyc-alert-info { 
-  background: #17a2b8; 
-  color: #fff; 
-}
-
-/* User Cards */
+/* --- User Card --- */
 .kyc-user-card {
-  background: #fff;
-  color: black;
-  border: 2px solid #900603;
+  background: white;
   border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border: 1px solid var(--border-color);
+  border-left: 5px solid var(--primary-red);
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-/* Recent Action Highlights */
-.kyc-recent-approve { 
-  border: 2px solid #28a745; 
-}
-
-.kyc-recent-reject { 
-  border: 2px solid #dc3545; 
-}
-
-.kyc-recent-request { 
-  border: 2px solid #ffc107; 
-}
-
-.kyc-recent-edd { 
-  border: 2px solid #dc3545; 
-}
-
-/* User Info */
-.kyc-user-info {
+.kyc-card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
 }
 
-.kyc-user-info h5 { 
-  margin: 0 0 5px 0; 
-  font-size: 1.1rem;
-  color: #333;
+.user-main-info h5 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
 }
 
-.kyc-user-info small span { 
-  font-weight: bold; 
-  color: #900603;
-}
-
-/* Status Badge */
-.kyc-status-badge {
-  padding: 6px 15px;
-  border-radius: 50px;
-  text-align: center;
-  min-width: 120px;
+.user-main-info small {
+  color: #64748b;
   font-size: 0.85rem;
-  font-weight: 600;
 }
 
-.kyc-status-badge-approved { 
-  background: #28a745; 
-  color: #fff; 
+.kyc-status-chip {
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-.kyc-status-badge-rejected { 
-  background: #dc3545; 
-  color: #fff; 
+.status-approved {
+  background: #dcfce7;
+  color: #166534;
 }
 
-.kyc-status-badge-info-requested { 
-  background: #ffc107; 
-  color: #212529; 
+.status-pending {
+  background: #fef9c3;
+  color: #854d0e;
 }
 
-.kyc-status-badge-escalated-edd { 
-  background: #dc3545; 
-  color: #fff; 
+.status-rejected {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
-.kyc-status-badge-pending { 
-  background: #ffc107; 
-  color: #212529; 
-}
-
-/* Documents Grid */
-.kyc-documents-grid {
+/* --- Compact Red Doc Boxes --- */
+.kyc-docs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 15px;
-  margin-top: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background-color: #f8fafc;
 }
 
-.kyc-document-card {
-  background: #900603;
-  color: #fff;
-  border-radius: 12px;
-  padding: 15px;
-  text-align: center;
+.doc-item-card {
+  background: var(--primary-red);
+  color: white;
+  border-radius: 10px;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 120px;
+  gap: 1rem;
 }
 
-.kyc-document-card h6 {
-  margin: 0 0 10px 0;
-  font-size: 0.9rem;
-}
-
-.kyc-doc-actions {
+.doc-header {
   display: flex;
-  gap: 8px;
-  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  font-size: 0.95rem;
 }
 
-.kyc-doc-actions button {
-  padding: 6px 12px;
-  background: none;
-  border: 1px solid #fff;
-  color: #fff;
+.doc-header svg {
+  color: white;
+}
+
+.doc-button-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.doc-btn {
+  flex: 1;
+  padding: 0.5rem;
   border-radius: 6px;
-  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
   font-size: 0.8rem;
-  transition: all 0.3s ease;
-}
-
-.kyc-doc-actions button:hover {
-  background: #fff;
-  color: #900603;
-}
-
-/* Meta Info */
-.kyc-meta-info {
-  background: #f8f9fa;
-  padding: 12px;
-  border-radius: 6px;
-  margin-top: 15px;
-  border: 1px solid rgba(108,117,125,0.25);
-  font-size: 0.85rem;
-}
-
-.kyc-meta-info strong {
-  color: #900603;
-}
-
-/* Notes */
-.kyc-notes {
-  background: #fff3cd;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 6px;
-  border: 1px solid #ffc107;
-  font-size: 0.85rem;
-}
-
-.kyc-notes strong {
-  color: #856404;
-}
-
-/* Action Buttons */
-.kyc-action-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.kyc-action-buttons button {
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: none;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.kyc-action-buttons button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-.kyc-action-buttons button.approve { 
-  background: #28a745; 
-  color: #fff; 
-}
-
-.kyc-action-buttons button.reject { 
-  background: #dc3545; 
-  color: #fff; 
-}
-
-.kyc-action-buttons button.request { 
-  background: #ffc107; 
-  color: #212529; 
-}
-
-.kyc-action-buttons button.notes-btn { 
-  background: #17a2b8; 
-  color: #fff; 
-}
-
-.kyc-action-buttons button.edd { 
-  background: #343a40; 
-  color: #fff; 
-}
-
-/* Modal */
-.kyc-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.7);
-  display: flex;
   justify-content: center;
-  align-items: center;
-  z-index: 2000;
+  gap: 0.5rem;
+  transition: all 0.2s;
 }
 
-.kyc-modal-content {
-  background: #fff;
-  padding: 25px;
-  color: #343a40;
-  border-radius: 12px;
-  max-width: 700px;
-  width: 90%;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+.doc-btn:hover {
+  background: white;
+  color: var(--primary-red);
 }
 
-.kyc-modal-content h5 {
-  margin-bottom: 15px;
-  color: #900603;
-  font-size: 1.3rem;
+/* --- Card Action Footer --- */
+.kyc-card-footer {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  background: white;
 }
 
-.kyc-modal-content img {
-  max-width: 100%;
-  max-height: 500px;
+.action-btn {
+  padding: 0.65rem 1.5rem;
   border-radius: 8px;
-  margin: 15px 0;
-  border: 2px solid #ddd;
-}
-
-.kyc-close-btn {
-  padding: 8px 20px;
-  border: none;
-  border-radius: 6px;
-  background: #900603;
-  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  transition: all 0.2s;
 }
 
-.kyc-close-btn:hover {
-  background: #700502;
+.btn-success {
+  background: #059669;
+  color: white;
 }
 
-/* No Results */
-.kyc-no-results {
-  text-align: center;
-  padding: 40px;
-  background: #fff;
+.btn-danger {
+  background: #dc2626;
+  color: white;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+/* --- Preview Modal --- */
+.kyc-modal-blur {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.kyc-modal-wrap {
+  background: white;
+  padding: 0.5rem;
   border-radius: 12px;
-  border: 2px solid #900603;
+  position: relative;
 }
 
-/* ===== Responsive Design ===== */
-@media (max-width: 768px) {
-  .kyc-review-container {
-    margin-top: 70px;
-    padding: 15px;
-  }
-  
+.kyc-modal-wrap img {
+  max-width: 90vw;
+  max-height: 85vh;
+  display: block;
+  border-radius: 8px;
+}
+
+.kyc-close-x {
+  position: absolute;
+  top: -1.25rem;
+  right: -1.25rem;
+  background: var(--primary-red);
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Alerts */
+.kyc-notification {
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.notify-success {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.notify-danger {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+@media (max-width: 640px) {
   .kyc-review-header {
-    padding: 15px 1rem;
+    padding: 1rem;
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
   }
-  
-  .kyc-back-btn-container {
-    width: 100%;
-    justify-content: flex-start;
-    margin-top: 10px;
-  }
-  
-  .kyc-back-btn:hover {
-    transform: translateX(3px);
-  }
-  
-  .kyc-review-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .kyc-documents-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-  }
-  
-  .kyc-action-buttons {
-    gap: 8px;
-  }
-  
-  .kyc-action-buttons button {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-  }
-  
-  .kyc-user-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-}
 
-@media (max-width: 480px) {
-  .kyc-review-container {
-    padding: 10px;
+  .kyc-page-body {
+    padding: 1rem;
   }
-  
-  .kyc-documents-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .kyc-action-buttons {
+
+  .doc-button-row {
     flex-direction: column;
   }
-  
-  .kyc-action-buttons button {
+
+  .kyc-card-footer {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
     justify-content: center;
   }
-  
-  .kyc-back-btn {
-    font-size: 12px;
-    padding: 5px 10px;
-  }
-  
-  .kyc-back-btn-text {
-    white-space: normal;
-  }
-}
-/* FULL-SCREEN OVERLAY */
-.kyc-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-/* MODAL BOX */
-.kyc-modal-content {
-  position: relative;
-  background: #fff;
-  padding: 12px;
-  border-radius: 10px;
-  max-width: 40%;
-  max-height: 90%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* IMAGE PERFECT CENTER + RESPONSIVE */
-.kyc-modal-content img {
-  max-width: 100%;
-  max-height: 85vh;
-  object-fit: contain;
-  display: block;
-}
-
-/* CLOSE BUTTON */
-.kyc-modal-content button {
-  position: absolute;
-  top: -40px;
-  right: 0;
-  padding: 8px 18px;
-  background: #900603;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
 }

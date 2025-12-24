@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   User,
   Mail,
@@ -44,12 +44,199 @@ function AdminProfile() {
       "https://img.freepik.com/premium-vector/technology-concept-vector-illustration-featuring-consulting-design-flat-style-elements_1226483-4088.jpg?semt=ais_hybrid&w=740&q=80",
   };
 
-  const accessLogs = [
-    { date: "2025-10-09", time: "09:15 AM", device: "Windows Chrome", ip: "192.168.1.45", location: "Mumbai, MH", status: "success" },
-    { date: "2025-10-08", time: "02:30 PM", device: "MacBook Safari", ip: "192.168.1.45", location: "Mumbai, MH", status: "success" },
-    { date: "2025-10-07", time: "10:45 AM", device: "Android App", ip: "103.212.45.89", location: "Thane, MH", status: "success" },
-    { date: "2025-10-06", time: "08:20 PM", device: "Windows Firefox", ip: "103.212.45.90", location: "Unknown", status: "failed" },
-  ];
+  const [accessLogs, setAccessLogs] = useState([]);
+  const [locationPermissionPrompt, setLocationPermissionPrompt] = useState(false);
+  const sessionAdded = useRef(false);
+
+  // Generate a simple session ID to identify this specific browser session
+  const getSessionId = () => {
+    let id = sessionStorage.getItem("admin_session_id");
+    if (!id) {
+      id = "sess_" + Math.random().toString(36).substr(2, 9);
+      sessionStorage.setItem("admin_session_id", id);
+    }
+    return id;
+  };
+
+  const sessionId = getSessionId();
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/access-logs/${adminData.email}`);
+        if (response.ok) {
+          const data = await response.json();
+          setAccessLogs(data);
+        }
+      } catch (error) {
+        console.warn("Backend logs not reachable.");
+      }
+    };
+
+    const recordSession = async () => {
+      if (sessionAdded.current) return;
+      sessionAdded.current = true;
+
+      try {
+        const ua = navigator.userAgent;
+        let device = "Windows";
+        let browser = "Chrome";
+
+        if (/windows/i.test(ua)) device = "Windows";
+        else if (/macintosh|mac os x/i.test(ua)) device = "MacBook";
+        else if (/android/i.test(ua)) device = "Android";
+        else if (/iphone|ipad|ipod/i.test(ua)) device = "iPhone/iPad";
+
+        if (/chrome|crios/i.test(ua)) browser = "Chrome";
+        else if (/firefox|fxios/i.test(ua)) browser = "Firefox";
+        else if (/safari/i.test(ua)) browser = "Safari";
+        else if (/edg/i.test(ua)) browser = "Edge";
+
+        const deviceInfo = `${device} ${browser}`;
+
+        const logEntry = {
+          id: sessionId,
+          email: adminData.email,
+          date: new Date().toISOString().split("T")[0],
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          device: deviceInfo,
+          ip: "Detecting...",
+          location: "Detecting...",
+          status: "success",
+          isIPBased: true
+        };
+
+        // Show immediately with placeholders
+        setAccessLogs([logEntry]);
+
+        // Helper to update current session log with priority
+        const updateCurrentLog = (fields) => {
+          setAccessLogs(prev => {
+            const currentIdx = prev.findIndex(l => l.id === sessionId);
+            if (currentIdx !== -1) {
+              const current = prev[currentIdx];
+              // Don't overwrite precise with IP-based
+              if (!current.isIPBased && fields.isIPBased) return prev;
+
+              const updatedLog = { ...current, ...fields };
+              const updatedLogs = [...prev];
+              updatedLogs[currentIdx] = updatedLog;
+
+              // Sync to server
+              fetch("http://localhost:8080/api/access-logs/add", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedLog)
+              }).catch(e => console.warn("Save log fail", e));
+
+              return updatedLogs;
+            }
+            return prev;
+          });
+        };
+
+        // Fetch IP-based location (Approximate)
+        const fetchIPLocation = async () => {
+          try {
+            console.log("Fetching IP location...");
+            let res = await fetch("https://ipapi.co/json/");
+            let data = await res.json();
+
+            if (data.error || !data.ip) {
+              res = await fetch("http://ip-api.com/json/");
+              data = await res.json();
+            }
+
+            if (data) {
+              const ip = data.ip || data.query || "Unknown IP";
+              const city = data.city || data.region_name || data.region || data.regionName || "";
+              const region = data.region_name || data.region || data.regionName || data.country || "";
+              const location = city && region ? `${city}, ${region}` : (city || region || "Unknown Location");
+
+              console.log("IP Location detected:", location);
+              updateCurrentLog({ ip, location: location.replace("undefined", "Unknown"), isIPBased: true });
+            }
+          } catch (e) {
+            console.warn("IP location fallback fail", e);
+            updateCurrentLog({ ip: "Unknown IP", location: "Unknown Location", isIPBased: true });
+          }
+        };
+
+        if (navigator.geolocation) {
+          setLocationPermissionPrompt(true);
+          // Try precise location - it handles its own updateCurrentLog logic internally
+          requestPreciseLocation();
+        }
+
+        // Fetch IP location in parallel/baseline
+        fetchIPLocation();
+      } catch (error) {
+        console.error("Error recording session:", error);
+      }
+    };
+
+    const saveLogToServer = async (log) => {
+      try {
+        await fetch("http://localhost:8080/api/access-logs/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(log)
+        });
+        fetchHistory();
+      } catch (error) {
+        console.warn("Save log fail", error);
+      }
+    };
+
+    fetchHistory();
+    recordSession();
+  }, []);
+
+  const requestPreciseLocation = () => {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      try {
+        const { latitude, longitude } = position.coords;
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`);
+        const data = await res.json();
+
+        if (data.address) {
+          const city = data.address.city || data.address.town || data.address.village || data.address.suburb || data.address.city_district || "Unknown City";
+          const state = data.address.state || data.address.state_district || data.address.country || "Unknown";
+          const preciseLocation = `${city}, ${state}`.replace("undefined", "Unknown");
+
+          console.log("Precise Location detected:", preciseLocation);
+
+          setAccessLogs(prev => {
+            const currentIdx = prev.findIndex(l => l.id === sessionId);
+            if (currentIdx !== -1) {
+              const updatedLog = { ...prev[currentIdx], location: preciseLocation, isIPBased: false };
+              const updatedLogs = [...prev];
+              updatedLogs[currentIdx] = updatedLog;
+
+              // Sync to server
+              fetch("http://localhost:8080/api/access-logs/add", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedLog)
+              }).catch(e => console.warn("Save log fail", e));
+
+              return updatedLogs;
+            }
+            return prev;
+          });
+        }
+        setLocationPermissionPrompt(false);
+      } catch (e) {
+        console.error("Geo update fail", e);
+        setLocationPermissionPrompt(false);
+      }
+    }, (err) => {
+      console.warn("Geo denied", err);
+      setLocationPermissionPrompt(false);
+    }, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
+  };
 
   const handleNotificationToggle = (key) => {
     setNotifications((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -151,6 +338,11 @@ function AdminProfile() {
       <div className="section-card">
         <h3 className="section-title">
           <Clock size={18} /> Access Log
+          {locationPermissionPrompt && (
+            <button className="location-allow-btn" onClick={requestPreciseLocation}>
+              Enable Precise Location
+            </button>
+          )}
         </h3>
         <div className="log-list">
           {accessLogs.map((log, i) => (
@@ -158,8 +350,12 @@ function AdminProfile() {
               <div className="log-left">
                 <Monitor className="log-icon" />
                 <div>
-                  <p className="log-device">{log.device}</p>
-                  <p className="log-location">{log.location}</p>
+                  <p className="log-device">
+                    {log.device} {log.id === sessionId && <span className="current-badge">Current Session</span>}
+                  </p>
+                  <p className="log-location">
+                    {log.location} {log.isIPBased && <span className="approx-text">(Approximate)</span>}
+                  </p>
                 </div>
               </div>
               <div className="log-right">
