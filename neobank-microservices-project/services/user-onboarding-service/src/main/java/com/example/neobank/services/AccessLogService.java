@@ -36,7 +36,18 @@ public class AccessLogService {
         try {
             Map<String, String> agentInfo = userAgentService.parse(userAgent);
             log.setDeviceType(agentInfo.get("deviceType"));
-            log.setOs(agentInfo.get("os"));
+            
+            // Cleanup OS String
+            String os = agentInfo.get("os");
+            if (os != null) {
+                if (os.contains("Windows NT")) {
+                    // Simple mapping or cleanup
+                    os = os.replace("Windows NT ??", "Windows"); 
+                    // Yauaa sometimes returns "Windows NT ??" for unknown versions
+                }
+            }
+            log.setOs(os);
+            
             log.setBrowser(agentInfo.get("browser"));
         } catch (Exception e) {
             System.err.println("User-Agent parsing failed: " + e.getMessage());

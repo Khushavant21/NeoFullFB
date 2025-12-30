@@ -11,8 +11,16 @@ public class GeoLocationService {
 
     public Map<String, String> getApproximateLocation(String ip) {
         try {
-            // Using ipapi.co for server-side geolocation
-            String url = "https://ipapi.co/" + ip + "/json/";
+            String url;
+            // Check for localhost (IPv4 and IPv6)
+            if (ip.equals("127.0.0.1") || ip.equals("0:0:0:0:0:0:0:1")) {
+                // Fetch public IP location for the server itself
+                url = "https://ipapi.co/json/"; 
+            } else {
+                // Fetch location for the specific client IP
+                url = "https://ipapi.co/" + ip + "/json/";
+            }
+
             Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
             if (response != null) {
