@@ -1,25 +1,30 @@
-import React, { useState, useEffect, useRef } from "react";
+// AdminProfile.jsx
+import React, { useState, useEffect } from "react";
 import {
   User,
-  Mail,
-  Phone,
   Shield,
   Bell,
   Lock,
-  Camera,
   CheckCircle2,
-  XCircle,
-  Building2,
   Briefcase,
-  AlertCircle,
   Monitor,
   Clock,
-  Eye,
-  EyeOff,
+  TrendingUp,
+  Users,
+  Activity,
+  MapPin,
+  Globe,
+  X,
+  Calendar,
+  FileText,
+  Smartphone,
+  Tablet,
+  Laptop
 } from "lucide-react";
 import "./AdminProfile.css";
 
 function AdminProfile() {
+  const [showAllLogs, setShowAllLogs] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
   const [notifications, setNotifications] = useState({
     transactionAlerts: true,
@@ -27,447 +32,440 @@ function AdminProfile() {
     newDeviceLogin: true,
     monthlyStatements: false,
   });
-  const [showModal, setShowModal] = useState(false);
-  const [showOldPass, setShowOldPass] = useState(false);
-  const [showNewPass, setShowNewPass] = useState(false);
-  const [showConfirmPass, setShowConfirmPass] = useState(false);
 
   const adminData = {
-    name: "Admin",
+    name: "Admin Kumar",
     employeeId: "ADMIN009874",
     role: "Branch Manager",
     department: "Retail Banking",
     email: "admin@neobank.com",
-    phone: "+91-9876543210",
     branch: "Mumbai – Andheri West",
+    status: "Active",
     profileImage:
       "https://img.freepik.com/premium-vector/technology-concept-vector-illustration-featuring-consulting-design-flat-style-elements_1226483-4088.jpg?semt=ais_hybrid&w=740&q=80",
   };
 
+  const stats = [
+    { label: "Active Sessions", value: "3", icon: Activity, color: "success" },
+    { label: "Approvals Pending", value: "12", icon: FileText, color: "warning" },
+    { label: "Team Members", value: "24", icon: Users, color: "info" },
+    { label: "This Month", value: "156", icon: TrendingUp, color: "primary" },
+  ];
+
+  const recentActivity = [
+    { action: "Approved transaction #TXN-45891", time: "2 hours ago", type: "success" },
+    { action: "Updated security settings", time: "5 hours ago", type: "info" },
+    { action: "Generated monthly report", time: "1 day ago", type: "success" },
+    { action: "Reviewed customer complaint", time: "2 days ago", type: "warning" },
+  ];
+
+  const [loading, setLoading] = useState(true);
   const [accessLogs, setAccessLogs] = useState([]);
-  const [locationPermissionPrompt, setLocationPermissionPrompt] = useState(false);
-  const sessionAdded = useRef(false);
-
-  // Generate a simple session ID to identify this specific browser session
-  const getSessionId = () => {
-    let id = sessionStorage.getItem("admin_session_id");
-    if (!id) {
-      id = "sess_" + Math.random().toString(36).substr(2, 9);
-      sessionStorage.setItem("admin_session_id", id);
-    }
-    return id;
-  };
-
-  const sessionId = getSessionId();
 
   useEffect(() => {
-    const fetchHistory = async () => {
+    const fetchSessionInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/access-logs/${adminData.email}`);
-        if (response.ok) {
-          const data = await response.json();
-          setAccessLogs(data);
-        }
-      } catch (error) {
-        console.warn("Backend logs not reachable.");
-      }
-    };
+        // Detect OS and Browser
+        const userAgent = navigator.userAgent;
+        let os = "Unknown OS";
+        let browser = "Unknown Browser";
+        let deviceType = "Desktop";
 
-    const recordSession = async () => {
-      if (sessionAdded.current) return;
-      sessionAdded.current = true;
+        if (userAgent.indexOf("Win") !== -1) os = "Windows";
+        if (userAgent.indexOf("Mac") !== -1) os = "macOS";
+        if (userAgent.indexOf("Linux") !== -1) os = "Linux";
+        if (userAgent.indexOf("Android") !== -1) { os = "Android"; deviceType = "Mobile"; }
+        if (userAgent.indexOf("like Mac") !== -1) { os = "iOS"; deviceType = "Mobile"; }
 
-      try {
-        const ua = navigator.userAgent;
-        let device = "Windows";
-        let browser = "Chrome";
+        if (userAgent.indexOf("Chrome") !== -1) browser = "Chrome";
+        else if (userAgent.indexOf("Firefox") !== -1) browser = "Firefox";
+        else if (userAgent.indexOf("Safari") !== -1) browser = "Safari";
+        else if (userAgent.indexOf("Edge") !== -1) browser = "Edge";
 
-        if (/windows/i.test(ua)) device = "Windows";
-        else if (/macintosh|mac os x/i.test(ua)) device = "MacBook";
-        else if (/android/i.test(ua)) device = "Android";
-        else if (/iphone|ipad|ipod/i.test(ua)) device = "iPhone/iPad";
+        // Fetch Location & IP
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
 
-        if (/chrome|crios/i.test(ua)) browser = "Chrome";
-        else if (/firefox|fxios/i.test(ua)) browser = "Firefox";
-        else if (/safari/i.test(ua)) browser = "Safari";
-        else if (/edg/i.test(ua)) browser = "Edge";
-
-        const deviceInfo = `${device} ${browser}`;
-
-        const logEntry = {
-          id: sessionId,
-          email: adminData.email,
-          date: new Date().toISOString().split("T")[0],
+        const currentSession = {
+          id: "sess_current",
+          browser: browser,
+          os: os,
+          deviceType: deviceType,
+          location: {
+            city: data.city || "Unknown",
+            state: data.region || "Unknown",
+            country: data.country_name || "Unknown"
+          },
+          ip: data.ip || "0.0.0.0",
+          date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          device: deviceInfo,
-          ip: "Detecting...",
-          location: "Detecting...",
-          status: "success",
-          isIPBased: true
+          timezone: data.timezone || "UTC",
+          status: "success"
         };
 
-        // Show immediately with placeholders
-        setAccessLogs([logEntry]);
-
-        // Helper to update current session log with priority
-        const updateCurrentLog = (fields) => {
-          setAccessLogs(prev => {
-            const currentIdx = prev.findIndex(l => l.id === sessionId);
-            if (currentIdx !== -1) {
-              const current = prev[currentIdx];
-              // Don't overwrite precise with IP-based
-              if (!current.isIPBased && fields.isIPBased) return prev;
-
-              const updatedLog = { ...current, ...fields };
-              const updatedLogs = [...prev];
-              updatedLogs[currentIdx] = updatedLog;
-
-              // Sync to server
-              fetch("http://localhost:8080/api/access-logs/add", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedLog)
-              }).catch(e => console.warn("Save log fail", e));
-
-              return updatedLogs;
-            }
-            return prev;
-          });
-        };
-
-        // Fetch IP-based location (Approximate)
-        const fetchIPLocation = async () => {
-          try {
-            console.log("Fetching IP location...");
-            let res = await fetch("https://ipapi.co/json/");
-            let data = await res.json();
-
-            if (data.error || !data.ip) {
-              res = await fetch("http://ip-api.com/json/");
-              data = await res.json();
-            }
-
-            if (data) {
-              const ip = data.ip || data.query || "Unknown IP";
-              const city = data.city || data.region_name || data.region || data.regionName || "";
-              const region = data.region_name || data.region || data.regionName || data.country || "";
-              const location = city && region ? `${city}, ${region}` : (city || region || "Unknown Location");
-
-              console.log("IP Location detected:", location);
-              updateCurrentLog({ ip, location: location.replace("undefined", "Unknown"), isIPBased: true });
-            }
-          } catch (e) {
-            console.warn("IP location fallback fail", e);
-            updateCurrentLog({ ip: "Unknown IP", location: "Unknown Location", isIPBased: true });
+        const previousLogs = [
+          {
+            id: "sess_2",
+            browser: "Safari",
+            os: "iOS 17.2",
+            deviceType: "Mobile",
+            location: {
+              city: "Bengaluru",
+              state: "Karnataka",
+              country: "India"
+            },
+            ip: "106.51.78.204",
+            date: "Dec 28, 2025",
+            time: "18:45",
+            timezone: "IST",
+            status: "success"
           }
-        };
+        ];
 
-        if (navigator.geolocation) {
-          setLocationPermissionPrompt(true);
-          // Try precise location - it handles its own updateCurrentLog logic internally
-          requestPreciseLocation();
-        }
-
-        // Fetch IP location in parallel/baseline
-        fetchIPLocation();
+        // Only display 2 logs: Current Session + Most Recent Previous
+        setAccessLogs([currentSession, ...previousLogs]);
       } catch (error) {
-        console.error("Error recording session:", error);
+        console.error("Error fetching session info:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    const saveLogToServer = async (log) => {
-      try {
-        await fetch("http://localhost:8080/api/access-logs/add", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(log)
-        });
-        fetchHistory();
-      } catch (error) {
-        console.warn("Save log fail", error);
-      }
-    };
-
-    fetchHistory();
-    recordSession();
+    fetchSessionInfo();
   }, []);
 
-  const requestPreciseLocation = () => {
-    if (!navigator.geolocation) return;
-
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      try {
-        const { latitude, longitude } = position.coords;
-        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`);
-        const data = await res.json();
-
-        if (data.address) {
-          const city = data.address.city || data.address.town || data.address.village || data.address.suburb || data.address.city_district || "Unknown City";
-          const state = data.address.state || data.address.state_district || data.address.country || "Unknown";
-          const preciseLocation = `${city}, ${state}`.replace("undefined", "Unknown");
-
-          console.log("Precise Location detected:", preciseLocation);
-
-          setAccessLogs(prev => {
-            const currentIdx = prev.findIndex(l => l.id === sessionId);
-            if (currentIdx !== -1) {
-              const updatedLog = { ...prev[currentIdx], location: preciseLocation, isIPBased: false };
-              const updatedLogs = [...prev];
-              updatedLogs[currentIdx] = updatedLog;
-
-              // Sync to server
-              fetch("http://localhost:8080/api/access-logs/add", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedLog)
-              }).catch(e => console.warn("Save log fail", e));
-
-              return updatedLogs;
-            }
-            return prev;
-          });
-        }
-        setLocationPermissionPrompt(false);
-      } catch (e) {
-        console.error("Geo update fail", e);
-        setLocationPermissionPrompt(false);
-      }
-    }, (err) => {
-      console.warn("Geo denied", err);
-      setLocationPermissionPrompt(false);
-    }, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
+  const getDeviceIcon = (type) => {
+    switch (type.toLowerCase()) {
+      case 'mobile': return <Smartphone size={18} />;
+      case 'tablet': return <Tablet size={18} />;
+      case 'laptop': return <Laptop size={18} />;
+      default: return <Monitor size={18} />;
+    }
   };
 
   const handleNotificationToggle = (key) => {
     setNotifications((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handlePasswordSubmit = (e) => {
-    e.preventDefault();
-    alert("Password updated successfully ✅");
-    setShowModal(false);
-  };
-
   return (
-    <main className="admin-main">
-      <h2 className="page-title">My Account</h2>
-      <p className="page-sub">Manage your account information and security preferences</p>
-
-      {/* Profile Card */}
-      <div className="profile-card">
-        <div className="profile-header"></div>
-        <div className="profile-body">
-          <div className="profile-top">
-            <div className="profile-pic-wrapper">
+    <div className="admin-profile-container">
+      {/* Hero Section */}
+      <div className="profile-hero">
+        <div className="hero-pattern"></div>
+        <div className="hero-content">
+          <div className="avatar-section">
+            <div className="avatar-wrapper">
               <img
                 src={adminData.profileImage}
-                alt="Profile"
-                className="profile-pic"
+                alt="Admin Avatar"
+                className="admin-avatar"
                 onError={(e) => {
-                  e.target.src = "https://placehold.co/160x160/cccccc/333333?text=AR";
+                  e.target.src = "https://placehold.co/160x160/900603/ffffff?text=AD";
                 }}
               />
-              <button className="change-photo">
-                <Camera size={20} />
-                <span>Change Photo</span>
-              </button>
-            </div>
-            <div className="profile-actions">
-              <button className="btn-primary" onClick={() => setShowModal(true)}>
-                <Lock size={16} /> Change Password
-              </button>
+              <div className="status-badge">
+                <span className="status-ping"></span>
+                <span className="status-text">{adminData.status}</span>
+              </div>
             </div>
           </div>
+          <div className="hero-text">
+            <h1 className="admin-name">{adminData.name}</h1>
+            <p className="admin-role">{adminData.role}</p>
+            <div className="hero-badges">
+              <span className="hero-badge">
+                <Briefcase size={14} /> {adminData.department}
+              </span>
+              <span className="hero-badge">
+                <MapPin size={14} /> {adminData.branch}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          <div className="info-grid">
-            <div className="info-card">
-              <User className="info-icon blue" />
-              <div>
-                <p className="info-label">Admin ID</p>
-                <p className="info-value">{adminData.employeeId}</p>
+      {/* Stats Grid */}
+      <div className="stats-grid">
+        {stats.map((stat, i) => {
+          const Icon = stat.icon;
+          return (
+            <div key={i} className={`stat-card stat-card-${stat.color}`}>
+              <div className={`stat-icon stat-icon-${stat.color}`}>
+                <Icon size={22} />
+              </div>
+              <div className="stat-content">
+                <p className="stat-value">{stat.value}</p>
+                <p className="stat-label">{stat.label}</p>
               </div>
             </div>
-            <div className="info-card">
-              <Mail className="info-icon purple" />
-              <div>
-                <p className="info-label">Email Address</p>
-                <p className="info-value">{adminData.email}</p>
+          );
+        })}
+      </div>
+
+      {/* Main Grid */}
+      <div className="main-grid">
+        {/* Account Information */}
+        <div className="profile-card">
+          <div className="card-header">
+            <div className="card-title">
+              <div className="icon-box icon-box-primary">
+                <User size={20} />
+              </div>
+              <h3 className="card-heading">Account Information</h3>
+            </div>
+          </div>
+          <div className="card-body">
+            <div className="info-grid">
+              <div className="info-item">
+                <span className="info-label">Admin ID</span>
+                <span className="info-value">{adminData.employeeId}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Email Address</span>
+                <span className="info-value">{adminData.email}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Branch Location</span>
+                <span className="info-value">{adminData.branch}</span>
               </div>
             </div>
-            <div className="info-card">
-              <Phone className="info-icon green" />
-              <div>
-                <p className="info-label">Phone Number</p>
-                <p className="info-value">{adminData.phone}</p>
+          </div>
+        </div>
+
+        {/* Security Settings */}
+        <div className="profile-card">
+          <div className="card-header">
+            <div className="card-title">
+              <div className="icon-box icon-box-success">
+                <Shield size={20} />
               </div>
+              <h3 className="card-heading">Security Settings</h3>
             </div>
-            <div className="info-card">
-              <Briefcase className="info-icon orange" />
-              <div>
-                <p className="info-label">Department</p>
-                <p className="info-value">{adminData.department}</p>
-              </div>
-            </div>
-            <div className="info-card">
-              <Building2 className="info-icon teal" />
-              <div>
-                <p className="info-label">Branch Location</p>
-                <p className="info-value">{adminData.branch}</p>
-              </div>
-            </div>
-            <div className="info-card twofactor">
-              <Shield className="info-icon red" />
-              <div>
-                <p className="info-label">Two-Factor Authentication</p>
-                <p className="info-desc">Extra security layer</p>
+          </div>
+          <div className="card-body">
+            <div className="security-item">
+              <div className="security-info">
+                <Lock size={18} className="security-icon" />
+                <div>
+                  <h4 className="security-title">Two-Factor Authentication</h4>
+                  <p className="security-desc">Add an extra layer of security</p>
+                </div>
               </div>
               <button
-                className={`toggle-btn ${twoFactorEnabled ? "on" : "off"}`}
+                className={`toggle ${twoFactorEnabled ? "toggle-active" : ""}`}
                 onClick={() => setTwoFactorEnabled(!twoFactorEnabled)}
               >
-                <span className="toggle-circle">
-                  {twoFactorEnabled && <CheckCircle2 size={14} color="#900603" />}
-                </span>
+                <div className="toggle-thumb">
+                  {twoFactorEnabled && <CheckCircle2 size={12} />}
+                </div>
               </button>
+            </div>
+
+            <div className="divider"></div>
+
+            <div className="security-item">
+              <div className="security-info">
+                <Bell size={18} className="security-icon-warning" />
+                <div>
+                  <h4 className="security-title">Login Alerts</h4>
+                  <p className="security-desc">Get notified of new device logins</p>
+                </div>
+              </div>
+              <button
+                className={`toggle ${notifications.newDeviceLogin ? "toggle-active" : ""}`}
+                onClick={() => handleNotificationToggle('newDeviceLogin')}
+              >
+                <div className="toggle-thumb">
+                  {notifications.newDeviceLogin && <CheckCircle2 size={12} />}
+                </div>
+              </button>
+            </div>
+
+            <button className="change-password-btn">
+              <Lock size={16} />
+              Change Password
+            </button>
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="profile-card">
+          <div className="card-header">
+            <div className="card-title">
+              <div className="icon-box icon-box-info">
+                <Activity size={20} />
+              </div>
+              <h3 className="card-heading">Recent Activity</h3>
+            </div>
+          </div>
+          <div className="card-body">
+            <div className="activity-list">
+              {recentActivity.map((activity, i) => (
+                <div key={i} className="activity-item">
+                  <div className={`activity-dot activity-dot-${activity.type}`}></div>
+                  <div className="activity-content">
+                    <p className="activity-action">{activity.action}</p>
+                    <p className="activity-time">{activity.time}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Access Logs */}
-      <div className="section-card">
-        <h3 className="section-title">
-          <Clock size={18} /> Access Log
-          {locationPermissionPrompt && (
-            <button className="location-allow-btn" onClick={requestPreciseLocation}>
-              Enable Precise Location
-            </button>
-          )}
-        </h3>
-        <div className="log-list">
-          {accessLogs.map((log, i) => (
-            <div key={i} className="log-item">
-              <div className="log-left">
-                <Monitor className="log-icon" />
+        {/* Notifications */}
+        <div className="profile-card">
+          <div className="card-header">
+            <div className="card-title">
+              <div className="icon-box icon-box-warning">
+                <Bell size={20} />
+              </div>
+              <h3 className="card-heading">Notification Preferences</h3>
+            </div>
+          </div>
+          <div className="card-body">
+            {Object.entries(notifications).map(([key, value]) => (
+              <div key={key} className="notif-item">
                 <div>
-                  <p className="log-device">
-                    {log.device} {log.id === sessionId && <span className="current-badge">Current Session</span>}
-                  </p>
-                  <p className="log-location">
-                    {log.location} {log.isIPBased && <span className="approx-text">(Approximate)</span>}
-                  </p>
+                  <h4 className="notif-title">
+                    {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                  </h4>
                 </div>
-              </div>
-              <div className="log-right">
-                <p className="log-time">
-                  {log.date} • {log.time}
-                </p>
-                <div className="log-status">
-                  <span>{log.ip}</span>
-                  {log.status === "success" ? (
-                    <CheckCircle2 size={14} color="green" />
-                  ) : (
-                    <XCircle size={14} color="red" />
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Notification Preferences */}
-      <div className="section-card">
-        <h3 className="section-title">
-          <Bell size={18} /> Notification Preferences
-        </h3>
-        <div className="notif-list">
-          {[
-            { key: "transactionAlerts", label: "Transaction Alerts", desc: "Get notified about all transactions" },
-            { key: "systemNotifications", label: "System Notifications", desc: "Important system updates" },
-            { key: "newDeviceLogin", label: "New Device Login", desc: "Alert when logging from new device" },
-            { key: "monthlyStatements", label: "Monthly Statement Emails", desc: "Receive monthly reports via email" },
-          ].map((item) => (
-            <div key={item.key} className="notif-item-row">
-              <div className="notif-text">
-                <p className="notif-label">{item.label}</p>
-                <p className="notif-desc">{item.desc}</p>
-              </div>
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  checked={notifications[item.key]}
-                  onChange={() => handleNotificationToggle(item.key)}
-                />
-                <span className="slider round"></span>
-              </label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Security Note */}
-      <div className="security-note">
-        <AlertCircle size={18} />
-        <div>
-          <p className="note-title">Security Reminder</p>
-          <p className="note-text">
-            Never share your login credentials with anyone. Bank administrators will never ask for your password.
-          </p>
-        </div>
-      </div>
-
-      {/* Change Password Modal */}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h4>
-                <Lock size={16} /> Update Password
-              </h4>
-              <button className="close-btn" onClick={() => setShowModal(false)}>
-                <XCircle size={18} />
-              </button>
-            </div>
-            <form onSubmit={handlePasswordSubmit}>
-              <div className="form-group">
-                <label>Old Password</label>
-                <div className="password-wrapper">
-                  <input type={showOldPass ? "text" : "password"} required placeholder="Enter old password" />
-                  <button type="button" onClick={() => setShowOldPass(!showOldPass)}>
-                    {showOldPass ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-              </div>
-              <div className="form-group">
-                <label>New Password</label>
-                <div className="password-wrapper">
-                  <input type={showNewPass ? "text" : "password"} required placeholder="Enter new password" />
-                  <button type="button" onClick={() => setShowNewPass(!showNewPass)}>
-                    {showNewPass ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Confirm Password</label>
-                <div className="password-wrapper">
-                  <input type={showConfirmPass ? "text" : "password"} required placeholder="Re-enter new password" />
-                  <button type="button" onClick={() => setShowConfirmPass(!showConfirmPass)}>
-                    {showConfirmPass ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-              </div>
-              <div className="form-actions">
-                <button type="submit" className="btn-primary">Update Password</button>
-                <button type="button" className="btn-outline" onClick={() => setShowModal(false)}>
-                  Cancel
+                <button
+                  className={`toggle ${value ? "toggle-active" : ""}`}
+                  onClick={() => handleNotificationToggle(key)}
+                >
+                  <div className="toggle-thumb">
+                    {value && <CheckCircle2 size={12} />}
+                  </div>
                 </button>
               </div>
-            </form>
+            ))}
+          </div>
+        </div>
+
+        {/* Access Log - Full Width */}
+        <div className="profile-card access-log-card">
+          <div className="card-header">
+            <div className="card-title">
+              <div className="icon-box icon-box-pink">
+                <Clock size={20} />
+              </div>
+              <h3 className="card-heading">Recent Access Log (Last 2)</h3>
+            </div>
+            <span className="view-all-link" onClick={() => setShowAllLogs(true)}>View All →</span>
+          </div>
+          <div className="card-body">
+            {loading ? (
+              <div className="loading-state">
+                <div className="spinner"></div>
+                <p>Detecting current session details...</p>
+              </div>
+            ) : (
+              <div className="access-list">
+                {accessLogs.slice(0, 2).map((log, i) => (
+                  <div key={i} className="access-row">
+                    <div className="access-info">
+                      <div className="device-icon-wrapper">
+                        <div className="device-icon">
+                          {getDeviceIcon(log.deviceType)}
+                        </div>
+                      </div>
+                      <div className="access-details">
+                        <div className="device-header">
+                          <p className="access-device">
+                            {log.deviceType}
+                            {log.id === 'sess_current' && (
+                              <span className="current-badge">Current Session</span>
+                            )}
+                          </p>
+                        </div>
+                        <div className="location-info">
+                          <p className="access-location">
+                            <MapPin size={12} />
+                            {log.location.city}, {log.location.state}, {log.location.country}
+                          </p>
+                          <p className="access-ip">
+                            <Globe size={12} />
+                            {log.ip}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="access-meta">
+                      <div className="time-info">
+                        <Clock size={14} />
+                        <div className="time-details">
+                          <p className="access-date">{log.date}</p>
+                          <p className="access-time">{log.time} <span className="timezone-tag">{log.timezone}</span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      {/* Access Log Modal */}
+      {showAllLogs && (
+        <div className="modal-overlay" onClick={() => setShowAllLogs(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3 className="modal-title">All Access Logs</h3>
+              <button className="modal-close-btn" onClick={() => setShowAllLogs(false)}>
+                <X size={20} />
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="access-list">
+                {accessLogs.map((log, i) => (
+                  <div key={i} className="access-row">
+                    <div className="access-info">
+                      <div className="device-icon-wrapper">
+                        <div className="device-icon">
+                          {getDeviceIcon(log.deviceType)}
+                        </div>
+                      </div>
+                      <div className="access-details">
+                        <div className="device-header">
+                          <p className="access-device">
+                            {log.deviceType}
+                            {log.id === 'sess_current' && (
+                              <span className="current-badge">Current Session</span>
+                            )}
+                          </p>
+                        </div>
+                        <div className="location-info">
+                          <p className="access-location">
+                            <MapPin size={12} />
+                            {log.location.city}, {log.location.state}, {log.location.country}
+                          </p>
+                          <p className="access-ip">
+                            <Globe size={12} />
+                            {log.ip}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="access-meta">
+                      <div className="time-info">
+                        <Clock size={14} />
+                        <div className="time-details">
+                          <p className="access-date">{log.date}</p>
+                          <p className="access-time">{log.time} <span className="timezone-tag">{log.timezone}</span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 }
 
