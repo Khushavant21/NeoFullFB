@@ -869,8 +869,31 @@ export default function UserManagement() {
           <UserProfileModal
             user={selectedUser}
             onClose={() => setSelectedUser(null)}
-            onUpdate={(updatedUser) => {
-              setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+            onUpdate={async (updatedUser) => {
+              try {
+                const token = localStorage.getItem("adminToken");
+                const response = await fetch("http://localhost:8080/api/admin/update-user", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                  },
+                  body: JSON.stringify(updatedUser),
+                });
+
+                if (response.ok) {
+                  alert("✅ User details updated successfully!");
+                  setUsers((prev) =>
+                    prev.map((u) => (u.email === updatedUser.email ? { ...u, ...updatedUser } : u))
+                  );
+                } else {
+                  const errText = await response.text();
+                  alert(`❌ Failed to update user: ${errText}`);
+                }
+              } catch (error) {
+                console.error("Update User Error:", error);
+                alert("⚠️ Error connecting to server");
+              }
             }}
           />
         )}

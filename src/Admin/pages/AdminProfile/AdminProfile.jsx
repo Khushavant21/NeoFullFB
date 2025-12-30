@@ -19,11 +19,13 @@ import {
   FileText,
   Smartphone,
   Tablet,
-  Laptop
+  Laptop,
+  LogOut,
+  AlertCircle
 } from "lucide-react";
 import "./AdminProfile.css";
 
-function AdminProfile() {
+function AdminProfile({ onLogout }) {
   const [showAllLogs, setShowAllLogs] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
   const [notifications, setNotifications] = useState({
@@ -34,12 +36,12 @@ function AdminProfile() {
   });
 
   const adminData = {
-    name: "Admin Kumar",
+    name: localStorage.getItem("userFullName") || "Admin Kumar",
     employeeId: "ADMIN009874",
     role: "Branch Manager",
     department: "Retail Banking",
-    email: "admin@neobank.com",
-    branch: "Mumbai – Andheri West",
+    email: localStorage.getItem("adminEmail") || "admin@neobank.com",
+    branch: "Kharadi - Pune",
     status: "Active",
     profileImage:
       "https://img.freepik.com/premium-vector/technology-concept-vector-illustration-featuring-consulting-design-flat-style-elements_1226483-4088.jpg?semt=ais_hybrid&w=740&q=80",
@@ -61,78 +63,59 @@ function AdminProfile() {
 
   const [loading, setLoading] = useState(true);
   const [accessLogs, setAccessLogs] = useState([]);
+  const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
-    const fetchSessionInfo = async () => {
+    const fetchAccessLogs = async () => {
+      setFetchError(null);
       try {
-        // Detect OS and Browser
-        const userAgent = navigator.userAgent;
-        let os = "Unknown OS";
-        let browser = "Unknown Browser";
-        let deviceType = "Desktop";
+        const rawEmail = adminData.email;
+        const targetEmail = rawEmail && rawEmail !== "null" ? rawEmail.trim() : null;
 
-        if (userAgent.indexOf("Win") !== -1) os = "Windows";
-        if (userAgent.indexOf("Mac") !== -1) os = "macOS";
-        if (userAgent.indexOf("Linux") !== -1) os = "Linux";
-        if (userAgent.indexOf("Android") !== -1) { os = "Android"; deviceType = "Mobile"; }
-        if (userAgent.indexOf("like Mac") !== -1) { os = "iOS"; deviceType = "Mobile"; }
+        console.log("DEBUG: Starting fetch for targetEmail:", targetEmail);
 
-        if (userAgent.indexOf("Chrome") !== -1) browser = "Chrome";
-        else if (userAgent.indexOf("Firefox") !== -1) browser = "Firefox";
-        else if (userAgent.indexOf("Safari") !== -1) browser = "Safari";
-        else if (userAgent.indexOf("Edge") !== -1) browser = "Edge";
+        if (!targetEmail) {
+          console.warn("DEBUG: No valid email available for fetch yet.");
+          setLoading(false);
+          return;
+        }
 
-        // Fetch Location & IP
-        const response = await fetch('https://ipapi.co/json/');
+        const response = await fetch(`http://localhost:8080/api/access-logs/${targetEmail}`);
+        console.log("DEBUG: Fetch Status:", response.status);
+
+        if (!response.ok) {
+          const errorBody = await response.text();
+          throw new Error(`Server error (${response.status}): ${errorBody || response.statusText}`);
+        }
+
         const data = await response.json();
+        console.log("DEBUG: Data received from server:", data);
 
-        const currentSession = {
-          id: "sess_current",
-          browser: browser,
-          os: os,
-          deviceType: deviceType,
-          location: {
-            city: data.city || "Unknown",
-            state: data.region || "Unknown",
-            country: data.country_name || "Unknown"
-          },
-          ip: data.ip || "0.0.0.0",
-          date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          timezone: data.timezone || "UTC",
-          status: "success"
-        };
+        if (!Array.isArray(data)) {
+          throw new Error("Received invalid data format (expected list of logs)");
+        }
 
-        const previousLogs = [
-          {
-            id: "sess_2",
-            browser: "Safari",
-            os: "iOS 17.2",
-            deviceType: "Mobile",
-            location: {
-              city: "Bengaluru",
-              state: "Karnataka",
-              country: "India"
-            },
-            ip: "106.51.78.204",
-            date: "Dec 28, 2025",
-            time: "18:45",
-            timezone: "IST",
-            status: "success"
-          }
-        ];
+        const formattedLogs = data.map((log, i) => {
+          const logDate = log.timestamp ? new Date(log.timestamp) : (log.createdAt ? new Date(log.createdAt) : new Date());
+          return {
+            ...log,
+            date: logDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            time: logDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            timezone: log.timezone || "UTC"
+          };
+        });
 
-        // Only display 2 logs: Current Session + Most Recent Previous
-        setAccessLogs([currentSession, ...previousLogs]);
+        setAccessLogs(formattedLogs);
       } catch (error) {
-        console.error("Error fetching session info:", error);
+        console.error("DEBUG: fetchAccessLogs caught error:", error);
+        setFetchError(error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSessionInfo();
-  }, []);
+    fetchAccessLogs();
+  }, [adminData.email]);
 
   const getDeviceIcon = (type) => {
     switch (type.toLowerCase()) {
@@ -170,7 +153,7 @@ function AdminProfile() {
             </div>
           </div>
           <div className="hero-text">
-            <h1 className="admin-name">{adminData.name}</h1>
+            <h1 className="admin-name">Neo_Bank Admin Panel</h1>
             <p className="admin-role">{adminData.role}</p>
             <div className="hero-badges">
               <span className="hero-badge">
@@ -181,6 +164,15 @@ function AdminProfile() {
               </span>
             </div>
           </div>
+          {/* Logout Button positioned on the right side middle of box */}
+          <button
+            className="logout-hero-btn"
+            onClick={onLogout}
+            title="Log Out"
+          >
+            <LogOut size={18} />
+            <span>Log Out</span>
+          </button>
         </div>
       </div>
 
@@ -361,6 +353,17 @@ function AdminProfile() {
                 <div className="spinner"></div>
                 <p>Detecting current session details...</p>
               </div>
+            ) : fetchError ? (
+              <div className="fetch-error-state">
+                <AlertCircle size={32} color="var(--primary-red)" />
+                <p>Failed to load logs: {fetchError}</p>
+                <button onClick={() => window.location.reload()} className="retry-btn">Retry</button>
+              </div>
+            ) : accessLogs.length === 0 ? (
+              <div className="empty-state">
+                <Activity size={32} />
+                <p>No access logs found. Logs are generated during login.</p>
+              </div>
             ) : (
               <div className="access-list">
                 {accessLogs.slice(0, 2).map((log, i) => (
@@ -374,21 +377,27 @@ function AdminProfile() {
                       <div className="access-details">
                         <div className="device-header">
                           <p className="access-device">
-                            {log.deviceType}
-                            {log.id === 'sess_current' && (
-                              <span className="current-badge">Current Session</span>
+                            {log.deviceType} {log.browser} on {log.os}
+                            {i === 0 && (
+                              <span className="current-badge">Most Recent</span>
                             )}
                           </p>
                         </div>
                         <div className="location-info">
                           <p className="access-location">
                             <MapPin size={12} />
-                            {log.location.city}, {log.location.state}, {log.location.country}
+                            {log.city}, {log.region}, {log.country}
                           </p>
                           <p className="access-ip">
                             <Globe size={12} />
                             {log.ip}
                           </p>
+                          {log.isp && (
+                            <p className="access-isp">
+                              <Shield size={12} />
+                              {log.isp}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -431,21 +440,27 @@ function AdminProfile() {
                       <div className="access-details">
                         <div className="device-header">
                           <p className="access-device">
-                            {log.deviceType}
-                            {log.id === 'sess_current' && (
-                              <span className="current-badge">Current Session</span>
+                            {log.deviceType} {log.browser} on {log.os}
+                            {i === 0 && (
+                              <span className="current-badge">Most Recent</span>
                             )}
                           </p>
                         </div>
                         <div className="location-info">
                           <p className="access-location">
                             <MapPin size={12} />
-                            {log.location.city}, {log.location.state}, {log.location.country}
+                            {log.city}, {log.region}, {log.country}
                           </p>
                           <p className="access-ip">
                             <Globe size={12} />
                             {log.ip}
                           </p>
+                          {log.isp && (
+                            <p className="access-isp">
+                              <Shield size={12} />
+                              {log.isp}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>

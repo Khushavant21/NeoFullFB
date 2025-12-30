@@ -218,4 +218,50 @@ public class AdminController
             System.err.println("Failed to sync AdminUserInfo: " + e.getMessage());
         }
     }
+
+    // ✅ Update User Details (Admin Side)
+    @PostMapping("/update-user")
+    public ResponseEntity<?> updateUser(@RequestBody Map<String, Object> body) {
+        String email = (String) body.get("email");
+        if (email == null) return ResponseEntity.badRequest().body(Map.of("error", "Email is required"));
+
+        User user = userService.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        com.example.neobank.entity.ClientProfileInfo profile = clientProfileInfoRepository.findByEmail(email)
+                .orElse(new com.example.neobank.entity.ClientProfileInfo());
+        
+        profile.setEmail(email);
+
+        // Update User Entity
+        if (body.containsKey("name")) user.setFullName((String) body.get("name"));
+        if (body.containsKey("fullName")) user.setFullName((String) body.get("fullName"));
+        if (body.containsKey("mobile")) user.setMobile((String) body.get("mobile"));
+        if (body.containsKey("phone")) user.setMobile((String) body.get("phone"));
+        if (body.containsKey("dob")) user.setDob((String) body.get("dob"));
+        if (body.containsKey("gender")) user.setGender((String) body.get("gender"));
+        if (body.containsKey("aadhaar")) user.setAadhaar((String) body.get("aadhaar"));
+        if (body.containsKey("pan")) user.setPan((String) body.get("pan"));
+        if (body.containsKey("accountNumber")) user.setAccountNumber((String) body.get("accountNumber"));
+
+        userService.save(user);
+
+        // Update ClientProfileInfo Entity
+        if (body.containsKey("name")) profile.setFullName((String) body.get("name"));
+        if (body.containsKey("fullName")) profile.setFullName((String) body.get("fullName"));
+        if (body.containsKey("mobile")) profile.setMobile((String) body.get("mobile"));
+        if (body.containsKey("phone")) profile.setMobile((String) body.get("phone"));
+        if (body.containsKey("dob")) profile.setDob((String) body.get("dob"));
+        if (body.containsKey("gender")) profile.setGender((String) body.get("gender"));
+        if (body.containsKey("address")) profile.setAddress((String) body.get("address"));
+        if (body.containsKey("fatherName")) profile.setFatherName((String) body.get("fatherName"));
+        if (body.containsKey("aadhaar")) profile.setAadhaar((String) body.get("aadhaar"));
+
+        clientProfileInfoRepository.save(profile);
+
+        // ✅ SYNC to AdminUserInfo
+        syncAdminUserInfo(user, profile);
+
+        return ResponseEntity.ok(Map.of("message", "User details updated successfully", "email", email));
+    }
 }

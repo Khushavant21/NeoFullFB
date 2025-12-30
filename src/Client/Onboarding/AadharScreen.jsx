@@ -75,6 +75,7 @@ export default function AadharScreen() {
         body: JSON.stringify({
           email: email,
           otp: enteredOtp,
+          aadhaar: aadhaar,
         }),
       });
 
@@ -90,9 +91,8 @@ export default function AadharScreen() {
         const errData = await response.json();
         setError(errData.message || 'Invalid OTP. Please try again.');
       }
-    } 
-    catch (err) 
-    {
+    }
+    catch (err) {
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);
@@ -173,7 +173,7 @@ export default function AadharScreen() {
                   />
                 ))}
               </div>
-                {error && <p className="aadharscreen-error">{error}</p>}
+              {error && <p className="aadharscreen-error">{error}</p>}
             </div>
 
             <button

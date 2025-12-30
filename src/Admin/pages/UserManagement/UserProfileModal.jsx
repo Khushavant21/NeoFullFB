@@ -114,12 +114,16 @@ export default function UserProfileModal({ user, onClose, onUpdate }) {
           {/* Right Column */}
           <div className="upm-details-card">
             {[
-              { label: "Name", field: "name", editable: true },
+              { label: "Full Name", field: "name", editable: true },
+              { label: "Email Address", field: "email", editable: true },
+              { label: "Phone Number", field: "phone", editable: true },
+              { label: "Date of Birth", field: "dob", editable: true },
+              { label: "Gender", field: "gender", editable: true },
               { label: "Father's Name", field: "fatherName", editable: true },
               { label: "Address", field: "address", editable: true },
-              { label: "Aadhaar Number", field: "aadhaar", editable: false },
-              { label: "PAN Number", field: "pan", editable: false },
-              { label: "Account Number", field: "account", editable: false },
+              { label: "Aadhaar Number", field: "aadhaar", editable: true },
+              { label: "PAN Number", field: "pan", editable: true },
+              { label: "Account Number", field: "accountNumber", editable: true },
               { label: "Account Type", field: "type", editable: true },
               { label: "Balance", field: "balance", editable: true },
             ].map((item, idx) => (

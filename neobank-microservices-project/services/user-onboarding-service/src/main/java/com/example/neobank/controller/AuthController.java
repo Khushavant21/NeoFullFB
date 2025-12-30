@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.neobank.services.AccessLogService;
+import jakarta.servlet.http.HttpServletRequest;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/auth")
@@ -30,6 +33,7 @@ public class AuthController
     private final OtpService otpService;
     private final PasswordService passwordService;
     private final JwtUtil jwtUtil;
+    private final AccessLogService accessLogService;
 
     private final UserRepository userRepository;
     private final ClientProfileInfoRepository clientProfileInfoRepository;
@@ -40,6 +44,7 @@ public class AuthController
                           OtpService otpService,
                           PasswordService passwordService,
                           JwtUtil jwtUtil,
+                          AccessLogService accessLogService,
                           UserRepository userRepository,
                           ClientProfileInfoRepository clientProfileInfoRepository,
                           com.example.neobank.repository.AdminUserInfoRepository adminUserInfoRepository, // ✅ Added
@@ -49,6 +54,7 @@ public class AuthController
         this.otpService = otpService;
         this.passwordService = passwordService;
         this.jwtUtil = jwtUtil;
+        this.accessLogService = accessLogService;
         this.userRepository = userRepository;
         this.clientProfileInfoRepository = clientProfileInfoRepository;
         this.adminUserInfoRepository = adminUserInfoRepository; // ✅ Added
@@ -211,7 +217,7 @@ public class AuthController
 
     // --------------------- LOGIN ---------------------
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest req)
+    public ResponseEntity<?> login(@RequestBody LoginRequest req, HttpServletRequest request)
     {
         var maybe = userService.findByEmail(req.getCustomerIdOrEmail());
         if (maybe.isEmpty())
@@ -224,8 +230,12 @@ public class AuthController
         boolean ok = userService.checkPassword(user, req.getPassword());
         if (!ok)
         {
+            accessLogService.recordLog(user.getEmail(), request, "failed");
             return ResponseEntity.badRequest().body(Map.of("error", "invalid credentials"));
         }
+
+        // Record successful login
+        accessLogService.recordLog(user.getEmail(), request, "success");
 
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
 
@@ -404,25 +414,27 @@ public class AuthController
         if (opt.isEmpty()) return ResponseEntity.notFound().build();
 
         ClientProfileInfo profile = opt.get();
-        if (body.containsKey("fullName")) profile.setFullName(body.get("fullName"));
-        if (body.containsKey("mobile")) profile.setMobile(body.get("mobile"));
-        if (body.containsKey("address")) profile.setAddress(body.get("address"));
-        if (body.containsKey("dob")) profile.setDob(body.get("dob"));
-        if (body.containsKey("gender")) profile.setGender(body.get("gender"));
-        if (body.containsKey("fatherName")) profile.setFatherName(body.get("fatherName"));
-        if (body.containsKey("aadhaar")) profile.setAadhaar(body.get("aadhaar")); // ✅ Sync to ClientProfileInfo
         
-        clientProfileInfoRepository.save(profile);
-        
-        // Also sync basic User details if needed (optional, keeping User as Auth/Core identity)
-        userRepository.findByEmail(email).ifPresent(u -> {
-           if (body.containsKey("fullName")) u.setFullName(body.get("fullName"));
-           if (body.containsKey("mobile")) u.setMobile(body.get("mobile"));
-           if (body.containsKey("dob")) u.setDob(body.get("dob"));
-           if (body.containsKey("gender")) u.setGender(body.get("gender"));
-           if (body.containsKey("aadhaar")) u.setAadhaar(body.get("aadhaar")); // ✅ Support Aadhaar update
-           userRepository.save(u);
-        });
+        // 👋 Security: Only allow address updates from client side profile page
+        if (body.containsKey("address")) {
+            profile.setAddress(body.get("address"));
+            clientProfileInfoRepository.save(profile);
+            
+            // Sync to User entity as well
+            userRepository.findByEmail(email).ifPresent(u -> {
+                // If User entity had address (not in current entity, but good practice if added later)
+                // u.setAddress(body.get("address")); 
+                userRepository.save(u);
+            });
+            
+            // Sync to AdminUserInfo
+            userRepository.findByEmail(email).ifPresent(u -> {
+                adminUserInfoRepository.findByEmail(email).ifPresent(adminUser -> {
+                    adminUser.setAddress(body.get("address"));
+                    adminUserInfoRepository.save(adminUser);
+                });
+            });
+        }
 
         return ResponseEntity.ok(Map.of("message", "Profile updated successfully"));
     }

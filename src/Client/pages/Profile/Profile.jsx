@@ -7,6 +7,7 @@ import {
   Smartphone, Wifi, Home, Film, Heart, CheckCircle, AlertCircle,
   PauseCircle, Edit3, ArrowUpRight, ArrowDownLeft, ChevronRight
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import './Profile.css';
 import BASE_URL from '../../../api/apiConfig';
 
@@ -32,6 +33,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 };
 
 const ProfileSection = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [showBalance, setShowBalance] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
@@ -236,6 +238,14 @@ const ProfileSection = () => {
     }
   };
 
+  const handlePersonalDetailsClick = () => {
+    if (!user.aadhaar || user.aadhaar === 'Not updated') {
+      navigate('/welcome');
+    } else {
+      alert('Personal information is verified and can only be updated by the bank administrator.');
+    }
+  };
+
   const handleQuickAction = (action) => {
     switch (action) {
       case 'transfer':
@@ -411,7 +421,7 @@ const ProfileSection = () => {
                     </button>
                   </div>
                   <div className="ps-card-body">
-                    <div className="ps-row">
+                    <div className="ps-row" onClick={handlePersonalDetailsClick} style={{ cursor: 'pointer' }}>
                       <div className="ps-col">
                         <div className="ps-info-item">
                           <div className="ps-info-icon">
@@ -436,7 +446,7 @@ const ProfileSection = () => {
                       </div>
                     </div>
 
-                    <div className="ps-row">
+                    <div className="ps-row" onClick={handlePersonalDetailsClick} style={{ cursor: 'pointer' }}>
                       <div className="ps-col">
                         <div className="ps-info-item">
                           <div className="ps-info-icon">
@@ -461,7 +471,7 @@ const ProfileSection = () => {
                       </div>
                     </div>
 
-                    <div className="ps-row">
+                    <div className="ps-row" onClick={handlePersonalDetailsClick} style={{ cursor: 'pointer' }}>
                       <div className="ps-col">
                         <div className="ps-info-item">
                           <div className="ps-info-icon">
@@ -486,7 +496,7 @@ const ProfileSection = () => {
                       </div>
                     </div>
 
-                    <div className="ps-row">
+                    <div className="ps-row" onClick={handlePersonalDetailsClick} style={{ cursor: 'pointer' }}>
                       <div className="ps-col-full">
                         <div className="ps-info-item">
                           <div className="ps-info-icon">
@@ -838,7 +848,7 @@ const ProfileSection = () => {
         <form onSubmit={(e) => { e.preventDefault(); handleProfileUpdate(); }}>
           <div className="ps-form-row">
             <label htmlFor="editName">Full Name</label>
-            <input id="editName" type="text" value={formData.name} onChange={(e) => handleInputChange('name', e.target.value)} required />
+            <input id="editName" type="text" value={formData.name} readOnly />
           </div>
 
           <div className="ps-form-row">
@@ -853,17 +863,12 @@ const ProfileSection = () => {
 
           <div className="ps-form-row">
             <label htmlFor="editDob">Date of Birth</label>
-            <input id="editDob" type="date" value={formData.dateOfBirth} onChange={(e) => handleInputChange('dateOfBirth', e.target.value)} />
+            <input id="editDob" type="text" value={formData.dateOfBirth} readOnly />
           </div>
 
           <div className="ps-form-row">
             <label htmlFor="editGender">Gender</label>
-            <select id="editGender" className="ps-select" value={formData.gender} onChange={(e) => handleInputChange('gender', e.target.value)}>
-              <option value="">Select Gender</option>
-              <option value="male">male</option>
-              <option value="female">female</option>
-              <option value="other">other</option>
-            </select>
+            <input id="editGender" type="text" value={formData.gender} readOnly />
           </div>
 
           <div className="ps-form-row">
@@ -872,10 +877,8 @@ const ProfileSection = () => {
               id="editAadhaar"
               type="text"
               value={formData.aadhaar}
-              onChange={(e) => handleInputChange('aadhaar', e.target.value)}
-              placeholder={user.aadhaar ? "Verified - Cannot Change" : "Update your Aadhaar Number"}
-              readOnly={!!user.aadhaar && user.aadhaar.trim().toLowerCase() !== "aadhaar"} // Lock if set and not the bugged "aadhaar" string
-              className={!!user.aadhaar && user.aadhaar.trim().toLowerCase() !== "aadhaar" ? "ps-input ps-input-readonly" : "ps-input"}
+              readOnly
+              className="ps-input ps-input-readonly"
             />
           </div>
 

@@ -34,6 +34,7 @@ public class SecurityConfig
             // ✅ Allow preflight requests
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/access-logs/**").permitAll() // ✅ Allow access to logs
                 .requestMatchers("/uploads/**").permitAll() // ✅ Allow access to uploaded images
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()

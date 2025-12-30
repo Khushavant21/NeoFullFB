@@ -19,6 +19,7 @@ import {
   Settings,
   ChevronDown,
   Menu,
+  LogOut,
 } from "lucide-react";
 import logo from "../assets/logo.png";
 import "./TopNavbar.css";
@@ -86,7 +87,7 @@ const TopNavbar = () => {
 
           {/* Right Side: Notification + Profile */}
           <div className="tnb-navbar-right">
-           <button
+            <button
               className="tn-icon-btn"
               onClick={() => navigate("/admin/notifications")} // :white_check_mark: Navigate to AdminNotificationPanel
               title="View Notifications"
@@ -99,6 +100,28 @@ const TopNavbar = () => {
               <User size={20} className="tnb-profile-icon" />
               <span className="tnb-profile-text">Admin</span>
             </NavLink>
+
+            <button
+              className="tn-icon-btn logout-nav-btn"
+              onClick={() => {
+                localStorage.clear();
+                window.location.reload();
+              }}
+              title="Log Out"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'var(--text-secondary)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '8px',
+                borderRadius: '50%',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <LogOut size={20} />
+            </button>
 
             <button
               className="tnb-menu-btn"

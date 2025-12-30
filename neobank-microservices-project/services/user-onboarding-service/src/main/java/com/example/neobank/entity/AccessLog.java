@@ -11,12 +11,19 @@ public class AccessLog {
     @Id
     private String id;
     private String email;
-    private String date;
-    private String time;
-    private String device;
+    private Instant timestamp; // UTC login time
     private String ip;
-    private String location;
+    private String deviceType;
+    private String os;
+    private String browser;
+    private String city;
+    private String region;
+    private String country;
+    private String timezone;
+    private String isp;
+    private Double latitude; // Consent-based exact
+    private Double longitude; // Consent-based exact
+    private boolean locationConsent;
     private String status;
-    private boolean isIPBased;
     private Instant createdAt = Instant.now();
 }

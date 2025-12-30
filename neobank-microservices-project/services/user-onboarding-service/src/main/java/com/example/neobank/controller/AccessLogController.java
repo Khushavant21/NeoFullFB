@@ -17,14 +17,11 @@ public class AccessLogController {
     @Autowired
     private AccessLogRepository accessLogRepository;
 
-    @GetMapping("/{email}")
+    @GetMapping("/{email:.+}")
     public List<AccessLog> getLogs(@PathVariable String email) {
-        return accessLogRepository.findByEmailOrderByCreatedAtDesc(email);
-    }
-
-    @PostMapping("/add")
-    public ResponseEntity<?> addLog(@RequestBody AccessLog log) {
-        accessLogRepository.save(log);
-        return ResponseEntity.ok(Map.of("message", "Log saved successfully"));
+        System.out.println("Fetching access logs for email: " + email);
+        List<AccessLog> logs = accessLogRepository.findByEmailOrderByCreatedAtDesc(email);
+        System.out.println("Found " + logs.size() + " logs for " + email);
+        return logs;
     }
 }

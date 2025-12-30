@@ -23,11 +23,32 @@ const AadharVerification = ({ userData, updateUserData, nextStep, prevStep }) =>
     }
   };
 
-  const verifyOtp = () => {
+  const verifyOtp = async () => {
     if (enteredOtp === otp && enteredOtp !== "") {
-      setMessage("✅ Aadhar Verified Successfully!");
-      setMessageType('success');
-      setTimeout(() => nextStep(), 1000); // Move to next step after 1s
+      try {
+        const response = await fetch('http://localhost:8080/api/auth/aadhaar/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: userData.email,
+            otp: enteredOtp,
+            aadhaar: userData.aadharNumber
+          }),
+        });
+
+        if (response.ok) {
+          setMessage("✅ Aadhar Verified Successfully!");
+          setMessageType('success');
+          setTimeout(() => nextStep(), 1000);
+        } else {
+          const errData = await response.json();
+          setMessage(`❌ ${errData.error || "Verification failed"}`);
+          setMessageType('error');
+        }
+      } catch (err) {
+        setMessage("❌ Network error. Please try again.");
+        setMessageType('error');
+      }
     } else {
       setMessage("❌ Incorrect OTP. Please try again.");
       setMessageType('error');

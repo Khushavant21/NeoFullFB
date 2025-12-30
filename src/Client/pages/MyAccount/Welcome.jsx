@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PersonalDetails from "./PersonalDetails";
 import AadharVerification from "./AadharVerification";
 import PANVerification from "./PANVerification";
 import VideoKYC from "./VideoKYC";
 import "./Welcome.css"; // 👈 unique CSS
 import logoWhite from '../../assets/neobank-logo.png';
+import BASE_URL from "../../../api/apiConfig";
 
 const Welcome = () => {
   const [step, setStep] = useState(1);
@@ -17,6 +18,31 @@ const Welcome = () => {
     kycVerified: false,
   });
   const [modal, setModal] = useState(null); // For OTP messages
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const email = localStorage.getItem('userEmail');
+      if (email) {
+        try {
+          const response = await fetch(`${BASE_URL}/auth/profile?email=${encodeURIComponent(email)}`);
+          if (response.ok) {
+            const data = await response.json();
+            setUserData({
+              fullName: data.fullName || "",
+              email: data.email || "",
+              mobileNumber: data.mobile || "",
+              aadharNumber: data.aadhaar || "",
+              panNumber: data.pan || "",
+              kycVerified: data.panVerified || false,
+            });
+          }
+        } catch (err) {
+          console.error("Error fetching profile in Welcome screen:", err);
+        }
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const updateUserData = (data) =>
     setUserData((prev) => ({ ...prev, ...data }));
@@ -31,7 +57,7 @@ const Welcome = () => {
       <div className="wn-box">
         {/* Header */}
         <div className="wn-header">
-          <img src={logoWhite} alt="NeoBank" className="wn-logo"/>
+          <img src={logoWhite} alt="NeoBank" className="wn-logo" />
           <h1 className="wn-title">NeoBank Account Open</h1>
           <p className="wn-subtitle">
             Complete your account setup in easy steps
@@ -44,26 +70,23 @@ const Welcome = () => {
             <div key={index} className="wn-step">
               {index !== steps.length - 1 && (
                 <div
-                  className={`wn-step-line ${
-                    step > index + 1 ? "wn-filled" : ""
-                  }`}
+                  className={`wn-step-line ${step > index + 1 ? "wn-filled" : ""
+                    }`}
                 ></div>
               )}
               <div
-                className={`wn-step-circle ${
-                  step > index + 1
+                className={`wn-step-circle ${step > index + 1
                     ? "wn-complete"
                     : step === index + 1
-                    ? "wn-active"
-                    : ""
-                }`}
+                      ? "wn-active"
+                      : ""
+                  }`}
               >
                 {index + 1}
               </div>
               <span
-                className={`wn-step-label ${
-                  step >= index + 1 ? "wn-label-active" : ""
-                }`}
+                className={`wn-step-label ${step >= index + 1 ? "wn-label-active" : ""
+                  }`}
               >
                 {label}
               </span>

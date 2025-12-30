@@ -61,7 +61,17 @@ export default function AdminApp() {
           {/* --- Protected Routes --- */}
           {isLoggedIn ? (
             <>
-              <Route path="/adminprofile" element={<AdminProfile />} />
+              <Route
+                path="/adminprofile"
+                element={
+                  <AdminProfile
+                    onLogout={() => {
+                      localStorage.clear();
+                      setIsLoggedIn(false);
+                    }}
+                  />
+                }
+              />
               <Route path="/notifications" element={<Notification />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/users" element={<UserManagement />} />
