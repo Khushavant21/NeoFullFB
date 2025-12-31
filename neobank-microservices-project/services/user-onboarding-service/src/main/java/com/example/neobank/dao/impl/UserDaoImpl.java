@@ -23,13 +23,13 @@ public class UserDaoImpl implements UserDao
     @Override
     public Optional<User> findByEmail(String email)
     {
-        return repo.findByEmail(email);
+        return repo.findByEmailIgnoreCase(email);
     }
 
     @Override
     public Optional<User> findByCustomerId(String customerId)
     {
-        return repo.findByCustomerId(customerId);
+        return repo.findByCustomerIdIgnoreCase(customerId);
     }
 
     @Override

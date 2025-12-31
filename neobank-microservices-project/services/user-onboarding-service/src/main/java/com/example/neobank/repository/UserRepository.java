@@ -8,5 +8,10 @@ public interface UserRepository extends MongoRepository<User, String>
 {
     Optional<User> findByEmail(String email);
     Optional<User> findByCustomerId(String customerId);
+    
+    // Case-insensitive lookups for robust login
+    Optional<User> findByEmailIgnoreCase(String email);
+    Optional<User> findByCustomerIdIgnoreCase(String customerId);
+
     long countByKycStatus(String status);
 }

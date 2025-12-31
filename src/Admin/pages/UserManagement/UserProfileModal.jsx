@@ -32,8 +32,7 @@ export default function UserProfileModal({ user, onClose, onUpdate }) {
             aadhaar: data.user?.aadhaar || fullData.aadhaar,
             aadhaarFront: fullData.aadhaarPhotoUrl ? `${fullData.aadhaarPhotoUrl}?t=${timestamp}` : null,
             signature: fullData.signatureUrl ? `${fullData.signatureUrl}?t=${timestamp}` : null,
-            photo: (fullData.profileImageUrl || fullData.photo) ? `${(fullData.profileImageUrl || fullData.photo)}?t=${timestamp}` : null,
-            fatherName: data.clientProfile?.fatherName || fullData.fatherName
+            photo: (fullData.profileImageUrl || fullData.photo) ? `${(fullData.profileImageUrl || fullData.photo)}?t=${timestamp}` : null
           };
 
           setEditableUser(prev => ({ ...prev, ...mappedData }));
@@ -119,7 +118,6 @@ export default function UserProfileModal({ user, onClose, onUpdate }) {
               { label: "Phone Number", field: "phone", editable: true },
               { label: "Date of Birth", field: "dob", editable: true },
               { label: "Gender", field: "gender", editable: true },
-              { label: "Father's Name", field: "fatherName", editable: true },
               { label: "Address", field: "address", editable: true },
               { label: "Aadhaar Number", field: "aadhaar", editable: true },
               { label: "PAN Number", field: "pan", editable: true },

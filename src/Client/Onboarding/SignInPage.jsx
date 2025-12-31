@@ -5,7 +5,7 @@ import './SignInPage.css';
 
 export default function SignInPage({ onComplete }) {
   const { setCurrentStep, updateUserData } = useOnboarding();
-  
+
   const [customerId, setCustomerId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -33,15 +33,16 @@ export default function SignInPage({ onComplete }) {
         password: password,
       });
 
-      const { token, role, kycStatus } = response?.data;
+      const { token, role, kycStatus, email } = response?.data;
 
       if (!token) {
         setError("Login failed: No token received.");
         return;
       }
 
-      // Save token in localStorage
+      // Save token & email in localStorage
       localStorage.setItem("accessToken", token);
+      if (email) localStorage.setItem("userEmail", email);
 
       // Save login state globally
       updateUserData({

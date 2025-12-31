@@ -219,10 +219,13 @@ public class AuthController
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req, HttpServletRequest request)
     {
-        var maybe = userService.findByEmail(req.getCustomerIdOrEmail());
+        // Trim input to remove accidental spaces
+        String identifier = req.getCustomerIdOrEmail() != null ? req.getCustomerIdOrEmail().trim() : "";
+
+        var maybe = userService.findByEmail(identifier);
         if (maybe.isEmpty())
         {
-            maybe = userService.findByCustomerId(req.getCustomerIdOrEmail());
+            maybe = userService.findByCustomerId(identifier);
         }
         if (maybe.isEmpty()) return ResponseEntity.badRequest().body(Map.of("error","user not found"));
 
@@ -243,6 +246,7 @@ public class AuthController
         response.put("token", token);
         response.put("role", user.getRole());
         response.put("customerId", user.getCustomerId());
+        response.put("email", user.getEmail()); // ✅ return email for frontend context
         response.put("kycStatus", user.getKycStatus());
 
 
